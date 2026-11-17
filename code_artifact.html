@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>聖經桌遊製卡工坊</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap" rel="stylesheet">
+  <!-- html2canvas & JSZip -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <style>
+    :root {
+      --forest-dark: #1d3529;
+      --forest-mid: #264334;
+      --parchment-bg: #e5dec9;
+      --ink-black: #181a18;
+    }
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: #111714;
+      color: #f3f1ea;
+    }
+
+    .font-serif-tc {
+      font-family: 'Noto Serif TC', serif;
+    }
+
+    .font-cinzel {
+      font-family: 'Cinzel', 'Noto Serif TC', serif;
+    }
+
+    /* =========================================================
+       AUTHENTIC VINTAGE CARD STYLE (Matching STORY 37)
+       ========================================================= */
+    .vintage-card-outer {
+      position: relative;
+      background: radial-gradient(circle at 30% 20%, #345947 0%, #264334 55%, #1a2f24 100%);
+      border: 3.5px solid #101512;
+      border-radius: 14px;
+      box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.08),
+        inset 0 0 24px rgba(0, 0, 0, 0.65),
+        0 12px 28px rgba(0, 0, 0, 0.55);
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .vintage-card-outer.theme-element {
+      background: radial-gradient(circle at 30% 20%, #684327 0%, #4d301a 55%, #331f10 100%);
+    }
+
+    .vintage-card-outer.theme-character {
+      background: radial-gradient(circle at 30% 20%, #2b4d59 0%, #1e3740 55%, #14252b 100%);
+    }
+
+    .vintage-inner-border {
+      position: absolute;
+      inset: 5px;
+      border: 1.5px solid rgba(15, 20, 17, 0.85);
+      border-radius: 10px;
+      pointer-events: none;
+      z-index: 30;
+      box-shadow: inset 0 0 0 1px rgba(215, 208, 185, 0.14);
+    }
+
+    .vintage-header-bar {
+      position: relative;
+      background: linear-gradient(90deg, #1b3126 0%, #2e4e3f 45%, #849988 85%, #4a6657 100%);
+      border: 2px solid #141916;
+      border-radius: 6px;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    }
+
+    .story-pill-badge {
+      background: linear-gradient(135deg, #c7d2c6 0%, #96a89b 60%, #75887b 100%);
+      border: 2px solid #171c19;
+      border-radius: 8px;
+      color: #151b18;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.4);
+    }
+
+    .torn-parchment {
+      position: relative;
+      background: radial-gradient(circle at 50% 40%, #ede8da 0%, #e5dec9 65%, #cfc7b0 100%);
+      border: 2.5px solid #1a1d1a;
+      border-radius: 6px;
+      color: #161816;
+      box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.45),
+        inset 0 0 18px rgba(138, 118, 82, 0.28);
+    }
+
+    .title-brush-strip {
+      background: linear-gradient(90deg,
+        rgba(176, 196, 177, 0.15) 0%,
+        rgba(174, 194, 175, 0.82) 12%,
+        rgba(166, 188, 168, 0.88) 88%,
+        rgba(176, 196, 177, 0.15) 100%);
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .scripture-scroll {
+      position: relative;
+      background: linear-gradient(180deg, #e5c68b 0%, #d4ab67 50%, #b88944 100%);
+      border: 2px solid #1d1811;
+      border-radius: 4px;
+      color: #17130d;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(120, 78, 24, 0.35);
+    }
+
+    .scroll-roller-left,
+    .scroll-roller-right {
+      position: absolute;
+      top: -4px;
+      bottom: -4px;
+      width: 10px;
+      background: linear-gradient(90deg, #8c6229 0%, #e4c283 50%, #78511d 100%);
+      border: 2px solid #1d1811;
+      border-radius: 4px;
+      z-index: 2;
+    }
+    .scroll-roller-left { left: -6px; }
+    .scroll-roller-right { right: -6px; }
+
+    .score-badge {
+      position: relative;
+      border: 2.5px solid #1b1610;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 7px rgba(0,0,0,0.45), inset 0 0 8px rgba(45, 28, 10, 0.45);
+      transition: transform 0.15s ease;
+    }
+    .score-badge:hover {
+      transform: scale(1.06);
+    }
+    .score-badge::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1.2px dashed rgba(27, 22, 16, 0.55);
+      border-radius: 9999px;
+      pointer-events: none;
+    }
+    .score-kraft {
+      background: radial-gradient(circle at 35% 30%, #d8b989 0%, #bc955d 60%, #99723c 100%);
+      color: #16120c;
+    }
+    .score-red {
+      background: radial-gradient(circle at 35% 30%, #d46555 0%, #aa3b2c 65%, #7d2519 100%);
+      color: #fff8ee;
+    }
+
+    .artwork-frame {
+      position: relative;
+      border: 2.5px solid #141815;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #1a241f;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.7);
+    }
+
+    .oil-canvas-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 50%, transparent 62%, rgba(10, 15, 12, 0.36) 100%),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+      mix-blend-mode: multiply;
+    }
+
+    .oil-grade {
+      filter: contrast(1.1) saturate(1.15) sepia(0.06) brightness(1.02);
+    }
+
+    /* Shimmer loading animation while AI paints */
+    @keyframes shimmerPulse {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .ai-painting-shimmer {
+      background: linear-gradient(90deg, rgba(24,36,30,0.85) 25%, rgba(212,171,103,0.35) 50%, rgba(24,36,30,0.85) 75%);
+      background-size: 200% 100%;
+      animation: shimmerPulse 1.8s infinite linear;
+    }
+
+    /* Inline editable text highlight */
+    [contenteditable="true"]:focus {
+      outline: 2px dashed #b45309;
+      background-color: rgba(254, 243, 199, 0.5);
+      border-radius: 3px;
+    }
+
+    /* =========================================================
+       CARD DIMENSIONS (Screen & Print)
+       ========================================================= */
+    /* A6 Landscape: 148mm x 105mm */
+    .card-a6-landscape {
+      width: 536px;
+      height: 380px;
+      flex-shrink: 0;
+    }
+
+    /* Poker Vertical: 63mm x 88mm */
+    .card-poker-vertical {
+      width: 280px;
+      height: 391px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 640px) {
+      .card-scale-wrapper-a6 {
+        transform: scale(0.63);
+        transform-origin: top center;
+        margin-bottom: -135px;
+      }
+    }
+
+    /* =========================================================
+       PRINT MEDIA STYLES (Exact Physical Millimeter Sizing)
+       ========================================================= */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 8mm;
+      }
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      #printSheetContainer {
+        display: block !important;
+      }
+      .print-page-a4 {
+        width: 194mm;
+        height: 281mm;
+        page-break-after: always;
+        break-after: page;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        margin: 0 auto;
+      }
+      .print-slot-a6 {
+        width: 148mm !important;
+        height: 105mm !important;
+        margin: 6mm auto;
+        position: relative;
+        outline: 0.3mm dashed #888;
+      }
+      .print-grid-poker {
+        display: grid;
+        grid-template-columns: repeat(3, 63mm);
+        grid-template-rows: repeat(3, 88mm);
+        gap: 1.5mm;
+        justify-content: center;
+        align-content: center;
+      }
+      .print-slot-poker {
+        width: 63mm !important;
+        height: 88mm !important;
+        position: relative;
+        outline: 0.25mm dashed #888;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-amber-600 selection:text-white">
+
+  <!-- =========================================================
+       CLEAN, MINIMAL TOP BAR
+       ========================================================= -->
+  <header class="no-print sticky top-0 z-40 bg-[#16221c]/95 backdrop-blur-md border-b border-emerald-900/60 px-4 py-2.5 shadow-lg">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+
+      <!-- Left: Brand + Mode Switch + Layout Switch -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        <div class="flex items-center gap-2 mr-1">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-emerald-800 flex items-center justify-center text-stone-950 font-black shadow">
+            ✝
+          </div>
+          <span class="font-bold text-base text-amber-100 tracking-wide">聖經桌遊製卡工坊</span>
+        </div>
+
+        <!-- Mode Switch: Event (A6) vs Poker -->
+        <div class="flex bg-stone-900 p-1 rounded-xl border border-stone-700/80 text-xs font-bold">
+          <button id="btnModeEvent" onclick="switchMode('event')" class="px-3 py-1.5 rounded-lg bg-emerald-700 text-white shadow transition">
+            事件卡 (A6橫版)
+          </button>
+          <button id="btnModePoker" onclick="switchMode('poker')" class="px-3 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition">
+            人物・元素卡 (撲克牌)
+          </button>
+        </div>
+
+        <!-- Layout Switch (Only shown in Event Mode) -->
+        <div id="layoutToggleGroup" class="flex bg-stone-900 p-1 rounded-xl border border-stone-700/80 text-xs font-bold">
+          <button id="btnLayoutClassic" onclick="switchLayout('classic')" class="px-2.5 py-1.5 rounded-lg bg-amber-600/30 text-amber-200 border border-amber-500/40 transition">
+            標準版型
+          </button>
+          <button id="btnLayoutSplit" onclick="switchLayout('split')" class="px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition">
+            左右雙欄
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: 4 Simple Action Buttons -->
+      <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+        <button onclick="openPasteModal()" class="px-3.5 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-amber-200 border border-amber-500/40 flex items-center gap-1.5 transition shadow">
+          <span>📋</span> 貼上文字
+        </button>
+        <button onclick="redrawAllUnlockedCards()" id="btnRedrawAll" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black flex items-center gap-1.5 transition shadow">
+          <span>✨</span> 全部重繪
+        </button>
+        <button onclick="triggerPrintA4()" class="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white flex items-center gap-1.5 transition shadow">
+          <span>🖨️</span> A4 列印
+        </button>
+        <button onclick="openDownloadModal()" class="px-3.5 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-600 flex items-center gap-1.5 transition">
+          <span>💾</span> 下載離線版
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =========================================================
+       SUBTLE PROGRESS BANNER (Only visible when batch drawing)
+       ========================================================= -->
+  <div id="batchBanner" class="no-print hidden bg-stone-900/95 border-b border-amber-500/40 px-4 py-2">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs">
+      <div class="flex items-center gap-2 text-amber-300 font-bold truncate">
+        <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+        <span id="batchStatusText">AI 正在理解經文故事並繪製油畫...</span>
+      </div>
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="w-36 h-2 bg-stone-800 rounded-full overflow-hidden">
+          <div id="batchProgressBar" class="h-full bg-amber-400 transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <button onclick="stopBatchDrawing()" class="px-2 py-0.5 rounded bg-red-900/80 text-red-200 hover:bg-red-800 font-bold">停止</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MAIN CARD PREVIEW WORKSPACE
+       ========================================================= -->
+  <main class="no-print flex-1 max-w-7xl w-full mx-auto px-4 py-5 flex flex-col gap-4">
+
+    <!-- Simple Info Strip -->
+    <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-stone-400 px-1">
+      <div>
+        目前顯示 <span id="cardCountText" class="text-amber-300 font-bold">6</span> 張卡片（直接點擊卡面文字即可修改，點擊右下角分數圓圈可切換紅圈／牛皮色）
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="loadQuickPreset('sample6')" class="underline hover:text-amber-300">精選 6 張</button>
+        <span>・</span>
+        <button onclick="loadQuickPreset('all37')" class="underline hover:text-amber-300">全套 37 張事件卡</button>
+        <span>・</span>
+        <button onclick="loadQuickPreset('poker100')" class="underline hover:text-amber-300">人物與元素卡 (100張)</button>
+      </div>
+    </div>
+
+    <!-- Cards Grid -->
+    <div id="cardsGrid" class="flex-1 bg-[#0d120f] border border-stone-800/80 rounded-2xl p-5 md:p-7 flex flex-wrap justify-center gap-7 items-start content-start shadow-inner min-h-[76vh]">
+      <!-- Rendered Cards -->
+    </div>
+
+  </main>
+
+  <!-- =========================================================
+       A4 PRINT CONTAINER (Only shown when printing)
+       ========================================================= -->
+  <div id="printSheetContainer" class="hidden"></div>
+
+  <!-- =========================================================
+       MODAL 1: SIMPLE PASTE TEXT DRAWER (📋 貼上文字)
+       ========================================================= -->
+  <div id="pasteModal" class="no-print fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#18241e] border border-amber-500/50 rounded-2xl max-w-2xl w-full p-5 shadow-2xl text-stone-100 flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-emerald-900/80 pb-2.5">
+        <h3 class="text-base font-bold text-amber-300">📋 貼上卡片文字（AI 自動理解故事生圖）</h3>
+        <button onclick="closePasteModal()" class="text-stone-400 hover:text-white text-2xl leading-none px-1">&times;</button>
+      </div>
+
+      <p class="text-xs text-stone-300 leading-relaxed">
+        直接貼上文字（每行一張卡：<span class="text-amber-300 font-mono">編號｜標題｜人物｜元素｜經文｜分數</span>），AI 會自動理解聖經故事、人物動作與物件，畫出對應的古典微抽象油畫。
+      </p>
+
+      <!-- Quick Preset Buttons -->
+      <div class="flex flex-wrap gap-2 text-xs">
+        <button onclick="fillPastePreset('sample6')" class="px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-600 font-bold">
+          載入精選 6 張
+        </button>
+        <button onclick="fillPastePreset('all37')" class="px-3 py-1.5 rounded-lg bg-emerald-800/80 hover:bg-emerald-700 text-amber-100 border border-emerald-500/40 font-bold">
+          載入全套 37 張事件卡 (STORY 01–37)
+        </button>
+        <button onclick="fillPastePreset('poker100')" class="px-3 py-1.5 rounded-lg bg-amber-900/60 hover:bg-amber-800/70 text-amber-100 border border-amber-600/40 font-bold">
+          載入人物與元素卡 (46人物+54元素)
+        </button>
+      </div>
+
+      <textarea
+        id="pasteTextarea"
+        rows="11"
+        class="w-full bg-stone-950 text-stone-100 border border-emerald-800 rounded-xl p-3 text-xs font-mono leading-relaxed focus:outline-none focus:border-amber-400 resize-y"
+        placeholder="STORY 37 | 保羅在雅典講道 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 17:16-34 | 2分"
+      ></textarea>
+
+      <div class="flex items-center justify-between pt-2 border-t border-emerald-900/80">
+        <label class="flex items-center gap-2 text-xs text-stone-300 cursor-pointer">
+          <input id="chkAutoDrawAfterPaste" type="checkbox" checked class="w-4 h-4 accent-amber-500 rounded" />
+          <span>套用後自動為新卡片生成 AI 油畫</span>
+        </label>
+        <div class="flex gap-2">
+          <button onclick="closePasteModal()" class="px-4 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-bold">取消</button>
+          <button onclick="applyPastedText()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-lg">
+            ✅ 產生卡片
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MODAL 2: SIMPLE 1-LINE EDIT SCENE (✏️ 改畫面)
+       ========================================================= -->
+  <div id="editSceneModal" class="no-print fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#18241e] border border-amber-500/50 rounded-2xl max-w-lg w-full p-5 shadow-2xl text-stone-100 flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-emerald-900/80 pb-2.5">
+        <h3 id="editSceneTitle" class="text-base font-bold text-amber-300">✏️ 調整畫面內容</h3>
+        <button onclick="closeEditSceneModal()" class="text-stone-400 hover:text-white text-2xl leading-none px-1">&times;</button>
+      </div>
+
+      <div>
+        <label class="block text-xs text-stone-300 mb-1.5 font-medium">
+          直接用中文輸入您想呈現的畫面細節（AI 會自動結合這張卡的故事重畫）：
+        </label>
+        <input
+          id="editSceneInput"
+          type="text"
+          placeholder="例如：特寫保羅手指天空的表情、背景有帕德嫩神廟與金色星雲旋渦..."
+          onkeydown="if(event.key==='Enter') submitEditScene()"
+          class="w-full bg-stone-950 border border-emerald-700 rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none focus:border-amber-400"
+        />
+      </div>
+
+      <!-- Quick suggestion chips -->
+      <div class="flex flex-wrap gap-1.5 text-[11px]">
+        <button onclick="appendSceneChip('特寫人物堅定敬虔的表情，加強林布蘭光影對比')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 特寫人物表情</button>
+        <button onclick="appendSceneChip('廣角史詩遠景，天空有強烈梵谷風金藍星雲旋渦')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 史詩金藍星雲天空</button>
+        <button onclick="appendSceneChip('溫暖神聖的金色光芒從雲層破曉灑落')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 破曉神聖金光</button>
+        <button onclick="appendSceneChip('強化厚塗油畫畫刀肌理與古典油燈暖光')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 厚塗油燈暖光</button>
+      </div>
+
+      <div class="flex items-center justify-between pt-2 border-t border-emerald-900/80 text-xs">
+        <label class="text-stone-400 hover:text-stone-200 cursor-pointer flex items-center gap-1.5">
+          <span>📁 或上傳電腦圖片</span>
+          <input type="file" accept="image/*" onchange="uploadLocalCardImage(event)" class="hidden" />
+        </label>
+        <div class="flex gap-2">
+          <button onclick="closeEditSceneModal()" class="px-4 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 font-bold">取消</button>
+          <button onclick="submitEditScene()" id="btnSubmitEditScene" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black shadow-lg">
+            🎨 立即重畫
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MODAL 3: 4-PICK-1 STUDIO (❖ 4選1)
+       ========================================================= -->
+  <div id="quadModal" class="no-print fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-[#18241e] border border-amber-500/60 rounded-2xl max-w-4xl w-full p-5 shadow-2xl text-stone-100 max-h-[92vh] overflow-y-auto">
+      <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-emerald-900">
+        <div>
+          <h3 id="quadTitle" class="text-base font-bold text-amber-300">❖ 4選1 挑圖（點選最喜歡的一張直接套用）</h3>
+          <p class="text-xs text-stone-400 mt-0.5">AI 同時用 4 種不同鏡頭角度與光影繪製，完全免費無限制</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="refreshQuadGrid()" id="btnRefreshQuad" class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow">
+            🎲 再換 4 張
+          </button>
+          <button onclick="closeQuadModal()" class="text-stone-400 hover:text-white text-2xl leading-none px-2">&times;</button>
+        </div>
+      </div>
+
+      <div id="quadGrid" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- 4 candidate images -->
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       MODAL 4: DOWNLOAD & OFFLINE EXPORT (💾 下載離線版)
+       ========================================================= -->
+  <div id="downloadModal" class="no-print fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#18241e] border border-amber-500/50 rounded-2xl max-w-md w-full p-5 shadow-2xl text-stone-100 flex flex-col gap-3.5">
+      <div class="flex items-center justify-between border-b border-emerald-900/80 pb-2.5">
+        <h3 class="text-base font-bold text-amber-300">💾 儲存與下載</h3>
+        <button onclick="closeDownloadModal()" class="text-stone-400 hover:text-white text-2xl leading-none px-1">&times;</button>
+      </div>
+
+      <div class="space-y-2.5 text-xs">
+        <button onclick="exportAllCardsZip()" id="btnDownloadZip" class="w-full py-3 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold flex items-center justify-between shadow transition">
+          <span>📦 下載全部卡片圖片 (.zip)</span>
+          <span class="text-[11px] opacity-80">高畫質 PNG</span>
+        </button>
+
+        <button onclick="saveOfflineHtmlWithBase64()" id="btnDownloadOfflineHtml" class="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black flex items-center justify-between shadow transition">
+          <span>🐙 下載 GitHub 永久離線網頁 (index.html)</span>
+          <span class="text-[11px] opacity-80">內嵌圖片不掉圖</span>
+        </button>
+      </div>
+
+      <p class="text-[11px] text-stone-400 leading-relaxed">
+        提示：點擊「下載 GitHub 永久離線網頁」會自動把目前畫面上的油畫封裝進單一 `index.html` 檔案中，上傳到 GitHub Pages 即可永久保存。
+      </p>
+    </div>
+  </div>
+
+  <!-- =========================================================
+       CORE JAVASCRIPT ENGINE
+       ========================================================= -->
+  <script>
+    /*************************************************************
+     * 1. BUILT-IN DATASETS (All Specific Names, Saul=Paul, No "需求")
+     *************************************************************/
+    const PRESET_SAMPLE_6 = `STORY 37 | 保羅在雅典講道 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 17:16-34 | 2分 | 牛皮
+STORY 09 | 撒馬利亞婦人與耶穌談道 | 耶穌×1 | 井×1、水×1 | 約翰福音 4:1-30 | 2分 | 紅圈
+STORY 24 | 五旬節聖靈降臨 | 彼得×1、約翰×1 | 房屋×1、信心×1 | 使徒行傳 2:1-4 | 2分 | 紅圈
+STORY 26 | 保羅大馬士革悔改 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 9:1-19 | 2分 | 紅圈
+STORY 29 | 保羅遭毒蛇咬傷 | 保羅×1 | 火堆×1、信心×1 | 使徒行傳 28:1-10 | 2分 | 牛皮
+STORY 31 | 約翰在拔摩島見啟示 | 約翰×1、天使×1 | 外衣×1、信心×1 | 啟示錄 1:9-20 | 2分 | 牛皮`;
+
+    const PRESET_ALL_37 = `STORY 01 | 天使向馬利亞報信 | 天使×1、馬利亞×1 | 房屋×1、信心×1 | 路加福音 1:26-38 | 2分 | 牛皮
+STORY 02 | 約瑟夢中得到啟示 | 約瑟×1、天使×1 | 房屋×1、信心×1 | 馬太福音 1:18-25 | 1分 | 牛皮
+STORY 03 | 牧羊人朝見耶穌 | 耶穌×1、天使×1 | 馬槽×1、包布×1 | 路加福音 2:8-20 | 2分 | 牛皮
+STORY 04 | 東方博士朝見耶穌 | 耶穌×1、馬利亞×1 | 星星×1、禮物×1、房屋×1 | 馬太福音 2:1-12 | 3分 | 紅圈
+STORY 05 | 西面等候彌賽亞 | 西面×1、耶穌×1 | 聖殿×1、信心×1 | 路加福音 2:25-35 | 2分 | 牛皮
+STORY 06 | 十二歲的耶穌在聖殿 | 耶穌×1 | 聖殿×1、經卷×1 | 路加福音 2:41-52 | 2分 | 牛皮
+STORY 07 | 施洗約翰為耶穌施洗 | 施洗約翰×1、耶穌×1 | 河流×1、水×1 | 馬太福音 3:13-17 | 2分 | 牛皮
+STORY 08 | 尼哥底母夜訪耶穌 | 尼哥底母×1、耶穌×1 | 房屋×1、經卷×1 | 約翰福音 3:1-21 | 2分 | 牛皮
+STORY 09 | 撒馬利亞婦人與耶穌談道 | 耶穌×1 | 井×1、水×1 | 約翰福音 4:1-30 | 2分 | 紅圈
+STORY 10 | 撒該爬上桑樹 | 撒該×1、耶穌×1 | 樹×1、道路×1 | 路加福音 19:1-10 | 2分 | 牛皮
+STORY 11 | 馬太蒙召 | 馬太×1、耶穌×1 | 錢幣×1、道路×1 | 馬太福音 9:9-13 | 1分 | 牛皮
+STORY 12 | 睚魯為女兒求助 | 睚魯×1、耶穌×1 | 房屋×1、信心×1 | 馬可福音 5:21-43 | 2分 | 牛皮
+STORY 13 | 患血漏的婦人 | 耶穌×1 | 外衣×1、道路×1 | 馬可福音 5:25-34 | 3分 | 紅圈
+STORY 14 | 百夫長為僕人求助 | 耶穌×1 | 房屋×1、信心×1 | 馬太福音 8:5-13 | 2分 | 牛皮
+STORY 15 | 迦南婦人求助 | 耶穌×1 | 餅×1、房屋×1 | 馬太福音 15:21-28 | 2分 | 牛皮
+STORY 16 | 巴底買呼喊 | 巴底買×1、耶穌×1 | 道路×1、外衣×1 | 馬可福音 10:46-52 | 2分 | 牛皮
+STORY 17 | 財主與拉撒路 | 拉撒路×1 | 房屋×1、錢幣×1 | 路加福音 16:19-31 | 2分 | 牛皮
+STORY 18 | 多馬不信 | 多馬×1、耶穌×1 | 房屋×1、信心×1 | 約翰福音 20:24-29 | 2分 | 牛皮
+STORY 19 | 彼得不認主 | 彼得×1 | 火堆×1、房屋×1 | 路加福音 22:54-62 | 2分 | 牛皮
+STORY 20 | 猶大出賣耶穌 | 猶大×1、耶穌×1 | 錢幣×1、道路×1 | 馬太福音 26:14-50 | 3分 | 紅圈
+STORY 21 | 耶穌被釘十字架 | 耶穌×1、約翰×1 | 十字架×1、信心×1 | 馬可福音 15:21-39 | 3分 | 紅圈
+STORY 22 | 耶穌復活 | 耶穌×1、馬利亞×1 | 墳墓×1、信心×1 | 馬太福音 28:1-10 | 3分 | 紅圈
+STORY 23 | 耶穌升天 | 耶穌×1、彼得×1 | 道路×1、信心×1 | 使徒行傳 1:6-11 | 3分 | 紅圈
+STORY 24 | 五旬節聖靈降臨 | 彼得×1、約翰×1 | 房屋×1、信心×1 | 使徒行傳 2:1-4 | 2分 | 紅圈
+STORY 25 | 美門口的奇蹟 | 彼得×1、約翰×1 | 房屋×1、信心×1 | 使徒行傳 3:1-10 | 2分 | 紅圈
+STORY 26 | 保羅大馬士革悔改 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 9:1-19 | 2分 | 紅圈
+STORY 27 | 彼得監獄得釋放 | 彼得×1、天使×1 | 房屋×1、信心×1 | 使徒行傳 12:1-19 | 2分 | 紅圈
+STORY 28 | 保羅西拉在監牢歌頌 | 保羅×1、西拉×1 | 房屋×1、信心×1 | 使徒行傳 16:16-40 | 2分 | 牛皮
+STORY 29 | 保羅遭毒蛇咬傷 | 保羅×1 | 火堆×1、信心×1 | 使徒行傳 28:1-10 | 2分 | 牛皮
+STORY 30 | 保羅在羅馬傳道 | 保羅×1 | 房屋×1、信心×1 | 使徒行傳 28:16-31 | 2分 | 牛皮
+STORY 31 | 約翰在拔摩島見啟示 | 約翰×1、天使×1 | 外衣×1、信心×1 | 啟示錄 1:9-20 | 2分 | 牛皮
+STORY 32 | 腓利與衣索匹亞太監 | 腓利×1 | 道路×1、信心×1 | 使徒行傳 8:26-40 | 2分 | 牛皮
+STORY 33 | 彼得使多加復活 | 彼得×1、多加×1 | 房屋×1、信心×1 | 使徒行傳 9:36-43 | 2分 | 牛皮
+STORY 34 | 彼得見大布異象 | 彼得×1 | 房屋×1、信心×1 | 使徒行傳 10:9-16 | 2分 | 牛皮
+STORY 35 | 巴拿巴接納保羅 | 巴拿巴×1、保羅×1 | 房屋×1、信心×1 | 使徒行傳 9:26-31 | 2分 | 牛皮
+STORY 36 | 大馬士革籃子逃脫 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 9:20-25 | 2分 | 牛皮
+STORY 37 | 保羅在雅典講道 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 17:16-34 | 2分 | 牛皮`;
+
+    const PRESET_POKER_100 = `人物 | 保羅 | 12 | 使徒保羅身穿古羅馬長袍與赭石色披肩，眼神堅定指向天際，背景有金色星雲筆觸
+人物 | 耶穌 | 10 | 耶穌基督身穿潔白亞麻長袍，面容慈愛威嚴，周圍環繞神聖溫暖金光與厚塗油畫筆觸
+人物 | 彼得 | 8 | 使徒彼得留著濃密捲鬚，身穿古樸漁夫外袍，神情剛毅充滿信心
+人物 | 約翰 | 5 | 使徒約翰手捧古老羊皮書卷，神情溫和深邃，背景帶有拔摩島海浪與金光
+人物 | 巴拿巴 | 3 | 勸慰子巴拿巴面帶溫暖微笑，雙手張開展現接納與愛心，古典厚塗油畫肖像
+人物 | 西拉 | 2 | 保羅的忠實同工西拉，在暗夜中仰望讚美，身旁帶有掙斷鎖鏈與聖潔光輝
+人物 | 腓利 | 2 | 傳福音的腓利行走在曠野道路上，手指向前引導，神采飛揚
+人物 | 馬利亞 | 2 | 馬利亞身穿古猶太藍白頭巾與長袍，雙手合十敬虔仰望神聖光芒
+人物 | 天使 | 2 | 聖潔發光的白翼天使，展開潔白羽翼立於金色雲彩與星雲旋渦之中
+元素 | 信心 | 18 | 破雲而出的神聖金色光芒與梵谷風星雲旋渦，象徵堅定不移的信心
+元素 | 房屋 | 10 | 第一世紀古耶路撒冷石砌拱門房屋與溫暖油燈室內景致
+元素 | 道路 | 8 | 蜿蜒穿過古老橄欖山丘與石牆的聖地古道，遠方透出晨曦金光
+元素 | 水 | 3 | 清澈湧流的生命活水溪流，閃耀著金藍色厚塗油畫波光
+元素 | 食物 | 3 | 古樸木盤上的五餅二魚與無酵餅，散發溫暖燭光色澤
+元素 | 井 | 2 | 撒馬利亞古老石砌雅各井，井旁放著陶製水罐與麻繩
+元素 | 火堆 | 2 | 暗夜海灘與庭院中熊熊燃燒的營火，火星化作金色抽象光點升空
+元素 | 外衣 | 2 | 第一世紀手工編織的亞麻外衣與披肩，帶有細膩布紋光影
+元素 | 十字架 | 2 | 各各他山丘上的古木十字架，背後是震撼的普魯士藍與黃金破曉旋渦天空
+元素 | 墳墓 | 2 | 滾開大石的空墳墓洞口，清晨的復活金光從花園墓穴中綻放而出
+元素 | 船 | 2 | 加利利海上的古老木製帆船，在壯闊海浪與金色雲彩間航行`;
+
+    /*************************************************************
+     * 2. SMART AI DIRECTOR LAYER 1:
+     *    37 PRE-ENGINEERED STORY COMPOSITIONS + DEEP SEMANTIC ANALYZER
+     *************************************************************/
+    const STORY_BLUEPRINTS = {
+      "保羅在雅典講道": "Apostle Paul in white tunic and warm ochre-brown draped himation cloak standing atop rough-hewn ancient stone steps on the Areopagus hill in Athens, right arm raised pointing toward the heavens with a radiant golden halo of swirling impasto light particles around him; in the mid-ground below, ancient Athenian rooftops and two robed figures walking along a winding road; in the background atop the rocky Acropolis hill stands the classical columned Parthenon temple under a dramatic Van Gogh-style swirling Prussian blue and golden nebula sky",
+      "大馬士革籃子逃脫": "Nocturnal biblical oil painting of Damascus high ancient stone city wall under a starry swirling Prussian blue night sky; disciples at the top battlements lowering Apostle Paul inside a large woven reed basket held by thick ropes down the stone wall toward a winding road below, warm torchlight rim-lighting",
+      "巴拿巴接納保羅": "Warm lamp-lit interior of an ancient Jerusalem stone house with arched doorway; Barnabas standing with a gentle reassuring hand on Apostle Paul's shoulder, introducing him to Peter and John in 1st-century robes, golden dust motes of faith swirling in sunbeams",
+      "彼得見大布異象": "Apostle Peter kneeling in prayer on a sunlit flat stone rooftop terrace in Joppa overlooking the Mediterranean sea; descending from swirling golden and azure clouds above is a great white linen sheet held by its four corners containing doves and lambs in radiant light",
+      "彼得使多加復活": "Inside an upper stone chamber in Joppa with woven garments beside the bed; Apostle Peter extending his hand in faith toward Tabitha (Dorcas) sitting up alive on a wooden bed in astonishment, warm golden light streaming through the stone window",
+      "腓利與衣索匹亞太監": "On a sunlit desert road toward Gaza, Evangelist Philip walking alongside and pointing to an open Hebrew parchment scroll held by an Ethiopian noble seated inside an ornate horse-drawn wooden chariot, golden swirling sky above a desert stream",
+      "約翰在拔摩島見啟示": "Aged white-bearded Apostle John wearing a weathered woven cloak kneeling on rugged coastal rocks of Patmos island with crashing sapphire sea waves; looking up in awe at a radiant winged angel holding an open scroll amidst swirling golden nebula clouds",
+      "保羅在羅馬傳道": "Inside a sunlit Roman stone room, Apostle Paul wearing a light wrist chain earnestly teaching from open parchment scrolls on a wooden table, a Roman centurion guard standing respectfully by the arched window, golden impasto light rays",
+      "保羅遭毒蛇咬傷": "On a stormy windswept beach on Malta island with a wooden shipwreck in the distant waves; Apostle Paul standing calmly in wet robes beside a blazing orange campfire as a green viper hangs harmlessly from his hand, swirling golden embers rising into the dark blue sky",
+      "保羅西拉在監牢歌頌": "Inside a dark ancient Philippi stone dungeon at midnight, Apostle Paul and Silas with broken iron chains singing praises joyfully with uplifted hands, supernatural golden impasto light breaking through the arched stone ceiling bars",
+      "彼得監獄得釋放": "Inside a dark Jerusalem stone prison cell, a luminous white-winged angel touching Apostle Peter's shoulder as iron wrist chains fall broken to the stone floor, Roman guards sleeping in the shadowed archway",
+      "保羅大馬士革悔改": "On the dusty stony road to Damascus, Paul falling to his knees shielding his eyes in awe as a blinding magnificent column of swirling golden impasto light blazes down from the dramatic Prussian blue sky",
+      "美門口的奇蹟": "Before the towering bronze Beautiful Gate of the Jerusalem Temple with grand stone columns, Apostle Peter and John clasping the right hand of a lame beggar on the stone steps to lift him up, golden light of faith swirling",
+      "五旬節聖靈降臨": "Inside an ancient Jerusalem upper stone room, Apostles Peter and John with uplifted hands as wind of golden light sweeps through the room and glowing tongues of sacred fire rest above their heads",
+      "耶穌升天": "Atop the Mount of Olives along a winding stone path with olive trees, Risen Jesus Christ in luminous white robes ascending into a breathtaking vortex of golden and azure clouds while Apostle Peter gazes upward in reverence",
+      "耶穌復活": "At dawn outside the open rock-hewn garden tomb with the massive circular stone rolled away, Risen Jesus in radiant white robes speaking tenderly to Mary Magdalene kneeling among olive trees and golden morning light particles",
+      "耶穌被釘十字架": "Atop Golgotha hill, a rugged wooden cross silhouetted against a tempestuous swirling Prussian blue and fiery gold sky, Apostle John standing faithfully in the foreground in dramatic Rembrandt chiaroscuro lighting",
+      "猶大出賣耶穌": "In the moonlit Garden of Gethsemane among gnarled ancient olive trees along a stone path, Jesus standing in serene dignity while Judas approaches holding a pouch of silver coins with warm torchlight flickering",
+      "彼得不認主": "In a dark stone courtyard at night, Apostle Peter sitting beside a glowing charcoal brazier fire pit, his face illuminated by warm orange firelight with deep remorseful emotion as dawn breaks over the Jerusalem roofs",
+      "多馬不信": "Inside a candlelit stone room with closed wooden doors, Risen Jesus extending his pierced hands gently toward Apostle Thomas kneeling in awe and faith, warm Rembrandt golden light",
+      "財主與拉撒路": "Outside a grand ancient stone mansion gate, humble Lazarus resting on the stone steps while golden heavenly light beams down from a starry swirling sky, contrasting with scattered silver coins",
+      "巴底買呼喊": "Along the dusty stone road outside Jericho city walls, blind Bartimaeus casting aside his woven cloak and stretching out his hands toward Jesus Christ standing in warm golden sunlight",
+      "迦南婦人求助": "Inside a rustic Syrophoenician stone house with loaves of bread on a wooden table, a woman kneeling in humble faith before Jesus Christ who looks upon her with deep compassion",
+      "百夫長為僕人求助": "On a stone street in Capernaum in front of a Roman-style stone house, a centurion bowing in humble faith before Jesus Christ under a radiant golden sky",
+      "患血漏的婦人": "On an ancient stone road, a kneeling woman reaching out in trembling faith to touch the fringed hem of Jesus Christ's white garment as golden healing light ripples outward",
+      "睚魯為女兒求助": "Outside an ancient stone house in Galilee, synagogue ruler Jairus clasping his hands and pleading earnestly with Jesus Christ and Peter, warm golden sunbeams breaking through clouds",
+      "馬太蒙召": "Beside a stone road in Capernaum, Jesus Christ extending his hand to call Matthew sitting at a wooden tax booth with silver coins and ledger scrolls, golden morning light",
+      "撒該爬上桑樹": "Along a tree-lined road in Jericho, Zacchaeus perched high on the thick branch of an ancient sycamore fig tree looking down joyfully at Jesus Christ standing below and looking up at him",
+      "撒馬利亞婦人與耶穌談道": "At midday beside the ancient circular stone Jacob's well in Samaria with a clay water pitcher and rope on the stone rim, Jesus Christ sitting on a stone speaking gently to a Samaritan woman, distant city walls and olive tree",
+      "尼哥底母夜訪耶穌": "At night on a quiet stone rooftop balcony in Jerusalem, Pharisee Nicodemus holding a parchment scroll leaning in to listen to Jesus Christ beside a warm glowing oil lamp under a swirling starry sky",
+      "施洗約翰為耶穌施洗": "In the sparkling flowing waters of the Jordan River, John the Baptist in camel-hair garment baptizing Jesus Christ as the heavens open with a swirling golden vortex and a white dove descending",
+      "十二歲的耶穌在聖殿": "Inside the grand limestone columned courts of the Jerusalem Temple, twelve-year-old boy Jesus seated among open Hebrew parchment scrolls speaking with wisdom in warm sunbeams",
+      "西面等候彌賽亞": "Inside the sunlit columned court of the Jerusalem Temple, aged white-bearded Simeon cradling infant Jesus in his arms and praising God while Mary stands nearby in golden light",
+      "東方博士朝見耶穌": "Inside a rustic Bethlehem house, Mary holding infant Jesus as wise men in rich eastern robes present ornate gold, frankincense, and myrrh chests beneath a blazing golden star",
+      "牧羊人朝見耶穌": "Inside a warm lantern-lit stone stable in Bethlehem, baby Jesus wrapped in swaddling cloths lying in a wooden manger while a radiant winged angel shines in the starry night sky outside",
+      "約瑟夢中得到啟示": "Inside a rustic Nazareth carpenter stone room with wooden tools, Joseph sleeping peacefully as a luminous winged angel appears in a swirling golden dream vision",
+      "天使向馬利亞報信": "Inside a quiet Nazareth stone chamber, Archangel Gabriel with grand white wings appearing in a vortex of golden impasto light particles before Virgin Mary kneeling in humble faith"
+    };
+
+    // Deep Semantic Visual Mapper for ANY user-pasted Chinese words
+    const SEMANTIC_VISUAL_RULES = [
+      { match: /保羅|掃羅/, actor: "Apostle Paul with bearded Mediterranean features wearing 1st-century white tunic and warm ochre-brown draped cloak" },
+      { match: /耶穌|主|基督|彌賽亞/, actor: "Jesus Christ with compassionate bearded face wearing luminous white 1st-century linen robe" },
+      { match: /彼得/, actor: "Apostle Peter with curly beard wearing rustic fisherman tunic and mantle" },
+      { match: /施洗約翰/, actor: "John the Baptist in rustic camel-hair garment by the Jordan river" },
+      { match: /約翰/, actor: "Apostle John holding ancient parchment scroll in classical robes" },
+      { match: /巴拿巴/, actor: "Barnabas the encourager in warm ancient Middle Eastern robes" },
+      { match: /西拉/, actor: "Silas the faithful companion in 1st-century tunic" },
+      { match: /腓利/, actor: "Philip the Evangelist in 1st-century traveler robes" },
+      { match: /馬利亞/, actor: "Mary wearing modest 1st-century blue and white headveil and robes" },
+      { match: /天使|加百列/, actor: "radiant heavenly angel with majestic white feathered wings and golden aura" },
+      { match: /約瑟/, actor: "Joseph in rustic 1st-century Judean carpenter tunic" },
+      { match: /西面/, actor: "aged white-bearded prophet Simeon in temple robes" },
+      { match: /尼哥底母/, actor: "Nicodemus in ornate Pharisee scholar robes" },
+      { match: /撒該/, actor: "Zacchaeus in rich Jericho tunic" },
+      { match: /馬太/, actor: "Matthew Levi in 1st-century robe" },
+      { match: /睚魯/, actor: "Jairus in synagogue leader robes" },
+      { match: /巴底買/, actor: "blind Bartimaeus in weathered cloak" },
+      { match: /拉撒路/, actor: "humble Lazarus at the ancient stone gate" },
+      { match: /多馬/, actor: "Apostle Thomas kneeling in awe and faith" },
+      { match: /猶大/, actor: "Judas holding a leather pouch of silver coins in dim torchlight" },
+      { match: /多加|大比大/, actor: "Tabitha Dorcas surrounded by woven tunics" },
+      { match: /大衛/, actor: "young David with shepherd staff and harp in ancient Israel" },
+      { match: /摩西/, actor: "prophet Moses with flowing white beard holding wooden staff" },
+      { match: /亞伯拉罕/, actor: "patriarch Abraham in ancient Middle Eastern nomadic robes beneath starry sky" },
+      { match: /諾亞|挪亞/, actor: "Noah standing before the massive wooden Ark under dramatic rainbow sky" },
+
+      // Environments & Props
+      { match: /雅典|衛城|講道/, env: "standing atop rough stone steps on the Areopagus hill with the classical columned Parthenon temple on the Acropolis in the background" },
+      { match: /船|海|風浪|加利利|水面上/, env: "wooden 1st-century fishing sailboat on the dramatic waves of the Sea of Galilee with golden light breaking through storm clouds" },
+      { match: /監牢|監獄|鎖鏈|捆綁/, env: "inside an ancient dark Roman stone dungeon with broken iron wrist chains and supernatural golden light beams piercing through arched bars" },
+      { match: /井|撒馬利亞|打水/, env: "beside an ancient circular stone water well in Samaria with a terracotta water pitcher and rope on the stone rim" },
+      { match: /十字架|各各他|釘/, env: "atop Golgotha hill with a rugged wooden cross silhouetted against a dramatic swirling Prussian blue and gold eclipse sky" },
+      { match: /墳墓|復活|空墳/, env: "outside a rock-hewn garden tomb at dawn with the massive circular stone rolled away and radiant resurrection light pouring out" },
+      { match: /火堆|營火|炭火|毒蛇/, env: "beside a crackling orange wood campfire with glowing golden embers rising into the night sky" },
+      { match: /樹|桑樹|無花果|橄欖/, env: "beneath the thick gnarly branches of an ancient sycamore and olive tree along a sunlit stone path" },
+      { match: /馬槽|包布|伯利恆|降生/, env: "inside a warm lantern-lit stone stable with a rustic wooden manger filled with golden straw under the blazing Star of Bethlehem" },
+      { match: /聖殿|美門|殿/, env: "inside the grand limestone Corinthian columned courts and ornate bronze gates of the ancient Jerusalem Temple" },
+      { match: /籃子|城牆|逃脫/, env: "along a high ancient stone city wall at night with a large woven reed basket lowered by thick ropes" },
+      { match: /拔摩島|海島|啟示/, env: "on rugged volcanic coastal rocks of Patmos island with crashing sapphire sea waves and heavenly golden clouds" },
+      { match: /五餅二魚|餅|食物|筵席/, env: "rustic woven basket of five barley loaves and two fish glowing in warm golden sunlight" },
+      { match: /外衣|衣裳|繸子/, env: "authentic hand-woven 1st-century linen cloak with detailed fabric folds" },
+      { match: /錢幣|銀錢|稅/, env: "glinting ancient Roman silver denarius coins on a rustic wooden table" },
+      { match: /經卷|書卷|聖經/, env: "open ancient Hebrew parchment scroll with wooden rollers" },
+      { match: /河|約旦河|施洗|水/, env: "in the sparkling flowing waters of the Jordan River lined with reeds" },
+      { match: /房屋|屋頂|樓房|家/, env: "authentic 1st-century Jerusalem rough-cut limestone house with arched doorway and warm oil lamp glow" },
+      { match: /道路|曠野|路上|大馬士革/, env: "along a winding ancient stone road through golden Judean hills" },
+      { match: /信心|聖靈|異象|光/, env: "Van Gogh-inspired swirling Prussian blue and golden nebula light particles in the sky" }
+    ];
+
+    const CORE_ART_STYLE = "Masterpiece classical biblical oil painting blended with expressive abstract art, thick impasto palette knife brushstrokes, Rembrandt dramatic chiaroscuro lighting, Van Gogh-inspired swirling golden and Prussian blue celestial sky particles, rich museum canvas texture, historically accurate 1st-century robes";
+    const CORE_NEGATIVE = "strictly no text, no letters, no words, no watermark, no signature, no modern objects, no extra fingers, not flat cartoon";
+
+    /*************************************************************
+     * 3. STATE MANAGEMENT
+     *************************************************************/
+    let currentMode = 'event';      // 'event' (A6) or 'poker' (63x88mm)
+    let currentLayout = 'classic';  // 'classic' or 'split'
+    let cardsData = [];
+    let editingCardIdx = null;
+    let quadCardIdx = null;
+    let batchAbort = false;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadQuickPreset('sample6');
+    });
+
+    /*************************************************************
+     * 4. SMART PROMPT BUILDER + LIVE LLM SCENE DIRECTOR
+     *************************************************************/
+    function buildLocalSmartPrompt(card, extraNote = '', cameraVariation = '') {
+      const combinedText = `${card.title} ${card.characters || ''} ${card.elements || ''} ${card.description || ''} ${card.scripture || ''} ${extraNote}`;
+
+      if (card.cardType === 'event') {
+        const cleanTitle = card.title.trim();
+        let baseScene = STORY_BLUEPRINTS[cleanTitle];
+
+        let actors = [];
+        let envs = [];
+        for (const rule of SEMANTIC_VISUAL_RULES) {
+          if (rule.match.test(combinedText)) {
+            if (rule.actor && !actors.includes(rule.actor)) actors.push(rule.actor);
+            if (rule.env && !envs.includes(rule.env)) envs.push(rule.env);
+          }
+        }
+
+        if (!baseScene) {
+          const actorDesc = actors.length > 0 ? actors.join(" and ") : `1st-century biblical figure (${card.characters || card.title})`;
+          const envDesc = envs.length > 0 ? envs.join(", ") : "in an authentic 1st-century ancient Jerusalem stone setting under a swirling golden and Prussian blue sky";
+          baseScene = `Biblical historical oil painting of "${cleanTitle}" (${card.scripture || ''}): ${actorDesc} ${envDesc}, expressive spiritual emotion`;
+        } else if (envs.length > 0 && extraNote) {
+          baseScene += `, ${envs.slice(0, 2).join(", ")}`;
+        }
+
+        const customPart = extraNote ? `. Visual focus: ${extraNote}` : '';
+        const camPart = cameraVariation ? `. Camera & lighting: ${cameraVariation}` : '';
+        return `${CORE_ART_STYLE}. Scene: ${baseScene}${customPart}${camPart}. ${CORE_NEGATIVE}.`;
+      } else {
+        // Poker Card (Character or Element)
+        let matchedVisuals = [];
+        for (const rule of SEMANTIC_VISUAL_RULES) {
+          if (rule.match.test(combinedText)) {
+            if (rule.actor) matchedVisuals.push(rule.actor);
+            if (rule.env) matchedVisuals.push(rule.env);
+          }
+        }
+        const subjectDesc = matchedVisuals.length > 0
+          ? matchedVisuals.join(", ")
+          : `${card.title} (${card.description || '1st-century biblical symbol'})`;
+        const customPart = extraNote ? `, ${extraNote}` : '';
+        const camPart = cameraVariation ? `, ${cameraVariation}` : '';
+        return `${CORE_ART_STYLE}. Centered iconic museum oil portrait of ${subjectDesc}${customPart}${camPart}, dramatic golden rim lighting and swirling Prussian blue impasto background. ${CORE_NEGATIVE}.`;
+      }
+    }
+
+    /**
+     * Layer 2: Automatically calls keyless OpenAI-compatible LLM (`https://text.pollinations.ai/openai`)
+     * with a 3.5-second timeout guard so custom Chinese themes or scene edits become ultra-accurate!
+     */
+    async function buildSmartAiPromptAsync(card, extraNote = '') {
+      const localPrompt = buildLocalSmartPrompt(card, extraNote);
+
+      // If it's a known built-in story and user didn't type custom Chinese scene changes, local blueprint is already hand-crafted
+      if (card.cardType === 'event' && STORY_BLUEPRINTS[card.title.trim()] && !extraNote) {
+        card.prompt = localPrompt;
+        return localPrompt;
+      }
+
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 3500);
+
+      try {
+        const sysPrompt = `You are a Master Biblical Oil Painting Director. Convert the user's Chinese biblical card info into a vivid 70-word English visual description for FLUX image generation.
+Describe specific 1st-century robes, character actions/gestures, props, ancient architecture, Rembrandt chiaroscuro lighting, and Van Gogh-style swirling Prussian blue and golden nebula brushstrokes in the sky. Output ONLY the English visual description, no markdown, no text in image.`;
+
+        const userMsg = card.cardType === 'event'
+          ? `Title: ${card.title}\nCharacters: ${card.characters}\nElements: ${card.elements}\nScripture: ${card.scripture}\nUser Note: ${extraNote || 'None'}`
+          : `Card: ${card.title} (${card.pokerRole})\nDescription: ${card.description}\nUser Note: ${extraNote || 'None'}`;
+
+        const resp = await fetch('https://text.pollinations.ai/openai', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller.signal,
+          body: JSON.stringify({
+            model: 'openai',
+            messages: [
+              { role: 'system', content: sysPrompt },
+              { role: 'user', content: userMsg }
+            ]
+          })
+        });
+        clearTimeout(timer);
+
+        if (resp.ok) {
+          const data = await resp.json();
+          const englishScene = (data?.choices?.[0]?.message?.content || '').trim();
+          if (englishScene && englishScene.length > 20) {
+            card.prompt = `${CORE_ART_STYLE}. Scene: ${englishScene}. ${CORE_NEGATIVE}.`;
+            return card.prompt;
+          }
+        }
+      } catch (e) {
+        clearTimeout(timer);
+      }
+
+      card.prompt = localPrompt;
+      return localPrompt;
+    }
+
+    function buildFluxImageUrl(card, customPrompt = null, customSeed = null) {
+      const width = card.cardType === 'event' ? 800 : 520;
+      const height = card.cardType === 'event' ? 520 : 520;
+      const p = encodeURIComponent(customPrompt || card.prompt || buildLocalSmartPrompt(card, card.customNote));
+      const s = customSeed !== null ? customSeed : card.seed;
+      return `https://image.pollinations.ai/prompt/${p}?width=${width}&height=${height}&seed=${s}&model=flux&enhance=true&nologo=true`;
+    }
+
+    /*************************************************************
+     * 5. PARSE TEXT & RENDER CARDS
+     *************************************************************/
+    function parseLinesToCards(rawText, preserveExisting = true) {
+      const prevMap = {};
+      if (preserveExisting) {
+        cardsData.forEach(c => {
+          prevMap[`${c.id}_${c.title}`] = c;
+          prevMap[c.title] = c;
+        });
+      }
+
+      const lines = (rawText || '').split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      const list = [];
+      let idx = 1;
+
+      for (let line of lines) {
+        if (/^\|?\s*:?-+:?\s*\|/.test(line)) continue;
+        if (line.includes('編號與事件名稱') || line.includes('人物（全專名）')) continue;
+        if (line.startsWith('|')) line = line.slice(1);
+        if (line.endsWith('|')) line = line.slice(0, -1);
+
+        const parts = line.includes('|')
+          ? line.split('|').map(s => s.trim())
+          : line.includes('｜')
+          ? line.split('｜').map(s => s.trim())
+          : line.includes('\t')
+          ? line.split('\t').map(s => s.trim())
+          : line.split(/[,，]/).map(s => s.trim());
+
+        if (parts.length === 0) continue;
+        const col0 = parts[0].replace(/\*\*/g, '').trim();
+
+        if (currentMode === 'poker' || col0 === '人物' || col0 === '元素' || col0 === '人物卡' || col0 === '元素卡') {
+          const role = col0.includes('元素') ? '元素卡' : '人物卡';
+          const name = (parts[1] || col0).replace(/\*\*/g, '').replace(/掃羅/g, '保羅').trim();
+          const countNum = parseInt((parts[2] || '1').replace(/[^\d]/g, ''), 10) || 1;
+          const desc = (parts[3] || '').trim();
+          const prev = prevMap[`×${countNum}張_${name}`] || prevMap[name];
+          const seed = prev ? prev.seed : (3000 + idx * 131);
+
+          const card = {
+            uid: `poker_${idx}`,
+            cardType: 'poker',
+            pokerRole: role,
+            id: `×${countNum}張`,
+            count: countNum,
+            title: name,
+            description: desc,
+            seed: seed,
+            locked: prev ? !!prev.locked : false,
+            customNote: prev ? (prev.customNote || '') : '',
+            isLoading: false,
+            imageUrl: null
+          };
+          card.prompt = prev && prev.prompt ? prev.prompt : buildLocalSmartPrompt(card, card.customNote);
+          card.imageUrl = prev && prev.imageUrl ? prev.imageUrl : buildFluxImageUrl(card);
+          list.push(card);
+          idx++;
+        } else {
+          let storyId = '';
+          let title = '';
+          let chars = '';
+          let elems = '';
+          let scripture = '';
+          let score = '2分';
+          let badgeColor = 'kraft';
+
+          const clean0 = col0.replace(/\[cite:[^\]]*\]/g, '').trim();
+          const matchStory = clean0.match(/^(STORY\s*\d+)\s+(.+)$/i);
+
+          if (matchStory && parts.length >= 4) {
+            storyId = matchStory[1].toUpperCase();
+            title = matchStory[2].trim();
+            chars = (parts[1] || '保羅×1').replace(/\*\*/g, '').trim();
+            elems = (parts[2] || '信心×1').replace(/\*\*/g, '').trim();
+            scripture = (parts[3] || '').replace(/\*\*/g, '').trim();
+            score = (parts[4] || '2分').replace(/\*\*/g, '').trim();
+            const colorHint = (parts[5] || '').trim();
+            badgeColor = (colorHint.includes('紅') || score.includes('3')) ? 'red' : 'kraft';
+          } else {
+            storyId = clean0 || `STORY ${String(idx).padStart(2, '0')}`;
+            title = (parts[1] || clean0 || '聖經事件').replace(/\*\*/g, '').trim();
+            chars = (parts[2] || '保羅×1').replace(/\*\*/g, '').trim();
+            elems = (parts[3] || '道路×1、信心×1').replace(/\*\*/g, '').trim();
+            scripture = (parts[4] || '使徒行傳').replace(/\*\*/g, '').trim();
+            score = (parts[5] || '2分').replace(/\*\*/g, '').trim();
+            if (!score.endsWith('分')) score += '分';
+            const colorHint = (parts[6] || '').trim();
+            badgeColor = (colorHint.includes('紅') || score.includes('3')) ? 'red' : 'kraft';
+          }
+
+          // Unify Saul as Paul
+          chars = chars.replace(/掃羅/g, '保羅');
+
+          const prev = prevMap[`${storyId}_${title}`] || prevMap[title];
+          const seed = prev ? prev.seed : (7000 + idx * 179);
+
+          const card = {
+            uid: `event_${idx}`,
+            cardType: 'event',
+            id: storyId,
+            title: title,
+            characters: chars,
+            elements: elems,
+            scripture: scripture,
+            score: score,
+            badgeColor: prev ? prev.badgeColor : badgeColor,
+            seed: seed,
+            locked: prev ? !!prev.locked : false,
+            customNote: prev ? (prev.customNote || '') : '',
+            isLoading: false,
+            imageUrl: null
+          };
+          card.prompt = prev && prev.prompt ? prev.prompt : buildLocalSmartPrompt(card, card.customNote);
+          card.imageUrl = prev && prev.imageUrl ? prev.imageUrl : buildFluxImageUrl(card);
+          list.push(card);
+          idx++;
+        }
+      }
+
+      cardsData = list;
+      renderCardsGrid();
+    }
+
+    /*************************************************************
+     * 6. SVG ICONS & CARD DOM TEMPLATES
+     *************************************************************/
+    function escapeHtml(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function formatListLines(rawStr) {
+      if (!rawStr) return '';
+      return rawStr
+        .split(/[、,，/]+/)
+        .map(s => s.trim())
+        .filter(Boolean)
+        .map(item => `<div class="leading-tight">${escapeHtml(item)}</div>`)
+        .join('');
+    }
+
+    function getCrossSvg() {
+      return `
+        <svg viewBox="0 0 36 46" class="w-6 h-7 shrink-0 drop-shadow">
+          <path d="M14 2 H22 V13 H33 V21 H22 V44 H14 V21 H3 V13 H14 Z" fill="#8b7d65" stroke="#141815" stroke-width="2.5" stroke-linejoin="round"/>
+          <path d="M16 5 H20 V15 H30 V19 H20 V41 H16 V19 H6 V15 H16 Z" fill="#b3a58c" opacity="0.55"/>
+        </svg>
+      `;
+    }
+
+    function getPersonIconSvg() {
+      return `
+        <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0">
+          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" fill="#3a6e43" stroke="#182b1c" stroke-width="1.2"/>
+        </svg>
+      `;
+    }
+
+    function getCubeIconSvg() {
+      return `
+        <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0">
+          <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18-.21 0-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18.21 0 .41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9z" fill="#c86428" stroke="#2c1608" stroke-width="1.3"/>
+          <path d="M12 3.15L5.34 6.9 12 10.65l6.66-3.75L12 3.15zM4.5 8.15v7.6l6.75 3.8v-7.6L4.5 8.15zm15 0l-6.75 3.8v7.6l6.75-3.8v-7.6z" fill="#d97b3e"/>
+        </svg>
+      `;
+    }
+
+    /**
+     * Generates a rich offline fallback oil painting on canvas if network ever fails
+     */
+    function createFallbackCanvasUrl(card) {
+      const canvas = document.createElement('canvas');
+      canvas.width = card.cardType === 'event' ? 800 : 520;
+      canvas.height = 520;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      let s = card.seed || 12345;
+      const rand = () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
+
+      const g = ctx.createLinearGradient(0, 0, 0, h);
+      g.addColorStop(0, '#182b49');
+      g.addColorStop(0.55, '#32557a');
+      g.addColorStop(1, '#2a2219');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+
+      const cx = w * 0.58, cy = h * 0.34;
+      for (let i = 0; i < 140; i++) {
+        const ang = (i / 140) * Math.PI * 6 + rand() * 0.4;
+        const rad = 14 + (i / 140) * (w * 0.6);
+        ctx.save();
+        ctx.translate(cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad * 0.55);
+        ctx.rotate(ang + Math.PI / 2);
+        ctx.fillStyle = ['#f3c165', '#d4893b', '#32557a', '#e9d8a6'][Math.floor(rand() * 4)];
+        ctx.globalAlpha = 0.3 + rand() * 0.35;
+        ctx.beginPath();
+        ctx.roundRect(-20, -4, 42, 9, 4);
+        ctx.fill();
+        ctx.restore();
+      }
+      return canvas.toDataURL('image/jpeg', 0.88);
+    }
+
+    function buildCardHtml(card, idx, forPrint = false) {
+      const fallbackSrc = createFallbackCanvasUrl(card);
+      const imgSrc = card.imageUrl || fallbackSrc;
+      const editableAttr = forPrint ? '' : 'contenteditable="true" spellcheck="false"';
+      const shimmerHtml = (!forPrint && card.isLoading)
+        ? `<div class="ai-painting-shimmer absolute inset-0 z-20 flex items-center justify-center">
+             <span class="px-3 py-1 rounded-full bg-black/70 text-amber-300 text-xs font-bold shadow">🎨 AI 繪製油畫中...</span>
+           </div>`
+        : '';
+
+      if (card.cardType === 'event') {
+        const scoreClass = card.badgeColor === 'red' ? 'score-red' : 'score-kraft';
+
+        if (currentLayout === 'split') {
+          // Left Artwork / Right Parchment
+          return `
+            <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="vintage-card-outer card-a6-landscape p-3 flex flex-col justify-between relative group">
+              <div class="vintage-inner-border"></div>
+
+              <div class="vintage-header-bar h-11 px-3 flex items-center justify-between z-10 mb-2">
+                <div class="flex items-center gap-2">
+                  ${getCrossSvg()}
+                  <span class="font-serif-tc font-black text-xl tracking-widest text-stone-100">事件卡</span>
+                </div>
+                <div ${editableAttr} onblur="updateCardField(${idx}, 'id', this.innerText)" class="story-pill-badge px-3 py-0.5 font-cinzel font-black text-sm tracking-wider">
+                  ${escapeHtml(card.id)}
+                </div>
+              </div>
+
+              <div class="flex-1 grid grid-cols-12 gap-2.5 z-10 min-h-0">
+                <div class="col-span-7 artwork-frame relative h-full">
+                  <img
+                    src="${imgSrc}"
+                    alt="${escapeHtml(card.title)}"
+                    crossorigin="anonymous"
+                    onload="markCardLoaded(${idx})"
+                    onerror="handleImageError(this, ${idx})"
+                    class="w-full h-full object-cover oil-grade"
+                  />
+                  <div class="oil-canvas-overlay"></div>
+                  ${shimmerHtml}
+                  ${!forPrint ? getMinimalHoverControls(idx) : ''}
+                </div>
+
+                <div class="col-span-5 flex flex-col justify-between h-full">
+                  <div class="torn-parchment flex-1 p-2.5 flex flex-col justify-between">
+                    <div class="title-brush-strip py-1.5 px-2 text-center border-b border-stone-400/50">
+                      <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-[17px] leading-snug text-stone-900">
+                        ${escapeHtml(card.title)}
+                      </h3>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-1.5 my-auto py-1.5 px-1">
+                      <div class="flex flex-col items-start border-r border-stone-400/60 pr-1">
+                        <div class="flex items-center gap-1 mb-1">
+                          ${getPersonIconSvg()}
+                          <span class="font-serif-tc font-black text-sm text-stone-900">人物</span>
+                        </div>
+                        <div ${editableAttr} onblur="updateCardField(${idx}, 'characters', this.innerText)" class="font-serif-tc font-bold text-[13px] text-stone-800 pl-0.5 space-y-0.5 w-full">
+                          ${formatListLines(card.characters)}
+                        </div>
+                      </div>
+
+                      <div class="flex flex-col items-start pl-1">
+                        <div class="flex items-center gap-1 mb-1">
+                          ${getCubeIconSvg()}
+                          <span class="font-serif-tc font-black text-sm text-stone-900">元素</span>
+                        </div>
+                        <div ${editableAttr} onblur="updateCardField(${idx}, 'elements', this.innerText)" class="font-serif-tc font-bold text-[13px] text-stone-800 pl-0.5 space-y-0.5 w-full">
+                          ${formatListLines(card.elements)}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2 pt-1">
+                      <div class="scripture-scroll flex-1 py-1.5 px-2.5 text-center relative ml-1">
+                        <div class="scroll-roller-left"></div>
+                        <div class="scroll-roller-right"></div>
+                        <span ${editableAttr} onblur="updateCardField(${idx}, 'scripture', this.innerText)" class="font-serif-tc font-bold text-[11.5px] text-stone-950 block truncate">
+                          ${escapeHtml(card.scripture)}
+                        </span>
+                      </div>
+
+                      <div onclick="cycleScoreBadge(${idx})" title="點擊切換 2分 / 3分 與 紅圈 / 牛皮色" class="score-badge ${scoreClass} w-12 h-12 shrink-0 font-serif-tc font-black text-base">
+                        ${escapeHtml(card.score)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          // Standard Classic Layout (Top Panoramic Artwork / Bottom Torn Parchment matching Story 37)
+          return `
+            <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="vintage-card-outer card-a6-landscape p-3 flex flex-col justify-between relative group">
+              <div class="vintage-inner-border"></div>
+
+              <div class="h-[56%] flex flex-col gap-1.5 z-10">
+                <div class="vintage-header-bar h-9 px-3 flex items-center justify-between shrink-0">
+                  <div class="flex items-center gap-2">
+                    ${getCrossSvg()}
+                    <span class="font-serif-tc font-black text-lg tracking-widest text-stone-100">事件卡</span>
+                  </div>
+                  <div ${editableAttr} onblur="updateCardField(${idx}, 'id', this.innerText)" class="story-pill-badge px-2.5 py-0.5 font-cinzel font-black text-xs">
+                    ${escapeHtml(card.id)}
+                  </div>
+                </div>
+
+                <div class="artwork-frame flex-1 relative">
+                  <img
+                    src="${imgSrc}"
+                    alt="${escapeHtml(card.title)}"
+                    crossorigin="anonymous"
+                    onload="markCardLoaded(${idx})"
+                    onerror="handleImageError(this, ${idx})"
+                    class="w-full h-full object-cover oil-grade"
+                  />
+                  <div class="oil-canvas-overlay"></div>
+                  ${shimmerHtml}
+                  ${!forPrint ? getMinimalHoverControls(idx) : ''}
+                </div>
+              </div>
+
+              <div class="h-[41%] torn-parchment px-3.5 py-2 flex flex-col justify-between z-10 mt-1.5">
+                <div class="flex items-center justify-between gap-3 border-b border-stone-400/60 pb-1">
+                  <div class="title-brush-strip px-3 py-0.5 rounded">
+                    <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-lg text-stone-900">
+                      ${escapeHtml(card.title)}
+                    </h3>
+                  </div>
+                  <div class="scripture-scroll py-1 px-3 relative mr-1">
+                    <div class="scroll-roller-left"></div>
+                    <div class="scroll-roller-right"></div>
+                    <span ${editableAttr} onblur="updateCardField(${idx}, 'scripture', this.innerText)" class="font-serif-tc font-bold text-xs text-stone-950">
+                      ${escapeHtml(card.scripture)}
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-4 my-auto pt-1">
+                  <div class="grid grid-cols-2 gap-4 flex-1">
+                    <div class="flex items-center gap-2">
+                      ${getPersonIconSvg()}
+                      <span class="font-serif-tc font-black text-sm text-stone-900">人物</span>
+                      <span ${editableAttr} onblur="updateCardField(${idx}, 'characters', this.innerText)" class="font-serif-tc font-bold text-sm text-stone-800 ml-1">
+                        ${escapeHtml(card.characters)}
+                      </span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                      ${getCubeIconSvg()}
+                      <span class="font-serif-tc font-black text-sm text-stone-900">元素</span>
+                      <span ${editableAttr} onblur="updateCardField(${idx}, 'elements', this.innerText)" class="font-serif-tc font-bold text-sm text-stone-800 ml-1">
+                        ${escapeHtml(card.elements)}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div onclick="cycleScoreBadge(${idx})" title="點擊切換 2分 / 3分 與 紅圈 / 牛皮色" class="score-badge ${scoreClass} w-11 h-11 shrink-0 font-serif-tc font-black text-base">
+                    ${escapeHtml(card.score)}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      // Poker Resource Card (63mm x 88mm)
+      const isElement = card.pokerRole === '元素卡';
+      const themeClass = isElement ? 'theme-element' : 'theme-character';
+      const roleIcon = isElement ? getCubeIconSvg() : getPersonIconSvg();
+
+      return `
+        <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="vintage-card-outer ${themeClass} card-poker-vertical p-2.5 flex flex-col justify-between relative group">
+          <div class="vintage-inner-border"></div>
+
+          <div class="vintage-header-bar h-9 px-2.5 flex items-center justify-between z-10">
+            <div class="flex items-center gap-1.5">
+              ${getCrossSvg()}
+              <span class="font-serif-tc font-black text-base tracking-wider text-stone-100">${escapeHtml(card.pokerRole)}</span>
+            </div>
+            <div class="story-pill-badge px-2 py-0.5 font-serif-tc font-black text-xs">
+              ${escapeHtml(card.id)}
+            </div>
+          </div>
+
+          <div class="artwork-frame my-2 flex-1 relative z-10">
+            <img
+              src="${imgSrc}"
+              alt="${escapeHtml(card.title)}"
+              crossorigin="anonymous"
+              onload="markCardLoaded(${idx})"
+              onerror="handleImageError(this, ${idx})"
+              class="w-full h-full object-cover oil-grade"
+            />
+            <div class="oil-canvas-overlay"></div>
+            ${shimmerHtml}
+            ${!forPrint ? getMinimalHoverControls(idx) : ''}
+          </div>
+
+          <div class="torn-parchment p-2.5 text-center z-10 flex flex-col items-center justify-center gap-1">
+            <div class="title-brush-strip w-full py-1 px-2 flex items-center justify-center gap-1.5">
+              ${roleIcon}
+              <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-2xl tracking-widest text-stone-900">
+                ${escapeHtml(card.title)}
+              </h3>
+            </div>
+            <p ${editableAttr} onblur="updateCardField(${idx}, 'description', this.innerText)" class="font-serif-tc text-[11px] font-bold text-stone-700 line-clamp-1">
+              ${escapeHtml(card.description || (isElement ? '聖經元素卡' : '聖經人物卡'))}
+            </p>
+          </div>
+        </div>
+      `;
+    }
+
+    /**
+     * Minimal, clean 4-button hover bar over the artwork area
+     */
+    function getMinimalHoverControls(idx) {
+      const card = cardsData[idx];
+      const locked = card && card.locked;
+      return `
+        ${locked ? `
+          <div class="no-print absolute top-2 left-2 z-20 bg-amber-500 text-stone-950 font-black text-[10px] px-2 py-0.5 rounded-md shadow">
+            🔒 已鎖定
+          </div>
+        ` : ''}
+        <div class="no-print opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/90 via-black/65 to-transparent z-30 flex items-center justify-center gap-1.5 flex-wrap">
+          <button onclick="rerollSingleCard(${idx})" class="px-2.5 py-1 rounded-lg bg-stone-900/90 hover:bg-stone-800 text-amber-200 border border-amber-500/40 font-bold text-[11px] shadow">
+            🎲 換一張
+          </button>
+          <button onclick="openQuadModal(${idx})" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-[11px] shadow">
+            ❖ 4選1
+          </button>
+          <button onclick="openEditSceneModal(${idx})" class="px-2.5 py-1 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-[11px] shadow">
+            ✏️ 改畫面
+          </button>
+          <button onclick="toggleCardLock(${idx})" class="px-2 py-1 rounded-lg ${locked ? 'bg-amber-700 text-white' : 'bg-stone-800/90 text-stone-300'} hover:bg-stone-700 font-bold text-[11px]">
+            ${locked ? '🔓 解鎖' : '🔒 鎖定'}
+          </button>
+        </div>
+      `;
+    }
+
+    function renderCardsGrid() {
+      const grid = document.getElementById('cardsGrid');
+      document.getElementById('cardCountText').textContent = cardsData.length;
+
+      if (cardsData.length === 0) {
+        grid.innerHTML = `<div class="text-stone-400 text-sm py-20 text-center w-full">請點擊上方「📋 貼上文字」載入卡片。</div>`;
+        return;
+      }
+
+      grid.innerHTML = cardsData.map((card, i) => {
+        const scaleClass = card.cardType === 'event' ? 'card-scale-wrapper-a6' : '';
+        return `<div class="${scaleClass} flex flex-col items-center">${buildCardHtml(card, i, false)}</div>`;
+      }).join('');
+    }
+
+    /*************************************************************
+     * 7. INTERACTIVE CARD ACTIONS (Inline Edit, Reroll, 4-Pick-1)
+     *************************************************************/
+    function updateCardField(idx, field, val) {
+      const card = cardsData[idx];
+      if (!card) return;
+      const cleanVal = String(val || '').replace(/\r?\n/g, '、').replace(/掃羅/g, '保羅').trim();
+      if (cleanVal && card[field] !== cleanVal) {
+        card[field] = cleanVal;
+      }
+    }
+
+    function cycleScoreBadge(idx) {
+      const card = cardsData[idx];
+      if (!card) return;
+      const states = [
+        { score: '2分', badgeColor: 'kraft' },
+        { score: '2分', badgeColor: 'red' },
+        { score: '3分', badgeColor: 'red' },
+        { score: '3分', badgeColor: 'kraft' }
+      ];
+      const curIdx = states.findIndex(s => s.score === card.score && s.badgeColor === card.badgeColor);
+      const next = states[(curIdx + 1) % states.length];
+      card.score = next.score;
+      card.badgeColor = next.badgeColor;
+      renderCardsGrid();
+    }
+
+    function markCardLoaded(idx) {
+      if (cardsData[idx] && cardsData[idx].isLoading) {
+        cardsData[idx].isLoading = false;
+        const dom = document.getElementById(`card_dom_${idx}`);
+        const shimmer = dom?.querySelector('.ai-painting-shimmer');
+        if (shimmer) shimmer.remove();
+      }
+    }
+
+    function handleImageError(imgEl, idx) {
+      const card = cardsData[idx];
+      if (!card) return;
+      if (!card._retryCount) card._retryCount = 0;
+      if (card._retryCount < 2) {
+        card._retryCount++;
+        card.seed += 37;
+        imgEl.src = buildFluxImageUrl(card);
+      } else {
+        card.isLoading = false;
+        imgEl.onerror = null;
+        imgEl.src = createFallbackCanvasUrl(card);
+        markCardLoaded(idx);
+      }
+    }
+
+    async function rerollSingleCard(idx) {
+      const card = cardsData[idx];
+      if (!card) return;
+      card.locked = false;
+      card._retryCount = 0;
+      card.seed = Math.floor(Math.random() * 899999) + 10000;
+      card.isLoading = true;
+      renderCardsGrid();
+
+      await buildSmartAiPromptAsync(card, card.customNote);
+      card.imageUrl = buildFluxImageUrl(card);
+      renderCardsGrid();
+    }
+
+    function toggleCardLock(idx) {
+      const card = cardsData[idx];
+      if (!card) return;
+      card.locked = !card.locked;
+      renderCardsGrid();
+    }
+
+    /*************************************************************
+     * 8. EDIT SCENE MODAL (✏️ 改畫面)
+     *************************************************************/
+    function openEditSceneModal(idx) {
+      editingCardIdx = idx;
+      const card = cardsData[idx];
+      if (!card) return;
+      document.getElementById('editSceneTitle').textContent = `✏️ 改畫面：${card.id} ${card.title}`;
+      document.getElementById('editSceneInput').value = card.customNote || '';
+      document.getElementById('editSceneModal').classList.remove('hidden');
+      setTimeout(() => document.getElementById('editSceneInput').focus(), 50);
+    }
+
+    function closeEditSceneModal() {
+      document.getElementById('editSceneModal').classList.add('hidden');
+      editingCardIdx = null;
+    }
+
+    function appendSceneChip(text) {
+      const input = document.getElementById('editSceneInput');
+      input.value = input.value ? `${input.value}，${text}` : text;
+      input.focus();
+    }
+
+    async function submitEditScene() {
+      if (editingCardIdx === null) return;
+      const idx = editingCardIdx;
+      const card = cardsData[idx];
+      const note = document.getElementById('editSceneInput').value.trim();
+      card.customNote = note;
+      card.seed = Math.floor(Math.random() * 899999) + 10000;
+      card.isLoading = true;
+      closeEditSceneModal();
+      renderCardsGrid();
+
+      await buildSmartAiPromptAsync(card, note);
+      card.imageUrl = buildFluxImageUrl(card);
+      card.locked = true;
+      renderCardsGrid();
+    }
+
+    function uploadLocalCardImage(event) {
+      const file = event.target.files?.[0];
+      if (!file || editingCardIdx === null) return;
+      const idx = editingCardIdx;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        cardsData[idx].imageUrl = e.target.result;
+        cardsData[idx].locked = true;
+        cardsData[idx].isLoading = false;
+        closeEditSceneModal();
+        renderCardsGrid();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /*************************************************************
+     * 9. 4-PICK-1 VARIATION STUDIO (❖ 4選1)
+     *************************************************************/
+    const QUAD_ANGLES = [
+      { name: "視角 A｜史詩廣角・金藍星雲旋渦", cam: "Epic wide-angle architectural composition, dramatic Van Gogh swirling Prussian blue and golden nebula sky" },
+      { name: "視角 B｜林布蘭特寫・人物神情光影", cam: "Medium close-up emotional framing, intense Rembrandt chiaroscuro lighting on expressive faces" },
+      { name: "視角 C｜破曉神聖光束・厚塗肌理", cam: "Heavy palette knife impasto brushwork, radiant golden sunbeams breaking through dramatic clouds" },
+      { name: "視角 D｜古典黃金比例・博物館級細節", cam: "Classical museum oil painting, golden ratio composition, ultra-detailed 1st-century robes and stone" }
+    ];
+
+    function openQuadModal(idx) {
+      quadCardIdx = idx;
+      const card = cardsData[idx];
+      if (!card) return;
+      document.getElementById('quadTitle').textContent = `❖ 4選1 挑圖：${card.id} ${card.title}`;
+      document.getElementById('quadModal').classList.remove('hidden');
+      renderQuadChoices();
+    }
+
+    function closeQuadModal() {
+      document.getElementById('quadModal').classList.add('hidden');
+      quadCardIdx = null;
+    }
+
+    function refreshQuadGrid() {
+      renderQuadChoices();
+    }
+
+    function renderQuadChoices() {
+      if (quadCardIdx === null) return;
+      const card = cardsData[quadCardIdx];
+      const baseSeed = Math.floor(Math.random() * 700000) + 10000;
+      const grid = document.getElementById('quadGrid');
+
+      grid.innerHTML = QUAD_ANGLES.map((item, i) => {
+        const s = baseSeed + i * 1337;
+        const p = buildLocalSmartPrompt(card, card.customNote, item.cam);
+        const url = buildFluxImageUrl(card, p, s);
+        const encUrl = encodeURIComponent(url);
+        const encPrompt = encodeURIComponent(p);
+
+        return `
+          <div onclick="chooseQuadImage('${encUrl}', '${encPrompt}', ${s})" class="cursor-pointer bg-stone-900 border-2 border-stone-700 hover:border-amber-400 rounded-xl p-2.5 flex flex-col gap-2 transition group shadow-lg">
+            <div class="flex items-center justify-between text-xs px-1">
+              <span class="font-bold text-amber-300">${item.name}</span>
+              <span class="text-[11px] text-emerald-300 font-bold group-hover:underline">點擊選用 &rarr;</span>
+            </div>
+            <div class="relative w-full h-48 rounded-lg overflow-hidden bg-stone-950">
+              <img src="${url}" crossorigin="anonymous" class="w-full h-full object-cover oil-grade group-hover:scale-105 transition-transform duration-300" />
+              <div class="oil-canvas-overlay"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function chooseQuadImage(encUrl, encPrompt, seed) {
+      if (quadCardIdx === null) return;
+      const card = cardsData[quadCardIdx];
+      card.imageUrl = decodeURIComponent(encUrl);
+      card.prompt = decodeURIComponent(encPrompt);
+      card.seed = seed;
+      card.locked = true;
+      card.isLoading = false;
+      closeQuadModal();
+      renderCardsGrid();
+    }
+
+    /*************************************************************
+     * 10. TOP BAR CONTROLS (Mode, Layout, Paste, Batch Redraw)
+     *************************************************************/
+    function switchMode(mode) {
+      currentMode = mode;
+      const btnEvent = document.getElementById('btnModeEvent');
+      const btnPoker = document.getElementById('btnModePoker');
+      const layoutGroup = document.getElementById('layoutToggleGroup');
+
+      if (mode === 'event') {
+        btnEvent.className = "px-3 py-1.5 rounded-lg bg-emerald-700 text-white shadow transition";
+        btnPoker.className = "px-3 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition";
+        layoutGroup.classList.remove('hidden');
+        if (cardsData.length === 0 || cardsData[0].cardType !== 'event') {
+          parseLinesToCards(PRESET_SAMPLE_6, false);
+        } else {
+          renderCardsGrid();
+        }
+      } else {
+        btnPoker.className = "px-3 py-1.5 rounded-lg bg-amber-700 text-white shadow transition";
+        btnEvent.className = "px-3 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition";
+        layoutGroup.classList.add('hidden');
+        if (cardsData.length === 0 || cardsData[0].cardType !== 'poker') {
+          parseLinesToCards(PRESET_POKER_100, false);
+        } else {
+          renderCardsGrid();
+        }
+      }
+    }
+
+    function switchLayout(layout) {
+      currentLayout = layout;
+      const btnClassic = document.getElementById('btnLayoutClassic');
+      const btnSplit = document.getElementById('btnLayoutSplit');
+      if (layout === 'classic') {
+        btnClassic.className = "px-2.5 py-1.5 rounded-lg bg-amber-600/30 text-amber-200 border border-amber-500/40 transition";
+        btnSplit.className = "px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition";
+      } else {
+        btnSplit.className = "px-2.5 py-1.5 rounded-lg bg-amber-600/30 text-amber-200 border border-amber-500/40 transition";
+        btnClassic.className = "px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition";
+      }
+      renderCardsGrid();
+    }
+
+    function loadQuickPreset(key) {
+      if (key === 'sample6') {
+        currentMode = 'event';
+        switchMode('event');
+        parseLinesToCards(PRESET_SAMPLE_6, false);
+      } else if (key === 'all37') {
+        currentMode = 'event';
+        switchMode('event');
+        parseLinesToCards(PRESET_ALL_37, false);
+      } else if (key === 'poker100') {
+        currentMode = 'poker';
+        switchMode('poker');
+        parseLinesToCards(PRESET_POKER_100, false);
+      }
+    }
+
+    function openPasteModal() {
+      const currentLines = cardsData.map(c => {
+        if (c.cardType === 'poker') {
+          const r = c.pokerRole === '元素卡' ? '元素' : '人物';
+          return `${r} | ${c.title} | ${c.count || 1} | ${c.description || ''}`;
+        }
+        return `${c.id} | ${c.title} | ${c.characters} | ${c.elements} | ${c.scripture} | ${c.score} | ${c.badgeColor === 'red' ? '紅圈' : '牛皮'}`;
+      }).join('\n');
+
+      document.getElementById('pasteTextarea').value = currentLines || PRESET_SAMPLE_6;
+      document.getElementById('pasteModal').classList.remove('hidden');
+    }
+
+    function closePasteModal() {
+      document.getElementById('pasteModal').classList.add('hidden');
+    }
+
+    function fillPastePreset(key) {
+      const area = document.getElementById('pasteTextarea');
+      if (key === 'sample6') area.value = PRESET_SAMPLE_6;
+      else if (key === 'all37') area.value = PRESET_ALL_37;
+      else if (key === 'poker100') area.value = PRESET_POKER_100;
+    }
+
+    async function applyPastedText() {
+      const raw = document.getElementById('pasteTextarea').value;
+      const autoDraw = document.getElementById('chkAutoDrawAfterPaste').checked;
+      closePasteModal();
+
+      if (raw.includes('人物 |') || raw.includes('元素 |')) {
+        currentMode = 'poker';
+        switchMode('poker');
+      } else {
+        currentMode = 'event';
+        switchMode('event');
+      }
+
+      parseLinesToCards(raw, true);
+      if (autoDraw) {
+        await redrawAllUnlockedCards();
+      }
+    }
+
+    async function redrawAllUnlockedCards() {
+      if (cardsData.length === 0) return;
+      batchAbort = false;
+      const banner = document.getElementById('batchBanner');
+      const statusTxt = document.getElementById('batchStatusText');
+      const bar = document.getElementById('batchProgressBar');
+      banner.classList.remove('hidden');
+
+      for (let i = 0; i < cardsData.length; i++) {
+        if (batchAbort) break;
+        const card = cardsData[i];
+        if (card.locked) continue;
+
+        const pct = Math.round(((i + 1) / cardsData.length) * 100);
+        bar.style.width = `${pct}%`;
+        statusTxt.textContent = `正在繪製 (${i + 1}/${cardsData.length})：${card.title}`;
+
+        card.seed = Math.floor(Math.random() * 899999) + 10000;
+        card.isLoading = true;
+        renderCardsGrid();
+
+        await buildSmartAiPromptAsync(card, card.customNote);
+        card.imageUrl = buildFluxImageUrl(card);
+        renderCardsGrid();
+        await new Promise(r => setTimeout(r, 350));
+      }
+
+      statusTxt.textContent = `✨ 已完成全部卡片油畫更新！`;
+      setTimeout(() => banner.classList.add('hidden'), 2500);
+    }
+
+    function stopBatchDrawing() {
+      batchAbort = true;
+      document.getElementById('batchBanner').classList.add('hidden');
+    }
+
+    /*************************************************************
+     * 11. A4 PHYSICAL PRINT & OFFLINE DOWNLOAD
+     *************************************************************/
+    function triggerPrintA4() {
+      const container = document.getElementById('printSheetContainer');
+      container.innerHTML = '';
+
+      if (currentMode === 'event') {
+        for (let i = 0; i < cardsData.length; i += 2) {
+          const page = document.createElement('div');
+          page.className = 'print-page-a4';
+          for (let j = i; j < i + 2 && j < cardsData.length; j++) {
+            const slot = document.createElement('div');
+            slot.className = 'print-slot-a6 overflow-hidden';
+            slot.innerHTML = buildCardHtml(cardsData[j], j, true);
+            const el = slot.firstElementChild;
+            if (el) { el.style.width = '100%'; el.style.height = '100%'; }
+            page.appendChild(slot);
+          }
+          container.appendChild(page);
+        }
+      } else {
+        // Expand poker card quantities to full 100-card deck for printing
+        const expanded = [];
+        cardsData.forEach(c => {
+          const copies = Math.min(c.count || 1, 30);
+          for (let k = 0; k < copies; k++) expanded.push(c);
+        });
+
+        for (let i = 0; i < expanded.length; i += 9) {
+          const page = document.createElement('div');
+          page.className = 'print-page-a4';
+          const grid = document.createElement('div');
+          grid.className = 'print-grid-poker';
+
+          for (let j = i; j < i + 9 && j < expanded.length; j++) {
+            const slot = document.createElement('div');
+            slot.className = 'print-slot-poker overflow-hidden';
+            slot.innerHTML = buildCardHtml(expanded[j], j, true);
+            const el = slot.firstElementChild;
+            if (el) { el.style.width = '100%'; el.style.height = '100%'; }
+            grid.appendChild(slot);
+          }
+          page.appendChild(grid);
+          container.appendChild(page);
+        }
+      }
+
+      setTimeout(() => window.print(), 250);
+    }
+
+    function openDownloadModal() {
+      document.getElementById('downloadModal').classList.remove('hidden');
+    }
+    function closeDownloadModal() {
+      document.getElementById('downloadModal').classList.add('hidden');
+    }
+
+    async function exportAllCardsZip() {
+      if (cardsData.length === 0) return;
+      const btn = document.getElementById('btnDownloadZip');
+      const orig = btn.innerHTML;
+      btn.disabled = true;
+
+      const zip = new JSZip();
+      const folder = zip.folder("cards_png");
+
+      for (let i = 0; i < cardsData.length; i++) {
+        const c = cardsData[i];
+        btn.innerHTML = `<span>⏳ 正在打包 (${i + 1}/${cardsData.length})...</span>`;
+        const dom = document.getElementById(`card_dom_${i}`);
+        if (!dom) continue;
+        try {
+          const canvas = await html2canvas(dom, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: null });
+          const base64 = canvas.toDataURL('image/png').replace(/^data:image\/png;base64,/, '');
+          const fname = `${String(i + 1).padStart(2, '0')}_${c.id}_${c.title}.png`.replace(/[\\/:*?"<>|\s]+/g, '_');
+          folder.file(fname, base64, { base64: true });
+        } catch (e) {}
+      }
+
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `聖經桌遊卡片_${currentMode === 'event' ? 'A6事件卡' : '撲克牌'}.zip`;
+      link.click();
+
+      btn.innerHTML = orig;
+      btn.disabled = false;
+      closeDownloadModal();
+    }
+
+    async function saveOfflineHtmlWithBase64() {
+      const btn = document.getElementById('btnDownloadOfflineHtml');
+      const orig = btn.innerHTML;
+      btn.disabled = true;
+
+      for (let i = 0; i < cardsData.length; i++) {
+        const c = cardsData[i];
+        if (!c.imageUrl || c.imageUrl.startsWith('data:')) continue;
+        btn.innerHTML = `<span>⏳ 正在封裝圖片 (${i + 1}/${cardsData.length})...</span>`;
+        try {
+          const resp = await fetch(c.imageUrl);
+          const blob = await resp.blob();
+          const b64 = await new Promise(res => {
+            const reader = new FileReader();
+            reader.onloadend = () => res(reader.result);
+            reader.readAsDataURL(blob);
+          });
+          c.imageUrl = b64;
+          c.locked = true;
+        } catch (e) {}
+      }
+
+      renderCardsGrid();
+      const htmlStr = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'index.html';
+      a.click();
+
+      btn.innerHTML = orig;
+      btn.disabled = false;
+      closeDownloadModal();
+    }
+  </script>
+</body>
+</html>
