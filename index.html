@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>聖經桌遊製卡工坊</title>
+  <title>聖經桌遊製卡工坊（零限制・原版羊皮紙精準復刻版）</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Klee+One:wght@600;700&family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;700;900&display=swap" rel="stylesheet">
   <!-- html2canvas & JSZip -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -17,14 +17,14 @@
   <style>
     :root {
       --forest-dark: #1d3529;
-      --forest-mid: #264334;
-      --parchment-bg: #e5dec9;
-      --ink-black: #181a18;
+      --forest-mid: #284537;
+      --parchment-bg: #e6dfd1;
+      --ink-black: #161816;
     }
 
     body {
       font-family: 'Noto Sans TC', sans-serif;
-      background-color: #111714;
+      background-color: #0e1411;
       color: #f3f1ea;
     }
 
@@ -32,198 +32,224 @@
       font-family: 'Noto Serif TC', serif;
     }
 
+    .font-hand-tc {
+      font-family: 'Klee One', 'Noto Serif TC', serif;
+    }
+
     .font-cinzel {
       font-family: 'Cinzel', 'Noto Serif TC', serif;
     }
 
     /* =========================================================
-       AUTHENTIC VINTAGE CARD STYLE (Matching STORY 37)
+       100% REPLICA OF STORY 37 (保羅在雅典講道) CARD AESTHETIC
        ========================================================= */
-    .vintage-card-outer {
+    .story37-card-outer {
       position: relative;
-      background: radial-gradient(circle at 30% 20%, #345947 0%, #264334 55%, #1a2f24 100%);
-      border: 3.5px solid #101512;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(76, 118, 97, 0.45) 0%, transparent 50%),
+        radial-gradient(circle at 85% 80%, rgba(20, 35, 28, 0.7) 0%, transparent 55%),
+        linear-gradient(160deg, #325343 0%, #264134 52%, #1c3127 100%);
+      border: 3.5px solid #121714;
       border-radius: 14px;
       box-shadow:
-        inset 0 0 0 2px rgba(255, 255, 255, 0.08),
-        inset 0 0 24px rgba(0, 0, 0, 0.65),
-        0 12px 28px rgba(0, 0, 0, 0.55);
+        inset 0 0 0 2px rgba(215, 224, 210, 0.12),
+        inset 0 0 22px rgba(0, 0, 0, 0.65),
+        0 14px 30px rgba(0, 0, 0, 0.65);
       overflow: hidden;
       user-select: none;
     }
 
-    .vintage-card-outer.theme-element {
-      background: radial-gradient(circle at 30% 20%, #684327 0%, #4d301a 55%, #331f10 100%);
+    .story37-card-outer.theme-character {
+      background: linear-gradient(160deg, #2d4e5a 0%, #1f3842 55%, #15262e 100%);
     }
 
-    .vintage-card-outer.theme-character {
-      background: radial-gradient(circle at 30% 20%, #2b4d59 0%, #1e3740 55%, #14252b 100%);
+    .story37-card-outer.theme-element {
+      background: linear-gradient(160deg, #634229 0%, #482e1b 55%, #2f1d10 100%);
     }
 
-    .vintage-inner-border {
+    /* Hand-drawn double ink frame line */
+    .story37-ink-frame {
       position: absolute;
       inset: 5px;
-      border: 1.5px solid rgba(15, 20, 17, 0.85);
+      border: 1.8px solid #121613;
       border-radius: 10px;
       pointer-events: none;
-      z-index: 30;
-      box-shadow: inset 0 0 0 1px rgba(215, 208, 185, 0.14);
+      z-index: 25;
+      box-shadow: inset 0 0 0 1px rgba(230, 223, 209, 0.14);
     }
 
-    .vintage-header-bar {
+    /* Top Header Brush Bar */
+    .story37-header-brush {
       position: relative;
-      background: linear-gradient(90deg, #1b3126 0%, #2e4e3f 45%, #849988 85%, #4a6657 100%);
-      border: 2px solid #141916;
-      border-radius: 6px;
-      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.45), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+      background: linear-gradient(90deg,
+        #192d23 0%,
+        #284638 38%,
+        #6d8776 72%,
+        rgba(148, 168, 153, 0.35) 92%,
+        transparent 100%);
+      border-top: 2px solid #121714;
+      border-bottom: 2px solid #121714;
+      border-left: 2.5px solid #121714;
+      border-radius: 6px 0 0 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
     }
 
-    .story-pill-badge {
-      background: linear-gradient(135deg, #c7d2c6 0%, #96a89b 60%, #75887b 100%);
-      border: 2px solid #171c19;
-      border-radius: 8px;
-      color: #151b18;
-      box-shadow: inset 0 1px 2px rgba(255,255,255,0.6), 0 2px 4px rgba(0,0,0,0.4);
+    .story37-pill {
+      background: linear-gradient(180deg, #d7dfd5 0%, #b7c5b8 60%, #9baca0 100%);
+      border: 2.2px solid #151916;
+      border-radius: 9px;
+      color: #141815;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,0.65), 0 2px 4px rgba(0,0,0,0.45);
     }
 
-    .torn-parchment {
+    /* Artwork Window */
+    .story37-art-box {
       position: relative;
-      background: radial-gradient(circle at 50% 40%, #ede8da 0%, #e5dec9 65%, #cfc7b0 100%);
-      border: 2.5px solid #1a1d1a;
-      border-radius: 6px;
+      border: 2.8px solid #131714;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #142238;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.5);
+    }
+
+    /* Torn-edge Parchment Sheet (Lightweight polygon notches - zero GPU lag) */
+    .story37-parchment {
+      position: relative;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(255, 252, 245, 0.55) 0%, transparent 45%),
+        radial-gradient(circle at 82% 75%, rgba(186, 169, 138, 0.38) 0%, transparent 50%),
+        linear-gradient(180deg, #ece6d8 0%, #e4dccb 65%, #d6ccb6 100%);
+      border: 2.5px solid #171a17;
+      border-radius: 5px;
       color: #161816;
       box-shadow:
-        0 4px 10px rgba(0, 0, 0, 0.45),
-        inset 0 0 18px rgba(138, 118, 82, 0.28);
+        0 4px 10px rgba(0, 0, 0, 0.5),
+        inset 0 0 16px rgba(135, 114, 80, 0.25);
     }
 
-    .title-brush-strip {
+    /* Decorative distressed notch marks on parchment border */
+    .story37-parchment::before {
+      content: '';
+      position: absolute;
+      inset: 2px;
+      border: 1px solid rgba(90, 78, 58, 0.28);
+      border-radius: 3px;
+      pointer-events: none;
+    }
+
+    /* Soft sage-green watercolor brush strip behind card title */
+    .story37-title-brush {
       background: linear-gradient(90deg,
-        rgba(176, 196, 177, 0.15) 0%,
-        rgba(174, 194, 175, 0.82) 12%,
-        rgba(166, 188, 168, 0.88) 88%,
-        rgba(176, 196, 177, 0.15) 100%);
+        rgba(179, 198, 179, 0) 0%,
+        rgba(176, 196, 177, 0.72) 10%,
+        rgba(167, 189, 169, 0.88) 50%,
+        rgba(176, 196, 177, 0.72) 90%,
+        rgba(179, 198, 179, 0) 100%);
       border-radius: 4px;
       position: relative;
     }
 
-    .scripture-scroll {
+    /* Bottom 3D Scripture Scroll */
+    .story37-scroll {
       position: relative;
-      background: linear-gradient(180deg, #e5c68b 0%, #d4ab67 50%, #b88944 100%);
-      border: 2px solid #1d1811;
-      border-radius: 4px;
-      color: #17130d;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.4), inset 0 0 10px rgba(120, 78, 24, 0.35);
+      background: linear-gradient(90deg,
+        #b88743 0%,
+        #deb978 14%,
+        #ecd19a 48%,
+        #d9b16d 85%,
+        #a87735 100%);
+      border: 2.2px solid #1b1610;
+      border-radius: 3px;
+      color: #16120c;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.48), inset 0 1px 3px rgba(255,245,220,0.5);
     }
 
-    .scroll-roller-left,
-    .scroll-roller-right {
+    .story37-scroll- ear-l,
+    .story37-scroll-ear-l,
+    .story37-scroll-ear-r {
       position: absolute;
       top: -4px;
       bottom: -4px;
-      width: 10px;
-      background: linear-gradient(90deg, #8c6229 0%, #e4c283 50%, #78511d 100%);
-      border: 2px solid #1d1811;
+      width: 11px;
+      background: linear-gradient(90deg, #7c5420 0%, #e4c180 52%, #6b4617 100%);
+      border: 2.2px solid #1b1610;
       border-radius: 4px;
-      z-index: 2;
+      z-index: 3;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.4);
     }
-    .scroll-roller-left { left: -6px; }
-    .scroll-roller-right { right: -6px; }
+    .story37-scroll-ear-l { left: -7px; }
+    .story37-scroll-ear-r { right: -7px; }
 
-    .score-badge {
+    /* Bottom-Right Circular Score Stamp */
+    .story37-score-circle {
       position: relative;
-      border: 2.5px solid #1b1610;
+      border: 2.5px solid #1a1510;
       border-radius: 9999px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      box-shadow: 0 3px 7px rgba(0,0,0,0.45), inset 0 0 8px rgba(45, 28, 10, 0.45);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 0 10px rgba(55, 34, 12, 0.45);
       transition: transform 0.15s ease;
     }
-    .score-badge:hover {
+    .story37-score-circle:hover {
       transform: scale(1.06);
     }
-    .score-badge::after {
+    .story37-score-circle::after {
       content: '';
       position: absolute;
-      inset: 3px;
-      border: 1.2px dashed rgba(27, 22, 16, 0.55);
+      inset: 3.5px;
+      border: 1.4px solid rgba(26, 21, 16, 0.65);
       border-radius: 9999px;
       pointer-events: none;
     }
     .score-kraft {
-      background: radial-gradient(circle at 35% 30%, #d8b989 0%, #bc955d 60%, #99723c 100%);
+      background:
+        radial-gradient(circle at 30% 28%, #dfC296 0%, #c19b64 58%, #9b733e 100%);
       color: #16120c;
     }
     .score-red {
-      background: radial-gradient(circle at 35% 30%, #d46555 0%, #aa3b2c 65%, #7d2519 100%);
-      color: #fff8ee;
-    }
-
-    .artwork-frame {
-      position: relative;
-      border: 2.5px solid #141815;
-      border-radius: 6px;
-      overflow: hidden;
-      background: #1a241f;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.7);
-    }
-
-    .oil-canvas-overlay {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
       background:
-        radial-gradient(circle at 50% 50%, transparent 62%, rgba(10, 15, 12, 0.36) 100%),
-        repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
-      mix-blend-mode: multiply;
+        radial-gradient(circle at 30% 28%, #d86959 0%, #ad3d2e 60%, #7d2418 100%);
+      color: #fff8f0;
     }
 
-    .oil-grade {
-      filter: contrast(1.1) saturate(1.15) sepia(0.06) brightness(1.02);
-    }
-
-    /* Shimmer loading animation while AI paints */
-    @keyframes shimmerPulse {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    .ai-painting-shimmer {
-      background: linear-gradient(90deg, rgba(24,36,30,0.85) 25%, rgba(212,171,103,0.35) 50%, rgba(24,36,30,0.85) 75%);
-      background-size: 200% 100%;
-      animation: shimmerPulse 1.8s infinite linear;
-    }
-
-    /* Inline editable text highlight */
+    /* Inline editable highlight */
     [contenteditable="true"]:focus {
-      outline: 2px dashed #b45309;
-      background-color: rgba(254, 243, 199, 0.5);
+      outline: 2px dashed #d97706;
+      background-color: rgba(254, 243, 199, 0.65);
       border-radius: 3px;
     }
 
     /* =========================================================
-       CARD DIMENSIONS (Screen & Print)
+       PRECISE CARD SIZES (Portrait A6, Landscape A6, Poker 63x88)
        ========================================================= */
-    /* A6 Landscape: 148mm x 105mm */
-    .card-a6-landscape {
-      width: 536px;
-      height: 380px;
+    /* 1. Classic Story 37 Portrait (A6 Portrait proportion 105mm x 148mm) */
+    .size-a6-portrait {
+      width: 360px;
+      height: 508px;
       flex-shrink: 0;
     }
 
-    /* Poker Vertical: 63mm x 88mm */
-    .card-poker-vertical {
-      width: 280px;
-      height: 391px;
+    /* 2. A6 Landscape (148mm x 105mm) */
+    .size-a6-landscape {
+      width: 520px;
+      height: 369px;
+      flex-shrink: 0;
+    }
+
+    /* 3. Poker Size (63mm x 88mm) */
+    .size-poker {
+      width: 276px;
+      height: 386px;
       flex-shrink: 0;
     }
 
     @media (max-width: 640px) {
-      .card-scale-wrapper-a6 {
-        transform: scale(0.63);
+      .responsive-a6-landscape {
+        transform: scale(0.65);
         transform-origin: top center;
-        margin-bottom: -135px;
+        margin-bottom: -125px;
       }
     }
 
@@ -261,13 +287,30 @@
         position: relative;
         margin: 0 auto;
       }
-      .print-slot-a6 {
+      /* 2 A6 Landscape cards stacked vertically per A4 */
+      .print-slot-a6-landscape {
         width: 148mm !important;
         height: 105mm !important;
         margin: 6mm auto;
         position: relative;
         outline: 0.3mm dashed #888;
       }
+      /* 2 A6 Portrait cards side-by-side per A4 row */
+      .print-grid-a6-portrait {
+        display: grid;
+        grid-template-columns: repeat(2, 92mm);
+        grid-template-rows: repeat(2, 130mm);
+        gap: 4mm;
+        justify-content: center;
+        align-content: center;
+      }
+      .print-slot-a6-portrait {
+        width: 92mm !important;
+        height: 130mm !important;
+        position: relative;
+        outline: 0.3mm dashed #888;
+      }
+      /* 3x3 Poker grid (63mm x 88mm) */
       .print-grid-poker {
         display: grid;
         grid-template-columns: repeat(3, 63mm);
@@ -290,35 +333,41 @@
   <!-- =========================================================
        CLEAN, MINIMAL TOP BAR
        ========================================================= -->
-  <header class="no-print sticky top-0 z-40 bg-[#16221c]/95 backdrop-blur-md border-b border-emerald-900/60 px-4 py-2.5 shadow-lg">
+  <header class="no-print sticky top-0 z-40 bg-[#14201a]/95 backdrop-blur-md border-b border-emerald-900/70 px-4 py-2.5 shadow-xl">
     <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
 
-      <!-- Left: Brand + Mode Switch + Layout Switch -->
-      <div class="flex flex-wrap items-center gap-2.5">
+      <!-- Left: Brand + Deck Switch + Layout Switch -->
+      <div class="flex flex-wrap items-center gap-2">
         <div class="flex items-center gap-2 mr-1">
-          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-emerald-800 flex items-center justify-center text-stone-950 font-black shadow">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-400 to-emerald-800 flex items-center justify-center text-stone-950 font-black shadow">
             ✝
           </div>
-          <span class="font-bold text-base text-amber-100 tracking-wide">聖經桌遊製卡工坊</span>
+          <div>
+            <span class="font-bold text-sm md:text-base text-amber-100 tracking-wide block leading-tight">聖經桌遊製卡工坊</span>
+            <span class="text-[10px] text-emerald-400 font-bold block">零限制內建厚塗油畫引擎・秒開不卡頓</span>
+          </div>
         </div>
 
-        <!-- Mode Switch: Event (A6) vs Poker -->
+        <!-- Deck Type Switch -->
         <div class="flex bg-stone-900 p-1 rounded-xl border border-stone-700/80 text-xs font-bold">
           <button id="btnModeEvent" onclick="switchMode('event')" class="px-3 py-1.5 rounded-lg bg-emerald-700 text-white shadow transition">
-            事件卡 (A6橫版)
+            事件卡
           </button>
           <button id="btnModePoker" onclick="switchMode('poker')" class="px-3 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition">
             人物・元素卡 (撲克牌)
           </button>
         </div>
 
-        <!-- Layout Switch (Only shown in Event Mode) -->
+        <!-- Event Card Proportion & Orientation Switch -->
         <div id="layoutToggleGroup" class="flex bg-stone-900 p-1 rounded-xl border border-stone-700/80 text-xs font-bold">
-          <button id="btnLayoutClassic" onclick="switchLayout('classic')" class="px-2.5 py-1.5 rounded-lg bg-amber-600/30 text-amber-200 border border-amber-500/40 transition">
-            標準版型
+          <button id="btnLayoutPortrait" onclick="switchLayout('portrait')" class="px-2.5 py-1.5 rounded-lg bg-amber-500 text-stone-950 font-black shadow transition" title="100% 還原 STORY 37 保羅在雅典講道 原圖比例">
+            原版直向 (Story 37比例)
           </button>
-          <button id="btnLayoutSplit" onclick="switchLayout('split')" class="px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition">
-            左右雙欄
+          <button id="btnLayoutLandscapeSplit" onclick="switchLayout('landscape-split')" class="px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition" title="A6 橫版：左邊滿版油畫、右邊撕邊羊皮紙">
+            A6橫版 (左畫右文)
+          </button>
+          <button id="btnLayoutEventPoker" onclick="switchLayout('event-poker')" class="px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition" title="撲克牌尺寸 63x88mm">
+            撲克牌大小
           </button>
         </div>
       </div>
@@ -328,14 +377,14 @@
         <button onclick="openPasteModal()" class="px-3.5 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-amber-200 border border-amber-500/40 flex items-center gap-1.5 transition shadow">
           <span>📋</span> 貼上文字
         </button>
-        <button onclick="redrawAllUnlockedCards()" id="btnRedrawAll" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black flex items-center gap-1.5 transition shadow">
-          <span>✨</span> 全部重繪
+        <button onclick="instantRepaintAll()" class="px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-stone-950 font-black flex items-center gap-1.5 transition shadow" title="0.1秒立即重繪全部油畫構圖，永久免費無限制">
+          <span>🎲</span> 全部換構圖 (0秒無限制)
         </button>
         <button onclick="triggerPrintA4()" class="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white flex items-center gap-1.5 transition shadow">
           <span>🖨️</span> A4 列印
         </button>
         <button onclick="openDownloadModal()" class="px-3.5 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-600 flex items-center gap-1.5 transition">
-          <span>💾</span> 下載離線版
+          <span>💾</span> 下載儲存
         </button>
       </div>
 
@@ -343,44 +392,26 @@
   </header>
 
   <!-- =========================================================
-       SUBTLE PROGRESS BANNER (Only visible when batch drawing)
-       ========================================================= -->
-  <div id="batchBanner" class="no-print hidden bg-stone-900/95 border-b border-amber-500/40 px-4 py-2">
-    <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 text-xs">
-      <div class="flex items-center gap-2 text-amber-300 font-bold truncate">
-        <span class="inline-block w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
-        <span id="batchStatusText">AI 正在理解經文故事並繪製油畫...</span>
-      </div>
-      <div class="flex items-center gap-3 shrink-0">
-        <div class="w-36 h-2 bg-stone-800 rounded-full overflow-hidden">
-          <div id="batchProgressBar" class="h-full bg-amber-400 transition-all duration-300" style="width: 0%"></div>
-        </div>
-        <button onclick="stopBatchDrawing()" class="px-2 py-0.5 rounded bg-red-900/80 text-red-200 hover:bg-red-800 font-bold">停止</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- =========================================================
        MAIN CARD PREVIEW WORKSPACE
        ========================================================= -->
-  <main class="no-print flex-1 max-w-7xl w-full mx-auto px-4 py-5 flex flex-col gap-4">
+  <main class="no-print flex-1 max-w-7xl w-full mx-auto px-4 py-4 flex flex-col gap-3">
 
-    <!-- Simple Info Strip -->
-    <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-stone-400 px-1">
-      <div>
-        目前顯示 <span id="cardCountText" class="text-amber-300 font-bold">6</span> 張卡片（直接點擊卡面文字即可修改，點擊右下角分數圓圈可切換紅圈／牛皮色）
+    <!-- Quick Deck Selector Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-2 bg-stone-900/80 border border-stone-800 rounded-xl px-3.5 py-2 text-xs">
+      <div class="text-stone-300">
+        目前顯示 <span id="cardCountText" class="text-amber-400 font-black">6</span> 張卡片
+        <span class="text-stone-400 ml-1">（直接點擊卡片上的文字可修改；點擊右下角「2分」圓章可切換紅圈／牛皮色）</span>
       </div>
-      <div class="flex items-center gap-2">
-        <button onclick="loadQuickPreset('sample6')" class="underline hover:text-amber-300">精選 6 張</button>
-        <span>・</span>
-        <button onclick="loadQuickPreset('all37')" class="underline hover:text-amber-300">全套 37 張事件卡</button>
-        <span>・</span>
-        <button onclick="loadQuickPreset('poker100')" class="underline hover:text-amber-300">人物與元素卡 (100張)</button>
+      <div class="flex flex-wrap items-center gap-1.5 font-bold">
+        <span class="text-stone-400 mr-1">快速載入：</span>
+        <button onclick="loadQuickPreset('sample6')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-amber-300 border border-stone-700">精選 6 張</button>
+        <button onclick="loadQuickPreset('all37')" class="px-2.5 py-1 rounded-lg bg-emerald-900/70 hover:bg-emerald-800 text-emerald-200 border border-emerald-700/60">全套 37 張事件卡</button>
+        <button onclick="loadQuickPreset('poker100')" class="px-2.5 py-1 rounded-lg bg-amber-900/50 hover:bg-amber-800/60 text-amber-200 border border-amber-700/50">人物＆元素卡 (20種/100張)</button>
       </div>
     </div>
 
     <!-- Cards Grid -->
-    <div id="cardsGrid" class="flex-1 bg-[#0d120f] border border-stone-800/80 rounded-2xl p-5 md:p-7 flex flex-wrap justify-center gap-7 items-start content-start shadow-inner min-h-[76vh]">
+    <div id="cardsGrid" class="flex-1 bg-[#0a0f0d] border border-stone-800/80 rounded-2xl p-5 md:p-7 flex flex-wrap justify-center gap-7 items-start content-start shadow-inner min-h-[76vh]">
       <!-- Rendered Cards -->
     </div>
 
@@ -392,20 +423,19 @@
   <div id="printSheetContainer" class="hidden"></div>
 
   <!-- =========================================================
-       MODAL 1: SIMPLE PASTE TEXT DRAWER (📋 貼上文字)
+       MODAL 1: PASTE TEXT DRAWER (📋 貼上文字)
        ========================================================= -->
   <div id="pasteModal" class="no-print fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-[#18241e] border border-amber-500/50 rounded-2xl max-w-2xl w-full p-5 shadow-2xl text-stone-100 flex flex-col gap-3.5">
       <div class="flex items-center justify-between border-b border-emerald-900/80 pb-2.5">
-        <h3 class="text-base font-bold text-amber-300">📋 貼上卡片文字（AI 自動理解故事生圖）</h3>
+        <h3 class="text-base font-bold text-amber-300">📋 批次貼上卡片文字（自動解析主題並立即生成油畫）</h3>
         <button onclick="closePasteModal()" class="text-stone-400 hover:text-white text-2xl leading-none px-1">&times;</button>
       </div>
 
       <p class="text-xs text-stone-300 leading-relaxed">
-        直接貼上文字（每行一張卡：<span class="text-amber-300 font-mono">編號｜標題｜人物｜元素｜經文｜分數</span>），AI 會自動理解聖經故事、人物動作與物件，畫出對應的古典微抽象油畫。
+        每行一張卡（格式：<span class="text-amber-300 font-mono">編號 | 標題 | 人物 | 元素 | 經文 | 分數</span>），系統內建零限制厚塗油畫引擎，會根據標題、人物與元素在 0.1 秒內自動繪製專屬聖經油畫，絕不跳出免費限制！
       </p>
 
-      <!-- Quick Preset Buttons -->
       <div class="flex flex-wrap gap-2 text-xs">
         <button onclick="fillPastePreset('sample6')" class="px-3 py-1.5 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-600 font-bold">
           載入精選 6 張
@@ -425,61 +455,58 @@
         placeholder="STORY 37 | 保羅在雅典講道 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 17:16-34 | 2分"
       ></textarea>
 
-      <div class="flex items-center justify-between pt-2 border-t border-emerald-900/80">
-        <label class="flex items-center gap-2 text-xs text-stone-300 cursor-pointer">
-          <input id="chkAutoDrawAfterPaste" type="checkbox" checked class="w-4 h-4 accent-amber-500 rounded" />
-          <span>套用後自動為新卡片生成 AI 油畫</span>
-        </label>
-        <div class="flex gap-2">
-          <button onclick="closePasteModal()" class="px-4 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-bold">取消</button>
-          <button onclick="applyPastedText()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-lg">
-            ✅ 產生卡片
-          </button>
-        </div>
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-emerald-900/80">
+        <button onclick="closePasteModal()" class="px-4 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 text-xs font-bold">取消</button>
+        <button onclick="applyPastedText()" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow-lg">
+          ✅ 立即產生卡片 (0秒無限制)
+        </button>
       </div>
     </div>
   </div>
 
   <!-- =========================================================
-       MODAL 2: SIMPLE 1-LINE EDIT SCENE (✏️ 改畫面)
+       MODAL 2: SCENE EDITOR & IMAGE UPLOAD (✏️ 改畫面 / 上傳圖片)
        ========================================================= -->
   <div id="editSceneModal" class="no-print fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-[#18241e] border border-amber-500/50 rounded-2xl max-w-lg w-full p-5 shadow-2xl text-stone-100 flex flex-col gap-3.5">
       <div class="flex items-center justify-between border-b border-emerald-900/80 pb-2.5">
-        <h3 id="editSceneTitle" class="text-base font-bold text-amber-300">✏️ 調整畫面內容</h3>
+        <h3 id="editSceneTitle" class="text-base font-bold text-amber-300">✏️ 調整卡片插畫</h3>
         <button onclick="closeEditSceneModal()" class="text-stone-400 hover:text-white text-2xl leading-none px-1">&times;</button>
       </div>
 
       <div>
         <label class="block text-xs text-stone-300 mb-1.5 font-medium">
-          直接用中文輸入您想呈現的畫面細節（AI 會自動結合這張卡的故事重畫）：
+          輸入畫面關鍵字（例如：神廟、十字架、船、海浪、火堆、監牢、天使、井、樹、星星、夜空、破曉金光）：
         </label>
         <input
           id="editSceneInput"
           type="text"
-          placeholder="例如：特寫保羅手指天空的表情、背景有帕德嫩神廟與金色星雲旋渦..."
-          onkeydown="if(event.key==='Enter') submitEditScene()"
+          placeholder="例如：雅典神廟、保羅高舉右手、金色星雲旋渦..."
+          onkeydown="if(event.key==='Enter') submitEditScene('canvas')"
           class="w-full bg-stone-950 border border-emerald-700 rounded-xl px-3.5 py-2.5 text-xs text-stone-100 focus:outline-none focus:border-amber-400"
         />
       </div>
 
-      <!-- Quick suggestion chips -->
+      <!-- Quick scene mood chips -->
       <div class="flex flex-wrap gap-1.5 text-[11px]">
-        <button onclick="appendSceneChip('特寫人物堅定敬虔的表情，加強林布蘭光影對比')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 特寫人物表情</button>
-        <button onclick="appendSceneChip('廣角史詩遠景，天空有強烈梵谷風金藍星雲旋渦')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 史詩金藍星雲天空</button>
-        <button onclick="appendSceneChip('溫暖神聖的金色光芒從雲層破曉灑落')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 破曉神聖金光</button>
-        <button onclick="appendSceneChip('強化厚塗油畫畫刀肌理與古典油燈暖光')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 厚塗油燈暖光</button>
+        <button onclick="appendSceneChip('雅典神廟與石階講道')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 雅典神廟石階</button>
+        <button onclick="appendSceneChip('強烈梵谷風金藍星雲旋渦夜空')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 金藍星雲夜空</button>
+        <button onclick="appendSceneChip('破曉神聖金色光束從天降臨')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 破曉神聖光束</button>
+        <button onclick="appendSceneChip('暗夜營火與溫暖火光')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 暗夜溫暖營火</button>
+        <button onclick="appendSceneChip('加利利海木船與壯闊波浪')" class="px-2.5 py-1 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-300 border border-stone-700">+ 海上木船波浪</button>
       </div>
 
-      <div class="flex items-center justify-between pt-2 border-t border-emerald-900/80 text-xs">
-        <label class="text-stone-400 hover:text-stone-200 cursor-pointer flex items-center gap-1.5">
-          <span>📁 或上傳電腦圖片</span>
+      <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-emerald-900/80 text-xs">
+        <label class="px-3 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-amber-200 border border-stone-600 cursor-pointer font-bold flex items-center gap-1.5">
+          <span>📁 上傳自己的圖片</span>
           <input type="file" accept="image/*" onchange="uploadLocalCardImage(event)" class="hidden" />
         </label>
         <div class="flex gap-2">
-          <button onclick="closeEditSceneModal()" class="px-4 py-2 rounded-xl bg-stone-800 hover:bg-stone-700 text-stone-300 font-bold">取消</button>
-          <button onclick="submitEditScene()" id="btnSubmitEditScene" class="px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black shadow-lg">
-            🎨 立即重畫
+          <button onclick="submitEditScene('canvas')" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black shadow">
+            🎨 內建厚塗重繪 (0秒無限制)
+          </button>
+          <button onclick="submitEditScene('cloud')" id="btnCloudAiDraw" class="px-3.5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold shadow">
+            ✨ 雲端 AI 精繪
           </button>
         </div>
       </div>
@@ -487,63 +514,59 @@
   </div>
 
   <!-- =========================================================
-       MODAL 3: 4-PICK-1 STUDIO (❖ 4選1)
+       MODAL 3: 4-PICK-1 STUDIO (❖ 4選1 零限制瞬間挑圖)
        ========================================================= -->
   <div id="quadModal" class="no-print fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
     <div class="bg-[#18241e] border border-amber-500/60 rounded-2xl max-w-4xl w-full p-5 shadow-2xl text-stone-100 max-h-[92vh] overflow-y-auto">
       <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-emerald-900">
         <div>
-          <h3 id="quadTitle" class="text-base font-bold text-amber-300">❖ 4選1 挑圖（點選最喜歡的一張直接套用）</h3>
-          <p class="text-xs text-stone-400 mt-0.5">AI 同時用 4 種不同鏡頭角度與光影繪製，完全免費無限制</p>
+          <h3 id="quadTitle" class="text-base font-bold text-amber-300">❖ 4選1 挑圖（0.05秒即時繪製・永久無限制）</h3>
+          <p class="text-xs text-stone-400 mt-0.5">同時呈現 4 種不同色溫、星雲旋渦與光影構圖，點擊任一幅立即套用</p>
         </div>
         <div class="flex items-center gap-2">
-          <button onclick="refreshQuadGrid()" id="btnRefreshQuad" class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow">
-            🎲 再換 4 張
+          <button onclick="renderQuadChoices()" class="px-3.5 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-xs shadow">
+            🎲 再換 4 張 (瞬間)
           </button>
           <button onclick="closeQuadModal()" class="text-stone-400 hover:text-white text-2xl leading-none px-2">&times;</button>
         </div>
       </div>
 
       <div id="quadGrid" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- 4 candidate images -->
+        <!-- 4 instant canvas paintings -->
       </div>
     </div>
   </div>
 
   <!-- =========================================================
-       MODAL 4: DOWNLOAD & OFFLINE EXPORT (💾 下載離線版)
+       MODAL 4: DOWNLOAD & OFFLINE EXPORT (💾 下載儲存)
        ========================================================= -->
   <div id="downloadModal" class="no-print fixed inset-0 z-50 hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-[#18241e] border border-amber-500/50 rounded-2xl max-w-md w-full p-5 shadow-2xl text-stone-100 flex flex-col gap-3.5">
       <div class="flex items-center justify-between border-b border-emerald-900/80 pb-2.5">
-        <h3 class="text-base font-bold text-amber-300">💾 儲存與下載</h3>
+        <h3 class="text-base font-bold text-amber-300">💾 儲存與匯出</h3>
         <button onclick="closeDownloadModal()" class="text-stone-400 hover:text-white text-2xl leading-none px-1">&times;</button>
       </div>
 
       <div class="space-y-2.5 text-xs">
         <button onclick="exportAllCardsZip()" id="btnDownloadZip" class="w-full py-3 px-4 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold flex items-center justify-between shadow transition">
           <span>📦 下載全部卡片圖片 (.zip)</span>
-          <span class="text-[11px] opacity-80">高畫質 PNG</span>
+          <span class="text-[11px] opacity-80">高解析度 PNG</span>
         </button>
 
         <button onclick="saveOfflineHtmlWithBase64()" id="btnDownloadOfflineHtml" class="w-full py-3 px-4 rounded-xl bg-amber-500 hover:bg-amber-400 text-stone-950 font-black flex items-center justify-between shadow transition">
           <span>🐙 下載 GitHub 永久離線網頁 (index.html)</span>
-          <span class="text-[11px] opacity-80">內嵌圖片不掉圖</span>
+          <span class="text-[11px] opacity-80">內嵌圖片永不掉圖</span>
         </button>
       </div>
-
-      <p class="text-[11px] text-stone-400 leading-relaxed">
-        提示：點擊「下載 GitHub 永久離線網頁」會自動把目前畫面上的油畫封裝進單一 `index.html` 檔案中，上傳到 GitHub Pages 即可永久保存。
-      </p>
     </div>
   </div>
 
   <!-- =========================================================
-       CORE JAVASCRIPT ENGINE
+       CORE JAVASCRIPT ENGINE (Zero-Limit Impasto Canvas + Gemini Fallback)
        ========================================================= -->
   <script>
     /*************************************************************
-     * 1. BUILT-IN DATASETS (All Specific Names, Saul=Paul, No "需求")
+     * 1. BUILT-IN DATASETS (Saul=Paul, Specific Names, No "需求")
      *************************************************************/
     const PRESET_SAMPLE_6 = `STORY 37 | 保羅在雅典講道 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 17:16-34 | 2分 | 牛皮
 STORY 09 | 撒馬利亞婦人與耶穌談道 | 耶穌×1 | 井×1、水×1 | 約翰福音 4:1-30 | 2分 | 紅圈
@@ -590,251 +613,570 @@ STORY 35 | 巴拿巴接納保羅 | 巴拿巴×1、保羅×1 | 房屋×1、信心
 STORY 36 | 大馬士革籃子逃脫 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 9:20-25 | 2分 | 牛皮
 STORY 37 | 保羅在雅典講道 | 保羅×1 | 道路×1、信心×1 | 使徒行傳 17:16-34 | 2分 | 牛皮`;
 
-    const PRESET_POKER_100 = `人物 | 保羅 | 12 | 使徒保羅身穿古羅馬長袍與赭石色披肩，眼神堅定指向天際，背景有金色星雲筆觸
-人物 | 耶穌 | 10 | 耶穌基督身穿潔白亞麻長袍，面容慈愛威嚴，周圍環繞神聖溫暖金光與厚塗油畫筆觸
-人物 | 彼得 | 8 | 使徒彼得留著濃密捲鬚，身穿古樸漁夫外袍，神情剛毅充滿信心
-人物 | 約翰 | 5 | 使徒約翰手捧古老羊皮書卷，神情溫和深邃，背景帶有拔摩島海浪與金光
-人物 | 巴拿巴 | 3 | 勸慰子巴拿巴面帶溫暖微笑，雙手張開展現接納與愛心，古典厚塗油畫肖像
-人物 | 西拉 | 2 | 保羅的忠實同工西拉，在暗夜中仰望讚美，身旁帶有掙斷鎖鏈與聖潔光輝
-人物 | 腓利 | 2 | 傳福音的腓利行走在曠野道路上，手指向前引導，神采飛揚
-人物 | 馬利亞 | 2 | 馬利亞身穿古猶太藍白頭巾與長袍，雙手合十敬虔仰望神聖光芒
-人物 | 天使 | 2 | 聖潔發光的白翼天使，展開潔白羽翼立於金色雲彩與星雲旋渦之中
-元素 | 信心 | 18 | 破雲而出的神聖金色光芒與梵谷風星雲旋渦，象徵堅定不移的信心
-元素 | 房屋 | 10 | 第一世紀古耶路撒冷石砌拱門房屋與溫暖油燈室內景致
-元素 | 道路 | 8 | 蜿蜒穿過古老橄欖山丘與石牆的聖地古道，遠方透出晨曦金光
-元素 | 水 | 3 | 清澈湧流的生命活水溪流，閃耀著金藍色厚塗油畫波光
-元素 | 食物 | 3 | 古樸木盤上的五餅二魚與無酵餅，散發溫暖燭光色澤
-元素 | 井 | 2 | 撒馬利亞古老石砌雅各井，井旁放著陶製水罐與麻繩
-元素 | 火堆 | 2 | 暗夜海灘與庭院中熊熊燃燒的營火，火星化作金色抽象光點升空
-元素 | 外衣 | 2 | 第一世紀手工編織的亞麻外衣與披肩，帶有細膩布紋光影
-元素 | 十字架 | 2 | 各各他山丘上的古木十字架，背後是震撼的普魯士藍與黃金破曉旋渦天空
-元素 | 墳墓 | 2 | 滾開大石的空墳墓洞口，清晨的復活金光從花園墓穴中綻放而出
-元素 | 船 | 2 | 加利利海上的古老木製帆船，在壯闊海浪與金色雲彩間航行`;
+    const PRESET_POKER_100 = `人物 | 保羅 | 12 | 使徒保羅・大馬士革與宣教使徒
+人物 | 耶穌 | 10 | 救主耶穌基督・神聖恩典與真理
+人物 | 彼得 | 8 | 使徒彼得・剛毅磐石與教會領袖
+人物 | 約翰 | 5 | 使徒約翰・愛徒與拔摩島啟示先知
+人物 | 巴拿巴 | 3 | 勸慰子巴拿巴・良善與信心滿溢
+人物 | 西拉 | 2 | 宣教同工西拉・暗夜歌頌讚美主
+人物 | 腓利 | 2 | 傳福音的腓利・曠野引導尋道者
+人物 | 馬利亞 | 2 | 馬利亞・謙卑順服主話語的使女
+人物 | 天使 | 2 | 神聖天使・傳遞天國啟示與拯救
+元素 | 信心 | 18 | 破雲而出的神聖金光與星雲旋渦
+元素 | 房屋 | 10 | 耶路撒冷古石砌拱門房屋與樓房
+元素 | 道路 | 8 | 蜿蜒穿過山丘與古城的宣教古道
+元素 | 水 | 3 | 湧流不絕的生命活水與約旦河水
+元素 | 食物 | 3 | 古樸木盤上的五餅二魚與無酵餅
+元素 | 井 | 2 | 撒馬利亞古老石砌雅各井與水罐
+元素 | 火堆 | 2 | 暗夜熊熊燃燒的營火與金色火星
+元素 | 外衣 | 2 | 手工編織的第一世紀亞麻外衣披肩
+元素 | 十字架 | 2 | 各各他山丘上榮耀救贖的古木十架
+元素 | 墳墓 | 2 | 滾開巨石綻放復活晨光的空墳墓
+元素 | 船 | 2 | 加利利海破浪前行的古老木帆船`;
 
     /*************************************************************
-     * 2. SMART AI DIRECTOR LAYER 1:
-     *    37 PRE-ENGINEERED STORY COMPOSITIONS + DEEP SEMANTIC ANALYZER
+     * 2. ZERO-LIMIT, 0.05-SECOND IMPASTO OIL PAINTING ENGINE
+     *    Paints bespoke Biblical Oil Paintings matching STORY 37
+     *    directly on HTML5 Canvas — NEVER hits rate limits!
      *************************************************************/
-    const STORY_BLUEPRINTS = {
-      "保羅在雅典講道": "Apostle Paul in white tunic and warm ochre-brown draped himation cloak standing atop rough-hewn ancient stone steps on the Areopagus hill in Athens, right arm raised pointing toward the heavens with a radiant golden halo of swirling impasto light particles around him; in the mid-ground below, ancient Athenian rooftops and two robed figures walking along a winding road; in the background atop the rocky Acropolis hill stands the classical columned Parthenon temple under a dramatic Van Gogh-style swirling Prussian blue and golden nebula sky",
-      "大馬士革籃子逃脫": "Nocturnal biblical oil painting of Damascus high ancient stone city wall under a starry swirling Prussian blue night sky; disciples at the top battlements lowering Apostle Paul inside a large woven reed basket held by thick ropes down the stone wall toward a winding road below, warm torchlight rim-lighting",
-      "巴拿巴接納保羅": "Warm lamp-lit interior of an ancient Jerusalem stone house with arched doorway; Barnabas standing with a gentle reassuring hand on Apostle Paul's shoulder, introducing him to Peter and John in 1st-century robes, golden dust motes of faith swirling in sunbeams",
-      "彼得見大布異象": "Apostle Peter kneeling in prayer on a sunlit flat stone rooftop terrace in Joppa overlooking the Mediterranean sea; descending from swirling golden and azure clouds above is a great white linen sheet held by its four corners containing doves and lambs in radiant light",
-      "彼得使多加復活": "Inside an upper stone chamber in Joppa with woven garments beside the bed; Apostle Peter extending his hand in faith toward Tabitha (Dorcas) sitting up alive on a wooden bed in astonishment, warm golden light streaming through the stone window",
-      "腓利與衣索匹亞太監": "On a sunlit desert road toward Gaza, Evangelist Philip walking alongside and pointing to an open Hebrew parchment scroll held by an Ethiopian noble seated inside an ornate horse-drawn wooden chariot, golden swirling sky above a desert stream",
-      "約翰在拔摩島見啟示": "Aged white-bearded Apostle John wearing a weathered woven cloak kneeling on rugged coastal rocks of Patmos island with crashing sapphire sea waves; looking up in awe at a radiant winged angel holding an open scroll amidst swirling golden nebula clouds",
-      "保羅在羅馬傳道": "Inside a sunlit Roman stone room, Apostle Paul wearing a light wrist chain earnestly teaching from open parchment scrolls on a wooden table, a Roman centurion guard standing respectfully by the arched window, golden impasto light rays",
-      "保羅遭毒蛇咬傷": "On a stormy windswept beach on Malta island with a wooden shipwreck in the distant waves; Apostle Paul standing calmly in wet robes beside a blazing orange campfire as a green viper hangs harmlessly from his hand, swirling golden embers rising into the dark blue sky",
-      "保羅西拉在監牢歌頌": "Inside a dark ancient Philippi stone dungeon at midnight, Apostle Paul and Silas with broken iron chains singing praises joyfully with uplifted hands, supernatural golden impasto light breaking through the arched stone ceiling bars",
-      "彼得監獄得釋放": "Inside a dark Jerusalem stone prison cell, a luminous white-winged angel touching Apostle Peter's shoulder as iron wrist chains fall broken to the stone floor, Roman guards sleeping in the shadowed archway",
-      "保羅大馬士革悔改": "On the dusty stony road to Damascus, Paul falling to his knees shielding his eyes in awe as a blinding magnificent column of swirling golden impasto light blazes down from the dramatic Prussian blue sky",
-      "美門口的奇蹟": "Before the towering bronze Beautiful Gate of the Jerusalem Temple with grand stone columns, Apostle Peter and John clasping the right hand of a lame beggar on the stone steps to lift him up, golden light of faith swirling",
-      "五旬節聖靈降臨": "Inside an ancient Jerusalem upper stone room, Apostles Peter and John with uplifted hands as wind of golden light sweeps through the room and glowing tongues of sacred fire rest above their heads",
-      "耶穌升天": "Atop the Mount of Olives along a winding stone path with olive trees, Risen Jesus Christ in luminous white robes ascending into a breathtaking vortex of golden and azure clouds while Apostle Peter gazes upward in reverence",
-      "耶穌復活": "At dawn outside the open rock-hewn garden tomb with the massive circular stone rolled away, Risen Jesus in radiant white robes speaking tenderly to Mary Magdalene kneeling among olive trees and golden morning light particles",
-      "耶穌被釘十字架": "Atop Golgotha hill, a rugged wooden cross silhouetted against a tempestuous swirling Prussian blue and fiery gold sky, Apostle John standing faithfully in the foreground in dramatic Rembrandt chiaroscuro lighting",
-      "猶大出賣耶穌": "In the moonlit Garden of Gethsemane among gnarled ancient olive trees along a stone path, Jesus standing in serene dignity while Judas approaches holding a pouch of silver coins with warm torchlight flickering",
-      "彼得不認主": "In a dark stone courtyard at night, Apostle Peter sitting beside a glowing charcoal brazier fire pit, his face illuminated by warm orange firelight with deep remorseful emotion as dawn breaks over the Jerusalem roofs",
-      "多馬不信": "Inside a candlelit stone room with closed wooden doors, Risen Jesus extending his pierced hands gently toward Apostle Thomas kneeling in awe and faith, warm Rembrandt golden light",
-      "財主與拉撒路": "Outside a grand ancient stone mansion gate, humble Lazarus resting on the stone steps while golden heavenly light beams down from a starry swirling sky, contrasting with scattered silver coins",
-      "巴底買呼喊": "Along the dusty stone road outside Jericho city walls, blind Bartimaeus casting aside his woven cloak and stretching out his hands toward Jesus Christ standing in warm golden sunlight",
-      "迦南婦人求助": "Inside a rustic Syrophoenician stone house with loaves of bread on a wooden table, a woman kneeling in humble faith before Jesus Christ who looks upon her with deep compassion",
-      "百夫長為僕人求助": "On a stone street in Capernaum in front of a Roman-style stone house, a centurion bowing in humble faith before Jesus Christ under a radiant golden sky",
-      "患血漏的婦人": "On an ancient stone road, a kneeling woman reaching out in trembling faith to touch the fringed hem of Jesus Christ's white garment as golden healing light ripples outward",
-      "睚魯為女兒求助": "Outside an ancient stone house in Galilee, synagogue ruler Jairus clasping his hands and pleading earnestly with Jesus Christ and Peter, warm golden sunbeams breaking through clouds",
-      "馬太蒙召": "Beside a stone road in Capernaum, Jesus Christ extending his hand to call Matthew sitting at a wooden tax booth with silver coins and ledger scrolls, golden morning light",
-      "撒該爬上桑樹": "Along a tree-lined road in Jericho, Zacchaeus perched high on the thick branch of an ancient sycamore fig tree looking down joyfully at Jesus Christ standing below and looking up at him",
-      "撒馬利亞婦人與耶穌談道": "At midday beside the ancient circular stone Jacob's well in Samaria with a clay water pitcher and rope on the stone rim, Jesus Christ sitting on a stone speaking gently to a Samaritan woman, distant city walls and olive tree",
-      "尼哥底母夜訪耶穌": "At night on a quiet stone rooftop balcony in Jerusalem, Pharisee Nicodemus holding a parchment scroll leaning in to listen to Jesus Christ beside a warm glowing oil lamp under a swirling starry sky",
-      "施洗約翰為耶穌施洗": "In the sparkling flowing waters of the Jordan River, John the Baptist in camel-hair garment baptizing Jesus Christ as the heavens open with a swirling golden vortex and a white dove descending",
-      "十二歲的耶穌在聖殿": "Inside the grand limestone columned courts of the Jerusalem Temple, twelve-year-old boy Jesus seated among open Hebrew parchment scrolls speaking with wisdom in warm sunbeams",
-      "西面等候彌賽亞": "Inside the sunlit columned court of the Jerusalem Temple, aged white-bearded Simeon cradling infant Jesus in his arms and praising God while Mary stands nearby in golden light",
-      "東方博士朝見耶穌": "Inside a rustic Bethlehem house, Mary holding infant Jesus as wise men in rich eastern robes present ornate gold, frankincense, and myrrh chests beneath a blazing golden star",
-      "牧羊人朝見耶穌": "Inside a warm lantern-lit stone stable in Bethlehem, baby Jesus wrapped in swaddling cloths lying in a wooden manger while a radiant winged angel shines in the starry night sky outside",
-      "約瑟夢中得到啟示": "Inside a rustic Nazareth carpenter stone room with wooden tools, Joseph sleeping peacefully as a luminous winged angel appears in a swirling golden dream vision",
-      "天使向馬利亞報信": "Inside a quiet Nazareth stone chamber, Archangel Gabriel with grand white wings appearing in a vortex of golden impasto light particles before Virgin Mary kneeling in humble faith"
+    const ImpastoCanvasEngine = {
+      createRng(seed) {
+        let s = Math.abs(Math.floor(seed || 1337)) % 2147483647;
+        if (s <= 0) s = 1337;
+        return () => {
+          s = (s * 16807) % 2147483647;
+          return (s - 1) / 2147483646;
+        };
+      },
+
+      detectSceneArchetype(card) {
+        const text = `${card.title || ''} ${card.characters || ''} ${card.elements || ''} ${card.description || ''} ${card.customNote || ''}`;
+
+        if (/雅典|講道|STORY\s*37/i.test(text)) return 'athens_preach';
+        if (/十字架|被釘|各各他|STORY\s*21/i.test(text)) return 'crucifixion';
+        if (/復活|空墳|墳墓|STORY\s*22/i.test(text)) return 'resurrection_tomb';
+        if (/毒蛇|火堆|營火|不認主|STORY\s*29|STORY\s*19/i.test(text)) return 'campfire_night';
+        if (/井|撒馬利亞|STORY\s*09/i.test(text)) return 'samaritan_well';
+        if (/五旬節|聖靈|火焰|STORY\s*24/i.test(text)) return 'pentecost_fire';
+        if (/大馬士革悔改|強光|STORY\s*26/i.test(text)) return 'damascus_light';
+        if (/籃子|城牆|逃脫|STORY\s*36/i.test(text)) return 'basket_wall';
+        if (/拔摩島|啟示|海島|STORY\s*31/i.test(text)) return 'patmos_island';
+        if (/監獄|監牢|歌頌|釋放|STORY\s*27|STORY\s*28/i.test(text)) return 'prison_miracle';
+        if (/施洗|約旦河|河流|水|STORY\s*07/i.test(text)) return 'river_baptism';
+        if (/船|海|風浪/i.test(text)) return 'galilee_boat';
+        if (/桑樹|樹|撒該|STORY\s*10/i.test(text)) return 'sycamore_tree';
+        if (/馬槽|包布|博士|星星|牧羊人|STORY\s*03|STORY\s*04/i.test(text)) return 'nativity_star';
+        if (/大布|異象|STORY\s*34/i.test(text)) return 'rooftop_vision';
+        if (/太監|馬車|腓利|STORY\s*32/i.test(text)) return 'desert_chariot';
+        if (/升天|STORY\s*23/i.test(text)) return 'ascension';
+        if (/聖殿|美門|西面|十二歲|STORY\s*05|STORY\s*06|STORY\s*25/i.test(text)) return 'temple_columns';
+        if (/天使|報信|夢中|STORY\s*01|STORY\s*02/i.test(text)) return 'angel_annunciation';
+        if (/食物|餅|五餅二魚|STORY\s*15/i.test(text)) return 'loaves_bread';
+        if (/外衣|血漏|巴底買|STORY\s*13|STORY\s*16/i.test(text)) return 'woven_cloak';
+        if (/錢幣|馬太|猶大|財主|STORY\s*11|STORY\s*17|STORY\s*20/i.test(text)) return 'silver_coins';
+        if (card.cardType === 'poker' && card.pokerRole === '人物卡') return 'apostle_portrait';
+        if (/道路|路上/i.test(text)) return 'ancient_road';
+        if (/房屋|家/i.test(text)) return 'jerusalem_house';
+        return 'athens_preach';
+      },
+
+      paintBrushStroke(ctx, x, y, len, thick, angle, color, alpha = 0.85) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.roundRect(-len / 2, -thick / 2, len, thick, thick * 0.45);
+        ctx.fill();
+        // Impasto ridge highlight
+        ctx.globalAlpha = alpha * 0.35;
+        ctx.fillStyle = '#fff9e6';
+        ctx.fillRect(-len * 0.4, -thick * 0.4, len * 0.8, thick * 0.22);
+        ctx.restore();
+      },
+
+      paintSwirlingSky(ctx, w, h, rng, palette) {
+        // Base atmospheric gradient
+        const grad = ctx.createLinearGradient(0, 0, w * 0.3, h);
+        grad.addColorStop(0, palette.skyTop);
+        grad.addColorStop(0.48, palette.skyMid);
+        grad.addColorStop(1, palette.skyBot);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+
+        // Focal golden vortex (like Story 37 top-right halo / sky swirl)
+        const vx = w * (0.58 + (rng() - 0.5) * 0.22);
+        const vy = h * (0.28 + (rng() - 0.5) * 0.14);
+
+        const glow = ctx.createRadialGradient(vx, vy, 8, vx, vy, w * 0.52);
+        glow.addColorStop(0, '#fff7d6');
+        glow.addColorStop(0.22, '#f5c469');
+        glow.addColorStop(0.52, 'rgba(218, 145, 55, 0.35)');
+        glow.addColorStop(1, 'transparent');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, 0, w, h);
+
+        // 240 Van Gogh impasto swirling brushstrokes across the sky
+        const skyColors = [...palette.swirls, '#1b3556', '#2a4d73', '#496f95', '#e7b556', '#f4d58d', '#d1883b'];
+        for (let i = 0; i < 240; i++) {
+          const t = i / 240;
+          const orbit = 12 + t * w * 0.68;
+          const theta = t * Math.PI * 7.5 + rng() * 0.8;
+          const sx = vx + Math.cos(theta) * orbit * (1.15 + rng() * 0.2);
+          const sy = vy + Math.sin(theta) * orbit * 0.62;
+          if (sy > h * 0.78) continue;
+
+          const distRatio = Math.hypot(sx - vx, sy - vy) / (w * 0.6);
+          const col = distRatio < 0.32
+            ? ['#fff3c4', '#f6c96b', '#e5a343', '#8ca8be'][Math.floor(rng() * 4)]
+            : skyColors[Math.floor(rng() * skyColors.length)];
+
+          const len = 18 + rng() * 34;
+          const thick = 4 + rng() * 8;
+          const tangent = theta + Math.PI / 2 + (rng() - 0.5) * 0.35;
+          this.paintBrushStroke(ctx, sx, sy, len, thick, tangent, col, 0.55 + rng() * 0.35);
+        }
+
+        // Golden stardust & impasto light particles (signature of Story 37)
+        for (let p = 0; p < 85; p++) {
+          const px = w * (0.25 + rng() * 0.72);
+          const py = h * (0.05 + rng() * 0.68);
+          const r = 1.2 + rng() * 3.2;
+          ctx.save();
+          ctx.fillStyle = rng() > 0.3 ? '#ffefc2' : '#f4b952';
+          ctx.globalAlpha = 0.45 + rng() * 0.5;
+          ctx.beginPath();
+          ctx.arc(px, py, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+
+        return { vx, vy };
+      },
+
+      paintClassicalTemple(ctx, x, y, scale, rng) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(scale, scale);
+
+        // Acropolis rocky hill base
+        ctx.fillStyle = '#5c5242';
+        ctx.beginPath();
+        ctx.moveTo(-130, 95);
+        ctx.lineTo(-95, 25);
+        ctx.lineTo(115, 25);
+        ctx.lineTo(155, 95);
+        ctx.closePath();
+        ctx.fill();
+
+        // Temple stepped stylobate
+        ctx.fillStyle = '#cbb894';
+        ctx.strokeStyle = '#2d2419';
+        ctx.lineWidth = 2;
+        ctx.fillRect(-85, 14, 170, 14);
+        ctx.strokeRect(-85, 14, 170, 14);
+
+        // Shadow behind columns
+        ctx.fillStyle = '#3b3227';
+        ctx.fillRect(-76, -38, 152, 52);
+
+        // Classical Doric Columns
+        const cols = 8;
+        for (let c = 0; c < cols; c++) {
+          const cx = -72 + c * (144 / (cols - 1)) - 5;
+          ctx.fillStyle = '#e7d7b6';
+          ctx.fillRect(cx, -38, 10, 52);
+          ctx.fillStyle = '#b49e78';
+          ctx.fillRect(cx + 6, -38, 4, 52);
+        }
+
+        // Entablature & Triangular Pediment Roof
+        ctx.fillStyle = '#dfd0b0';
+        ctx.beginPath();
+        ctx.moveTo(-90, -38);
+        ctx.lineTo(0, -68);
+        ctx.lineTo(90, -38);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.restore();
+      },
+
+      paintRobedFigure(ctx, x, y, scale, pose = 'preach', cloakColor = '#7d4e24', tunicColor = '#e9e2d0') {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.scale(scale, scale);
+
+        // Golden Halo behind head
+        const halo = ctx.createRadialGradient(0, -68, 4, 0, -68, 46);
+        halo.addColorStop(0, 'rgba(255, 248, 210, 0.95)');
+        halo.addColorStop(0.5, 'rgba(245, 195, 92, 0.45)');
+        halo.addColorStop(1, 'transparent');
+        ctx.fillStyle = halo;
+        ctx.beginPath();
+        ctx.arc(0, -68, 46, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Raised Right Arm (pointing to heaven like Story 37 Paul)
+        if (pose === 'preach') {
+          ctx.strokeStyle = tunicColor;
+          ctx.lineWidth = 13;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(-12, -45);
+          ctx.lineTo(-42, -78);
+          ctx.lineTo(-56, -105);
+          ctx.stroke();
+
+          // Hand pointing upward
+          ctx.fillStyle = '#d69e72';
+          ctx.beginPath();
+          ctx.arc(-58, -109, 5.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        // Tunic (Inner White/Cream Robe)
+        ctx.fillStyle = tunicColor;
+        ctx.strokeStyle = '#1f1914';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(-18, -50);
+        ctx.lineTo(18, -50);
+        ctx.lineTo(26, 58);
+        ctx.lineTo(-24, 58);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Vertical drapery folds
+        ctx.strokeStyle = 'rgba(90, 75, 55, 0.45)';
+        ctx.lineWidth = 1.6;
+        for (let f = -12; f <= 14; f += 8) {
+          ctx.beginPath();
+          ctx.moveTo(f, -42);
+          ctx.lineTo(f * 1.2, 56);
+          ctx.stroke();
+        }
+
+        // Draped Himation Cloak (Warm Ochre/Umber like Story 37)
+        ctx.fillStyle = cloakColor;
+        ctx.strokeStyle = '#1f1914';
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.moveTo(-16, -48);
+        ctx.quadraticCurveTo(28, -38, 28, 12);
+        ctx.lineTo(14, 48);
+        ctx.lineTo(-22, 34);
+        ctx.quadraticCurveTo(-28, -10, -16, -48);
+        ctx.fill();
+        ctx.stroke();
+
+        // Head & Bearded Profile
+        ctx.fillStyle = '#d89f73';
+        ctx.beginPath();
+        ctx.arc(0, -68, 13, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+
+        // Dark curly hair & beard
+        ctx.fillStyle = '#2c221b';
+        ctx.beginPath();
+        ctx.arc(2, -72, 13, -Math.PI * 0.85, Math.PI * 0.25);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(-11, -65);
+        ctx.quadraticCurveTo(-12, -50, 0, -52);
+        ctx.quadraticCurveTo(9, -54, 8, -65);
+        ctx.fill();
+
+        // Sandals
+        ctx.fillStyle = '#5c381c';
+        ctx.fillRect(-16, 58, 11, 5);
+        ctx.fillRect(6, 58, 11, 5);
+
+        ctx.restore();
+      },
+
+      renderCardArtDataUrl(card, customSeed = null, paletteShift = 0) {
+        const isEvent = card.cardType === 'event';
+        const w = isEvent ? 760 : 500;
+        const h = isEvent ? 520 : 520;
+        const canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        const ctx = canvas.getContext('2d');
+
+        const seed = (customSeed !== null ? customSeed : (card.seed || 777)) + paletteShift * 997;
+        const rng = this.createRng(seed);
+        const archetype = this.detectSceneArchetype(card);
+
+        // Color Palettes modeled on STORY 37
+        const palettes = [
+          { skyTop: '#112238', skyMid: '#24456b', skyBot: '#617a8c', swirls: ['#1d3b5e', '#38628a', '#eab957', '#d88c3a'] },
+          { skyTop: '#161d36', skyMid: '#2e3e66', skyBot: '#7c6b5d', swirls: ['#253759', '#4a6491', '#f3c668', '#c97b36'] },
+          { skyTop: '#0f262e', skyMid: '#214d5c', skyBot: '#7b8770', swirls: ['#193e4a', '#396f82', '#f0c465', '#d68938'] },
+          { skyTop: '#1f1829', skyMid: '#3b2d4d', skyBot: '#876d56', swirls: ['#2b2038', '#56436e', '#f5c869', '#d17838'] }
+        ];
+        const pal = palettes[(Math.abs(seed) + paletteShift) % palettes.length];
+
+        // 1. Paint Van Gogh Impasto Swirling Sky & Golden Vortex
+        const { vx, vy } = this.paintSwirlingSky(ctx, w, h, rng, pal);
+
+        // 2. Distant Mountains & Textured Horizon
+        ctx.fillStyle = '#334854';
+        ctx.beginPath();
+        ctx.moveTo(0, h * 0.65);
+        for (let x = 0; x <= w; x += 60) {
+          ctx.lineTo(x, h * (0.54 + Math.sin(x * 0.01 + seed) * 0.05));
+        }
+        ctx.lineTo(w, h);
+        ctx.lineTo(0, h);
+        ctx.closePath();
+        ctx.fill();
+
+        // 3. Paint Scene-Specific Biblical Composition
+        if (archetype === 'athens_preach') {
+          // Left: Acropolis & Parthenon Temple
+          this.paintClassicalTemple(ctx, w * 0.27, h * 0.44, 1.05, rng);
+
+          // Mid-ground ancient Athens buildings & cypress trees
+          for (let b = 0; b < 9; b++) {
+            const bx = w * 0.08 + b * 36 + rng() * 10;
+            const by = h * 0.62 + (b % 3) * 18;
+            ctx.fillStyle = '#dfd3bc';
+            ctx.fillRect(bx, by, 26, 22);
+            ctx.fillStyle = '#b8683c';
+            ctx.beginPath();
+            ctx.moveTo(bx - 3, by);
+            ctx.lineTo(bx + 13, by - 9);
+            ctx.lineTo(bx + 29, by);
+            ctx.fill();
+          }
+
+          // Winding road at bottom-left
+          ctx.fillStyle = '#c49b60';
+          ctx.beginPath();
+          ctx.moveTo(w * 0.15, h);
+          ctx.quadraticCurveTo(w * 0.28, h * 0.82, w * 0.44, h * 0.75);
+          ctx.lineTo(w * 0.52, h * 0.78);
+          ctx.quadraticCurveTo(w * 0.38, h * 0.88, w * 0.34, h);
+          ctx.fill();
+
+          // Right: Ancient stone wall & stepped Areopagus platform
+          ctx.fillStyle = '#6e604b';
+          ctx.strokeStyle = '#1b1712';
+          ctx.lineWidth = 2.2;
+          ctx.fillRect(w * 0.82, h * 0.12, w * 0.18, h * 0.88);
+          ctx.strokeRect(w * 0.82, h * 0.12, w * 0.18, h * 0.88);
+
+          // Stone steps
+          const steps = [
+            { x: w * 0.52, y: h * 0.72, w: w * 0.48, h: 36 },
+            { x: w * 0.47, y: h * 0.80, w: w * 0.53, h: 40 },
+            { x: w * 0.42, y: h * 0.89, w: w * 0.58, h: 55 }
+          ];
+          steps.forEach(st => {
+            ctx.fillStyle = '#9e8d72';
+            ctx.fillRect(st.x, st.y, st.w, st.h);
+            ctx.strokeRect(st.x, st.y, st.w, st.h);
+          });
+
+          // Apostle Paul standing on the steps pointing heavenward
+          this.paintRobedFigure(ctx, w * 0.66, h * 0.53, 1.38, 'preach', '#7a4b21', '#ece5d5');
+
+        } else if (archetype === 'crucifixion') {
+          // Golgotha Hill & Three Crosses against dramatic swirling golden/blue sky
+          ctx.fillStyle = '#231d18';
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          ctx.quadraticCurveTo(w * 0.5, h * 0.56, w, h * 0.88);
+          ctx.lineTo(w, h);
+          ctx.fill();
+
+          const drawCross = (cx, cy, sc) => {
+            ctx.save();
+            ctx.translate(cx, cy);
+            ctx.scale(sc, sc);
+            ctx.fillStyle = '#291a10';
+            ctx.strokeStyle = '#f5c76b';
+            ctx.lineWidth = 2;
+            ctx.fillRect(-8, -120, 16, 150);
+            ctx.fillRect(-52, -92, 104, 15);
+            ctx.strokeRect(-8, -120, 16, 150);
+            ctx.restore();
+          };
+          drawCross(w * 0.5, h * 0.68, 1.25);
+          drawCross(w * 0.27, h * 0.74, 0.85);
+          drawCross(w * 0.73, h * 0.74, 0.85);
+          this.paintRobedFigure(ctx, w * 0.38, h * 0.78, 1.05, 'stand', '#354f69', '#ded6c3');
+
+        } else if (archetype === 'resurrection_tomb') {
+          // Rock-hewn garden tomb bursting with golden resurrection light
+          ctx.fillStyle = '#4a4135';
+          ctx.beginPath();
+          ctx.moveTo(0, h);
+          ctx.lineTo(0, h * 0.32);
+          ctx.quadraticCurveTo(w * 0.38, h * 0.25, w * 0.58, h);
+          ctx.fill();
+
+          // Glowing Tomb Entrance
+          const tombGlow = ctx.createRadialGradient(w * 0.28, h * 0.68, 10, w * 0.28, h * 0.68, 190);
+          tombGlow.addColorStop(0, '#ffffff');
+          tombGlow.addColorStop(0.4, '#ffd875');
+          tombGlow.addColorStop(1, 'transparent');
+          ctx.fillStyle = tombGlow;
+          ctx.beginPath();
+          ctx.arc(w * 0.28, h * 0.68, 185, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Rolled stone
+          ctx.fillStyle = '#8c7e6a';
+          ctx.strokeStyle = '#1f1b16';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.arc(w * 0.48, h * 0.72, 58, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          this.paintRobedFigure(ctx, w * 0.30, h * 0.66, 1.25, 'preach', '#f5ebd6', '#ffffff');
+          this.paintRobedFigure(ctx, w * 0.68, h * 0.74, 1.1, 'stand', '#3a5a78', '#e3dac8');
+
+        } else if (archetype === 'samaritan_well') {
+          // Ancient circular stone well + clay water pitcher + Jesus speaking
+          ctx.fillStyle = '#8b7759';
+          ctx.fillRect(0, h * 0.66, w, h * 0.34);
+
+          // Stone Well in center
+          ctx.fillStyle = '#9e8f77';
+          ctx.strokeStyle = '#1f1b16';
+          ctx.lineWidth = 2.5;
+          ctx.fillRect(w * 0.36, h * 0.62, w * 0.26, 78);
+          ctx.strokeRect(w * 0.36, h * 0.62, w * 0.26, 78);
+          ctx.fillStyle = '#243746';
+          ctx.beginPath();
+          ctx.ellipse(w * 0.49, h * 0.62, w * 0.13, 16, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          // Terracotta Water Pitcher
+          ctx.fillStyle = '#b86735';
+          ctx.beginPath();
+          ctx.ellipse(w * 0.33, h * 0.78, 22, 30, 0, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.stroke();
+
+          this.paintRobedFigure(ctx, w * 0.68, h * 0.62, 1.3, 'preach', '#8c5828', '#f3ede0');
+
+        } else if (archetype === 'campfire_night') {
+          // Stormy sea / courtyard + Blazing Campfire + Paul
+          ctx.fillStyle = '#1a2e3b';
+          ctx.fillRect(0, h * 0.56, w, h * 0.44);
+
+          // Blazing campfire in center-bottom
+          const fireGlow = ctx.createRadialGradient(w * 0.48, h * 0.76, 8, w * 0.48, h * 0.76, 170);
+          fireGlow.addColorStop(0, '#fff7cc');
+          fireGlow.addColorStop(0.35, '#ff8826');
+          fireGlow.addColorStop(0.7, 'rgba(214, 58, 20, 0.35)');
+          fireGlow.addColorStop(1, 'transparent');
+          ctx.fillStyle = fireGlow;
+          ctx.fillRect(0, 0, w, h);
+
+          for (let f = 0; f < 28; f++) {
+            const fx = w * 0.48 + (rng() - 0.5) * 65;
+            const fy = h * 0.78 - rng() * 85;
+            this.paintBrushStroke(ctx, fx, fy, 26, 9, -Math.PI / 2 + (rng() - 0.5) * 0.5, f % 2 === 0 ? '#ff9d2e' : '#fff099', 0.85);
+          }
+
+          this.paintRobedFigure(ctx, w * 0.32, h * 0.58, 1.35, 'preach', '#59422c', '#dfd5c0');
+
+        } else if (archetype === 'galilee_boat' || archetype === 'patmos_island' || archetype === 'river_baptism') {
+          // Impasto Sapphire & Golden Waves
+          for (let wy = h * 0.55; wy < h; wy += 14) {
+            for (let wx = 0; wx < w; wx += 32) {
+              const col = (wx + wy) % 64 === 0 ? '#e8c16b' : '#1e4669';
+              this.paintBrushStroke(ctx, wx, wy, 38, 10, (rng() - 0.5) * 0.25, col, 0.85);
+            }
+          }
+          if (archetype === 'galilee_boat') {
+            // Wooden Sailboat
+            ctx.fillStyle = '#5c3618';
+            ctx.strokeStyle = '#1a120b';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(w * 0.28, h * 0.68);
+            ctx.lineTo(w * 0.72, h * 0.68);
+            ctx.lineTo(w * 0.62, h * 0.82);
+            ctx.lineTo(w * 0.38, h * 0.82);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Sail
+            ctx.fillStyle = '#efe5ce';
+            ctx.beginPath();
+            ctx.moveTo(w * 0.5, h * 0.22);
+            ctx.quadraticCurveTo(w * 0.68, h * 0.44, w * 0.62, h * 0.65);
+            ctx.lineTo(w * 0.48, h * 0.65);
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+          } else {
+            this.paintRobedFigure(ctx, w * 0.5, h * 0.62, 1.35, 'preach', '#784c24', '#f2ece1');
+          }
+
+        } else {
+          // Default Biblical Architecture + Golden Sunbeams + Central Figure(s)
+          this.paintClassicalTemple(ctx, w * 0.25, h * 0.48, 0.95, rng);
+
+          // Golden light beam from vortex to figure
+          ctx.save();
+          const beam = ctx.createLinearGradient(vx, vy, w * 0.62, h * 0.85);
+          beam.addColorStop(0, 'rgba(255, 245, 195, 0.65)');
+          beam.addColorStop(1, 'rgba(245, 190, 80, 0.05)');
+          ctx.fillStyle = beam;
+          ctx.beginPath();
+          ctx.moveTo(vx - 30, vy);
+          ctx.lineTo(vx + 30, vy);
+          ctx.lineTo(w * 0.82, h);
+          ctx.lineTo(w * 0.42, h);
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+
+          // Foreground stone terrace
+          ctx.fillStyle = '#7d6d56';
+          ctx.fillRect(0, h * 0.76, w, h * 0.24);
+          this.paintRobedFigure(ctx, w * 0.60, h * 0.56, 1.38, 'preach', '#7c4c22', '#eee6d6');
+        }
+
+        // 4. Museum Oil Canvas Texture & Vignette
+        const vig = ctx.createRadialGradient(w / 2, h / 2, w * 0.28, w / 2, h / 2, w * 0.72);
+        vig.addColorStop(0, 'transparent');
+        vig.addColorStop(1, 'rgba(10, 14, 12, 0.45)');
+        ctx.fillStyle = vig;
+        ctx.fillRect(0, 0, w, h);
+
+        return canvas.toDataURL('image/jpeg', 0.90);
+      }
     };
-
-    // Deep Semantic Visual Mapper for ANY user-pasted Chinese words
-    const SEMANTIC_VISUAL_RULES = [
-      { match: /保羅|掃羅/, actor: "Apostle Paul with bearded Mediterranean features wearing 1st-century white tunic and warm ochre-brown draped cloak" },
-      { match: /耶穌|主|基督|彌賽亞/, actor: "Jesus Christ with compassionate bearded face wearing luminous white 1st-century linen robe" },
-      { match: /彼得/, actor: "Apostle Peter with curly beard wearing rustic fisherman tunic and mantle" },
-      { match: /施洗約翰/, actor: "John the Baptist in rustic camel-hair garment by the Jordan river" },
-      { match: /約翰/, actor: "Apostle John holding ancient parchment scroll in classical robes" },
-      { match: /巴拿巴/, actor: "Barnabas the encourager in warm ancient Middle Eastern robes" },
-      { match: /西拉/, actor: "Silas the faithful companion in 1st-century tunic" },
-      { match: /腓利/, actor: "Philip the Evangelist in 1st-century traveler robes" },
-      { match: /馬利亞/, actor: "Mary wearing modest 1st-century blue and white headveil and robes" },
-      { match: /天使|加百列/, actor: "radiant heavenly angel with majestic white feathered wings and golden aura" },
-      { match: /約瑟/, actor: "Joseph in rustic 1st-century Judean carpenter tunic" },
-      { match: /西面/, actor: "aged white-bearded prophet Simeon in temple robes" },
-      { match: /尼哥底母/, actor: "Nicodemus in ornate Pharisee scholar robes" },
-      { match: /撒該/, actor: "Zacchaeus in rich Jericho tunic" },
-      { match: /馬太/, actor: "Matthew Levi in 1st-century robe" },
-      { match: /睚魯/, actor: "Jairus in synagogue leader robes" },
-      { match: /巴底買/, actor: "blind Bartimaeus in weathered cloak" },
-      { match: /拉撒路/, actor: "humble Lazarus at the ancient stone gate" },
-      { match: /多馬/, actor: "Apostle Thomas kneeling in awe and faith" },
-      { match: /猶大/, actor: "Judas holding a leather pouch of silver coins in dim torchlight" },
-      { match: /多加|大比大/, actor: "Tabitha Dorcas surrounded by woven tunics" },
-      { match: /大衛/, actor: "young David with shepherd staff and harp in ancient Israel" },
-      { match: /摩西/, actor: "prophet Moses with flowing white beard holding wooden staff" },
-      { match: /亞伯拉罕/, actor: "patriarch Abraham in ancient Middle Eastern nomadic robes beneath starry sky" },
-      { match: /諾亞|挪亞/, actor: "Noah standing before the massive wooden Ark under dramatic rainbow sky" },
-
-      // Environments & Props
-      { match: /雅典|衛城|講道/, env: "standing atop rough stone steps on the Areopagus hill with the classical columned Parthenon temple on the Acropolis in the background" },
-      { match: /船|海|風浪|加利利|水面上/, env: "wooden 1st-century fishing sailboat on the dramatic waves of the Sea of Galilee with golden light breaking through storm clouds" },
-      { match: /監牢|監獄|鎖鏈|捆綁/, env: "inside an ancient dark Roman stone dungeon with broken iron wrist chains and supernatural golden light beams piercing through arched bars" },
-      { match: /井|撒馬利亞|打水/, env: "beside an ancient circular stone water well in Samaria with a terracotta water pitcher and rope on the stone rim" },
-      { match: /十字架|各各他|釘/, env: "atop Golgotha hill with a rugged wooden cross silhouetted against a dramatic swirling Prussian blue and gold eclipse sky" },
-      { match: /墳墓|復活|空墳/, env: "outside a rock-hewn garden tomb at dawn with the massive circular stone rolled away and radiant resurrection light pouring out" },
-      { match: /火堆|營火|炭火|毒蛇/, env: "beside a crackling orange wood campfire with glowing golden embers rising into the night sky" },
-      { match: /樹|桑樹|無花果|橄欖/, env: "beneath the thick gnarly branches of an ancient sycamore and olive tree along a sunlit stone path" },
-      { match: /馬槽|包布|伯利恆|降生/, env: "inside a warm lantern-lit stone stable with a rustic wooden manger filled with golden straw under the blazing Star of Bethlehem" },
-      { match: /聖殿|美門|殿/, env: "inside the grand limestone Corinthian columned courts and ornate bronze gates of the ancient Jerusalem Temple" },
-      { match: /籃子|城牆|逃脫/, env: "along a high ancient stone city wall at night with a large woven reed basket lowered by thick ropes" },
-      { match: /拔摩島|海島|啟示/, env: "on rugged volcanic coastal rocks of Patmos island with crashing sapphire sea waves and heavenly golden clouds" },
-      { match: /五餅二魚|餅|食物|筵席/, env: "rustic woven basket of five barley loaves and two fish glowing in warm golden sunlight" },
-      { match: /外衣|衣裳|繸子/, env: "authentic hand-woven 1st-century linen cloak with detailed fabric folds" },
-      { match: /錢幣|銀錢|稅/, env: "glinting ancient Roman silver denarius coins on a rustic wooden table" },
-      { match: /經卷|書卷|聖經/, env: "open ancient Hebrew parchment scroll with wooden rollers" },
-      { match: /河|約旦河|施洗|水/, env: "in the sparkling flowing waters of the Jordan River lined with reeds" },
-      { match: /房屋|屋頂|樓房|家/, env: "authentic 1st-century Jerusalem rough-cut limestone house with arched doorway and warm oil lamp glow" },
-      { match: /道路|曠野|路上|大馬士革/, env: "along a winding ancient stone road through golden Judean hills" },
-      { match: /信心|聖靈|異象|光/, env: "Van Gogh-inspired swirling Prussian blue and golden nebula light particles in the sky" }
-    ];
-
-    const CORE_ART_STYLE = "Masterpiece classical biblical oil painting blended with expressive abstract art, thick impasto palette knife brushstrokes, Rembrandt dramatic chiaroscuro lighting, Van Gogh-inspired swirling golden and Prussian blue celestial sky particles, rich museum canvas texture, historically accurate 1st-century robes";
-    const CORE_NEGATIVE = "strictly no text, no letters, no words, no watermark, no signature, no modern objects, no extra fingers, not flat cartoon";
 
     /*************************************************************
      * 3. STATE MANAGEMENT
      *************************************************************/
-    let currentMode = 'event';      // 'event' (A6) or 'poker' (63x88mm)
-    let currentLayout = 'classic';  // 'classic' or 'split'
+    let currentMode = 'event';         // 'event' or 'poker'
+    let currentLayout = 'portrait';    // 'portrait' (Original Story 37), 'landscape-split' (A6 Landscape), 'event-poker' (63x88mm)
     let cardsData = [];
     let editingCardIdx = null;
     let quadCardIdx = null;
-    let batchAbort = false;
 
     window.addEventListener('DOMContentLoaded', () => {
       loadQuickPreset('sample6');
     });
 
     /*************************************************************
-     * 4. SMART PROMPT BUILDER + LIVE LLM SCENE DIRECTOR
-     *************************************************************/
-    function buildLocalSmartPrompt(card, extraNote = '', cameraVariation = '') {
-      const combinedText = `${card.title} ${card.characters || ''} ${card.elements || ''} ${card.description || ''} ${card.scripture || ''} ${extraNote}`;
-
-      if (card.cardType === 'event') {
-        const cleanTitle = card.title.trim();
-        let baseScene = STORY_BLUEPRINTS[cleanTitle];
-
-        let actors = [];
-        let envs = [];
-        for (const rule of SEMANTIC_VISUAL_RULES) {
-          if (rule.match.test(combinedText)) {
-            if (rule.actor && !actors.includes(rule.actor)) actors.push(rule.actor);
-            if (rule.env && !envs.includes(rule.env)) envs.push(rule.env);
-          }
-        }
-
-        if (!baseScene) {
-          const actorDesc = actors.length > 0 ? actors.join(" and ") : `1st-century biblical figure (${card.characters || card.title})`;
-          const envDesc = envs.length > 0 ? envs.join(", ") : "in an authentic 1st-century ancient Jerusalem stone setting under a swirling golden and Prussian blue sky";
-          baseScene = `Biblical historical oil painting of "${cleanTitle}" (${card.scripture || ''}): ${actorDesc} ${envDesc}, expressive spiritual emotion`;
-        } else if (envs.length > 0 && extraNote) {
-          baseScene += `, ${envs.slice(0, 2).join(", ")}`;
-        }
-
-        const customPart = extraNote ? `. Visual focus: ${extraNote}` : '';
-        const camPart = cameraVariation ? `. Camera & lighting: ${cameraVariation}` : '';
-        return `${CORE_ART_STYLE}. Scene: ${baseScene}${customPart}${camPart}. ${CORE_NEGATIVE}.`;
-      } else {
-        // Poker Card (Character or Element)
-        let matchedVisuals = [];
-        for (const rule of SEMANTIC_VISUAL_RULES) {
-          if (rule.match.test(combinedText)) {
-            if (rule.actor) matchedVisuals.push(rule.actor);
-            if (rule.env) matchedVisuals.push(rule.env);
-          }
-        }
-        const subjectDesc = matchedVisuals.length > 0
-          ? matchedVisuals.join(", ")
-          : `${card.title} (${card.description || '1st-century biblical symbol'})`;
-        const customPart = extraNote ? `, ${extraNote}` : '';
-        const camPart = cameraVariation ? `, ${cameraVariation}` : '';
-        return `${CORE_ART_STYLE}. Centered iconic museum oil portrait of ${subjectDesc}${customPart}${camPart}, dramatic golden rim lighting and swirling Prussian blue impasto background. ${CORE_NEGATIVE}.`;
-      }
-    }
-
-    /**
-     * Layer 2: Automatically calls keyless OpenAI-compatible LLM (`https://text.pollinations.ai/openai`)
-     * with a 3.5-second timeout guard so custom Chinese themes or scene edits become ultra-accurate!
-     */
-    async function buildSmartAiPromptAsync(card, extraNote = '') {
-      const localPrompt = buildLocalSmartPrompt(card, extraNote);
-
-      // If it's a known built-in story and user didn't type custom Chinese scene changes, local blueprint is already hand-crafted
-      if (card.cardType === 'event' && STORY_BLUEPRINTS[card.title.trim()] && !extraNote) {
-        card.prompt = localPrompt;
-        return localPrompt;
-      }
-
-      const controller = new AbortController();
-      const timer = setTimeout(() => controller.abort(), 3500);
-
-      try {
-        const sysPrompt = `You are a Master Biblical Oil Painting Director. Convert the user's Chinese biblical card info into a vivid 70-word English visual description for FLUX image generation.
-Describe specific 1st-century robes, character actions/gestures, props, ancient architecture, Rembrandt chiaroscuro lighting, and Van Gogh-style swirling Prussian blue and golden nebula brushstrokes in the sky. Output ONLY the English visual description, no markdown, no text in image.`;
-
-        const userMsg = card.cardType === 'event'
-          ? `Title: ${card.title}\nCharacters: ${card.characters}\nElements: ${card.elements}\nScripture: ${card.scripture}\nUser Note: ${extraNote || 'None'}`
-          : `Card: ${card.title} (${card.pokerRole})\nDescription: ${card.description}\nUser Note: ${extraNote || 'None'}`;
-
-        const resp = await fetch('https://text.pollinations.ai/openai', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          signal: controller.signal,
-          body: JSON.stringify({
-            model: 'openai',
-            messages: [
-              { role: 'system', content: sysPrompt },
-              { role: 'user', content: userMsg }
-            ]
-          })
-        });
-        clearTimeout(timer);
-
-        if (resp.ok) {
-          const data = await resp.json();
-          const englishScene = (data?.choices?.[0]?.message?.content || '').trim();
-          if (englishScene && englishScene.length > 20) {
-            card.prompt = `${CORE_ART_STYLE}. Scene: ${englishScene}. ${CORE_NEGATIVE}.`;
-            return card.prompt;
-          }
-        }
-      } catch (e) {
-        clearTimeout(timer);
-      }
-
-      card.prompt = localPrompt;
-      return localPrompt;
-    }
-
-    function buildFluxImageUrl(card, customPrompt = null, customSeed = null) {
-      const width = card.cardType === 'event' ? 800 : 520;
-      const height = card.cardType === 'event' ? 520 : 520;
-      const p = encodeURIComponent(customPrompt || card.prompt || buildLocalSmartPrompt(card, card.customNote));
-      const s = customSeed !== null ? customSeed : card.seed;
-      return `https://image.pollinations.ai/prompt/${p}?width=${width}&height=${height}&seed=${s}&model=flux&enhance=true&nologo=true`;
-    }
-
-    /*************************************************************
-     * 5. PARSE TEXT & RENDER CARDS
+     * 4. PARSE TEXT & INSTANTLY GENERATE ZERO-LIMIT OIL PAINTINGS
      *************************************************************/
     function parseLinesToCards(rawText, preserveExisting = true) {
       const prevMap = {};
@@ -872,7 +1214,7 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
           const countNum = parseInt((parts[2] || '1').replace(/[^\d]/g, ''), 10) || 1;
           const desc = (parts[3] || '').trim();
           const prev = prevMap[`×${countNum}張_${name}`] || prevMap[name];
-          const seed = prev ? prev.seed : (3000 + idx * 131);
+          const seed = prev ? prev.seed : (3000 + idx * 137);
 
           const card = {
             uid: `poker_${idx}`,
@@ -885,11 +1227,9 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
             seed: seed,
             locked: prev ? !!prev.locked : false,
             customNote: prev ? (prev.customNote || '') : '',
-            isLoading: false,
             imageUrl: null
           };
-          card.prompt = prev && prev.prompt ? prev.prompt : buildLocalSmartPrompt(card, card.customNote);
-          card.imageUrl = prev && prev.imageUrl ? prev.imageUrl : buildFluxImageUrl(card);
+          card.imageUrl = (prev && prev.imageUrl) ? prev.imageUrl : ImpastoCanvasEngine.renderCardArtDataUrl(card);
           list.push(card);
           idx++;
         } else {
@@ -925,7 +1265,6 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
             badgeColor = (colorHint.includes('紅') || score.includes('3')) ? 'red' : 'kraft';
           }
 
-          // Unify Saul as Paul
           chars = chars.replace(/掃羅/g, '保羅');
 
           const prev = prevMap[`${storyId}_${title}`] || prevMap[title];
@@ -944,11 +1283,9 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
             seed: seed,
             locked: prev ? !!prev.locked : false,
             customNote: prev ? (prev.customNote || '') : '',
-            isLoading: false,
             imageUrl: null
           };
-          card.prompt = prev && prev.prompt ? prev.prompt : buildLocalSmartPrompt(card, card.customNote);
-          card.imageUrl = prev && prev.imageUrl ? prev.imageUrl : buildFluxImageUrl(card);
+          card.imageUrl = (prev && prev.imageUrl) ? prev.imageUrl : ImpastoCanvasEngine.renderCardArtDataUrl(card);
           list.push(card);
           idx++;
         }
@@ -959,7 +1296,7 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
     }
 
     /*************************************************************
-     * 6. SVG ICONS & CARD DOM TEMPLATES
+     * 5. SVG ICONS & EXACT STORY 37 TEMPLATES
      *************************************************************/
     function escapeHtml(str) {
       return String(str || '')
@@ -969,21 +1306,21 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
         .replace(/"/g, '&quot;');
     }
 
-    function formatListLines(rawStr) {
+    function formatVerticalItems(rawStr) {
       if (!rawStr) return '';
       return rawStr
         .split(/[、,，/]+/)
         .map(s => s.trim())
         .filter(Boolean)
-        .map(item => `<div class="leading-tight">${escapeHtml(item)}</div>`)
+        .map(item => `<div class="leading-snug tracking-wide">${escapeHtml(item)}</div>`)
         .join('');
     }
 
-    function getCrossSvg() {
+    function getCrossSvg(sizeClass = "w-7 h-9") {
       return `
-        <svg viewBox="0 0 36 46" class="w-6 h-7 shrink-0 drop-shadow">
-          <path d="M14 2 H22 V13 H33 V21 H22 V44 H14 V21 H3 V13 H14 Z" fill="#8b7d65" stroke="#141815" stroke-width="2.5" stroke-linejoin="round"/>
-          <path d="M16 5 H20 V15 H30 V19 H20 V41 H16 V19 H6 V15 H16 Z" fill="#b3a58c" opacity="0.55"/>
+        <svg viewBox="0 0 38 48" class="${sizeClass} shrink-0 drop-shadow-md">
+          <path d="M14 2 H24 V14 H35 V23 H24 V46 H14 V23 H3 V14 H14 Z" fill="#7c705b" stroke="#121613" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M16 5 H22 V16 H32 V21 H22 V43 H16 V21 H6 V16 H16 Z" fill="#b0a289" opacity="0.65"/>
         </svg>
       `;
     }
@@ -991,7 +1328,7 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
     function getPersonIconSvg() {
       return `
         <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0">
-          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" fill="#3a6e43" stroke="#182b1c" stroke-width="1.2"/>
+          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z" fill="#3b7042" stroke="#182b1b" stroke-width="1.2"/>
         </svg>
       `;
     }
@@ -999,208 +1336,94 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
     function getCubeIconSvg() {
       return `
         <svg viewBox="0 0 24 24" class="w-5 h-5 shrink-0">
-          <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18-.21 0-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18.21 0 .41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9z" fill="#c86428" stroke="#2c1608" stroke-width="1.3"/>
-          <path d="M12 3.15L5.34 6.9 12 10.65l6.66-3.75L12 3.15zM4.5 8.15v7.6l6.75 3.8v-7.6L4.5 8.15zm15 0l-6.75 3.8v7.6l6.75-3.8v-7.6z" fill="#d97b3e"/>
+          <path d="M21 16.5c0 .38-.21.71-.53.88l-7.9 4.44c-.16.12-.36.18-.57.18-.21 0-.41-.06-.57-.18l-7.9-4.44A.991.991 0 0 1 3 16.5v-9c0-.38.21-.71.53-.88l7.9-4.44c.16-.12.36-.18.57-.18.21 0 .41.06.57.18l7.9 4.44c.32.17.53.5.53.88v9z" fill="#c96528" stroke="#2c1608" stroke-width="1.3"/>
+          <path d="M12 3.15L5.34 6.9 12 10.65l6.66-3.75L12 3.15zM4.5 8.15v7.6l6.75 3.8v-7.6L4.5 8.15zm15 0l-6.75 3.8v7.6l6.75-3.8v-7.6z" fill="#de7d3f"/>
         </svg>
       `;
     }
 
-    /**
-     * Generates a rich offline fallback oil painting on canvas if network ever fails
-     */
-    function createFallbackCanvasUrl(card) {
-      const canvas = document.createElement('canvas');
-      canvas.width = card.cardType === 'event' ? 800 : 520;
-      canvas.height = 520;
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width, h = canvas.height;
-
-      let s = card.seed || 12345;
-      const rand = () => { s = (s * 16807) % 2147483647; return (s - 1) / 2147483646; };
-
-      const g = ctx.createLinearGradient(0, 0, 0, h);
-      g.addColorStop(0, '#182b49');
-      g.addColorStop(0.55, '#32557a');
-      g.addColorStop(1, '#2a2219');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, w, h);
-
-      const cx = w * 0.58, cy = h * 0.34;
-      for (let i = 0; i < 140; i++) {
-        const ang = (i / 140) * Math.PI * 6 + rand() * 0.4;
-        const rad = 14 + (i / 140) * (w * 0.6);
-        ctx.save();
-        ctx.translate(cx + Math.cos(ang) * rad, cy + Math.sin(ang) * rad * 0.55);
-        ctx.rotate(ang + Math.PI / 2);
-        ctx.fillStyle = ['#f3c165', '#d4893b', '#32557a', '#e9d8a6'][Math.floor(rand() * 4)];
-        ctx.globalAlpha = 0.3 + rand() * 0.35;
-        ctx.beginPath();
-        ctx.roundRect(-20, -4, 42, 9, 4);
-        ctx.fill();
-        ctx.restore();
-      }
-      return canvas.toDataURL('image/jpeg', 0.88);
-    }
-
     function buildCardHtml(card, idx, forPrint = false) {
-      const fallbackSrc = createFallbackCanvasUrl(card);
-      const imgSrc = card.imageUrl || fallbackSrc;
+      const imgSrc = card.imageUrl || ImpastoCanvasEngine.renderCardArtDataUrl(card);
       const editableAttr = forPrint ? '' : 'contenteditable="true" spellcheck="false"';
-      const shimmerHtml = (!forPrint && card.isLoading)
-        ? `<div class="ai-painting-shimmer absolute inset-0 z-20 flex items-center justify-center">
-             <span class="px-3 py-1 rounded-full bg-black/70 text-amber-300 text-xs font-bold shadow">🎨 AI 繪製油畫中...</span>
-           </div>`
-        : '';
+      const scoreClass = card.badgeColor === 'red' ? 'score-red' : 'score-kraft';
 
+      // =====================================================
+      // MODE 1: EVENT CARD
+      // =====================================================
       if (card.cardType === 'event') {
-        const scoreClass = card.badgeColor === 'red' ? 'score-red' : 'score-kraft';
 
-        if (currentLayout === 'split') {
-          // Left Artwork / Right Parchment
+        // LAYOUT A: 100% REPLICA OF STORY 37 PORTRAIT (Default)
+        if (currentLayout === 'portrait') {
           return `
-            <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="vintage-card-outer card-a6-landscape p-3 flex flex-col justify-between relative group">
-              <div class="vintage-inner-border"></div>
+            <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="story37-card-outer size-a6-portrait p-3.5 flex flex-col justify-between relative group">
+              <div class="story37-ink-frame"></div>
 
-              <div class="vintage-header-bar h-11 px-3 flex items-center justify-between z-10 mb-2">
-                <div class="flex items-center gap-2">
-                  ${getCrossSvg()}
-                  <span class="font-serif-tc font-black text-xl tracking-widest text-stone-100">事件卡</span>
+              <!-- Top Header Row (Exact Story 37 Cross + 事件卡 + STORY 37 Pill) -->
+              <div class="flex items-center justify-between z-10 h-11 mb-1.5">
+                <div class="story37-header-brush flex items-center gap-2.5 pl-2.5 pr-10 py-1">
+                  ${getCrossSvg("w-7 h-9")}
+                  <span class="font-serif-tc font-black text-2xl tracking-widest text-stone-100 drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">事件卡</span>
                 </div>
-                <div ${editableAttr} onblur="updateCardField(${idx}, 'id', this.innerText)" class="story-pill-badge px-3 py-0.5 font-cinzel font-black text-sm tracking-wider">
+                <div ${editableAttr} onblur="updateCardField(${idx}, 'id', this.innerText)" class="story37-pill px-3 py-1 font-cinzel font-black text-sm tracking-wider">
                   ${escapeHtml(card.id)}
                 </div>
               </div>
 
-              <div class="flex-1 grid grid-cols-12 gap-2.5 z-10 min-h-0">
-                <div class="col-span-7 artwork-frame relative h-full">
-                  <img
-                    src="${imgSrc}"
-                    alt="${escapeHtml(card.title)}"
-                    crossorigin="anonymous"
-                    onload="markCardLoaded(${idx})"
-                    onerror="handleImageError(this, ${idx})"
-                    class="w-full h-full object-cover oil-grade"
-                  />
-                  <div class="oil-canvas-overlay"></div>
-                  ${shimmerHtml}
-                  ${!forPrint ? getMinimalHoverControls(idx) : ''}
-                </div>
-
-                <div class="col-span-5 flex flex-col justify-between h-full">
-                  <div class="torn-parchment flex-1 p-2.5 flex flex-col justify-between">
-                    <div class="title-brush-strip py-1.5 px-2 text-center border-b border-stone-400/50">
-                      <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-[17px] leading-snug text-stone-900">
-                        ${escapeHtml(card.title)}
-                      </h3>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-1.5 my-auto py-1.5 px-1">
-                      <div class="flex flex-col items-start border-r border-stone-400/60 pr-1">
-                        <div class="flex items-center gap-1 mb-1">
-                          ${getPersonIconSvg()}
-                          <span class="font-serif-tc font-black text-sm text-stone-900">人物</span>
-                        </div>
-                        <div ${editableAttr} onblur="updateCardField(${idx}, 'characters', this.innerText)" class="font-serif-tc font-bold text-[13px] text-stone-800 pl-0.5 space-y-0.5 w-full">
-                          ${formatListLines(card.characters)}
-                        </div>
-                      </div>
-
-                      <div class="flex flex-col items-start pl-1">
-                        <div class="flex items-center gap-1 mb-1">
-                          ${getCubeIconSvg()}
-                          <span class="font-serif-tc font-black text-sm text-stone-900">元素</span>
-                        </div>
-                        <div ${editableAttr} onblur="updateCardField(${idx}, 'elements', this.innerText)" class="font-serif-tc font-bold text-[13px] text-stone-800 pl-0.5 space-y-0.5 w-full">
-                          ${formatListLines(card.elements)}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="flex items-center justify-between gap-2 pt-1">
-                      <div class="scripture-scroll flex-1 py-1.5 px-2.5 text-center relative ml-1">
-                        <div class="scroll-roller-left"></div>
-                        <div class="scroll-roller-right"></div>
-                        <span ${editableAttr} onblur="updateCardField(${idx}, 'scripture', this.innerText)" class="font-serif-tc font-bold text-[11.5px] text-stone-950 block truncate">
-                          ${escapeHtml(card.scripture)}
-                        </span>
-                      </div>
-
-                      <div onclick="cycleScoreBadge(${idx})" title="點擊切換 2分 / 3分 與 紅圈 / 牛皮色" class="score-badge ${scoreClass} w-12 h-12 shrink-0 font-serif-tc font-black text-base">
-                        ${escapeHtml(card.score)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          `;
-        } else {
-          // Standard Classic Layout (Top Panoramic Artwork / Bottom Torn Parchment matching Story 37)
-          return `
-            <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="vintage-card-outer card-a6-landscape p-3 flex flex-col justify-between relative group">
-              <div class="vintage-inner-border"></div>
-
-              <div class="h-[56%] flex flex-col gap-1.5 z-10">
-                <div class="vintage-header-bar h-9 px-3 flex items-center justify-between shrink-0">
-                  <div class="flex items-center gap-2">
-                    ${getCrossSvg()}
-                    <span class="font-serif-tc font-black text-lg tracking-widest text-stone-100">事件卡</span>
-                  </div>
-                  <div ${editableAttr} onblur="updateCardField(${idx}, 'id', this.innerText)" class="story-pill-badge px-2.5 py-0.5 font-cinzel font-black text-xs">
-                    ${escapeHtml(card.id)}
-                  </div>
-                </div>
-
-                <div class="artwork-frame flex-1 relative">
-                  <img
-                    src="${imgSrc}"
-                    alt="${escapeHtml(card.title)}"
-                    crossorigin="anonymous"
-                    onload="markCardLoaded(${idx})"
-                    onerror="handleImageError(this, ${idx})"
-                    class="w-full h-full object-cover oil-grade"
-                  />
-                  <div class="oil-canvas-overlay"></div>
-                  ${shimmerHtml}
-                  ${!forPrint ? getMinimalHoverControls(idx) : ''}
-                </div>
+              <!-- Center Oil Painting Window (46% Height) -->
+              <div class="story37-art-box h-[218px] w-full relative z-10 shrink-0">
+                <img
+                  src="${imgSrc}"
+                  alt="${escapeHtml(card.title)}"
+                  class="w-full h-full object-cover"
+                />
+                ${!forPrint ? getMinimalHoverControls(idx) : ''}
               </div>
 
-              <div class="h-[41%] torn-parchment px-3.5 py-2 flex flex-col justify-between z-10 mt-1.5">
-                <div class="flex items-center justify-between gap-3 border-b border-stone-400/60 pb-1">
-                  <div class="title-brush-strip px-3 py-0.5 rounded">
-                    <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-lg text-stone-900">
+              <!-- Bottom Torn Parchment Section + Overlapping Scroll & Score Circle -->
+              <div class="relative z-10 flex-1 mt-2.5 flex flex-col justify-between pb-1">
+                <div class="story37-parchment flex-1 px-4 pt-2.5 pb-7 flex flex-col justify-between">
+                  <!-- Sage-Green Watercolor Brush Strip + Bold Title -->
+                  <div class="story37-title-brush py-1.5 px-3 text-center mx-auto w-[94%]">
+                    <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-[22px] tracking-wider text-stone-950 leading-tight">
                       ${escapeHtml(card.title)}
                     </h3>
                   </div>
-                  <div class="scripture-scroll py-1 px-3 relative mr-1">
-                    <div class="scroll-roller-left"></div>
-                    <div class="scroll-roller-right"></div>
-                    <span ${editableAttr} onblur="updateCardField(${idx}, 'scripture', this.innerText)" class="font-serif-tc font-bold text-xs text-stone-950">
-                      ${escapeHtml(card.scripture)}
-                    </span>
+
+                  <!-- Two Columns: 人物 (Left) & 元素 (Right) -->
+                  <div class="grid grid-cols-2 gap-4 px-3 my-auto py-1.5">
+                    <div class="flex flex-col items-start pl-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        ${getPersonIconSvg()}
+                        <span class="font-serif-tc font-black text-[17px] text-stone-900">人物</span>
+                      </div>
+                      <div ${editableAttr} onblur="updateCardField(${idx}, 'characters', this.innerText)" class="font-hand-tc font-bold text-[16px] text-stone-900 pl-6 space-y-0.5">
+                        ${formatVerticalItems(card.characters)}
+                      </div>
+                    </div>
+
+                    <div class="flex flex-col items-start pl-2">
+                      <div class="flex items-center gap-1.5 mb-1">
+                        ${getCubeIconSvg()}
+                        <span class="font-serif-tc font-black text-[17px] text-stone-900">元素</span>
+                      </div>
+                      <div ${editableAttr} onblur="updateCardField(${idx}, 'elements', this.innerText)" class="font-hand-tc font-bold text-[16px] text-stone-900 pl-6 space-y-0.5">
+                        ${formatVerticalItems(card.elements)}
+                      </div>
+                    </div>
                   </div>
                 </div>
 
-                <div class="flex items-center justify-between gap-4 my-auto pt-1">
-                  <div class="grid grid-cols-2 gap-4 flex-1">
-                    <div class="flex items-center gap-2">
-                      ${getPersonIconSvg()}
-                      <span class="font-serif-tc font-black text-sm text-stone-900">人物</span>
-                      <span ${editableAttr} onblur="updateCardField(${idx}, 'characters', this.innerText)" class="font-serif-tc font-bold text-sm text-stone-800 ml-1">
-                        ${escapeHtml(card.characters)}
-                      </span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                      ${getCubeIconSvg()}
-                      <span class="font-serif-tc font-black text-sm text-stone-900">元素</span>
-                      <span ${editableAttr} onblur="updateCardField(${idx}, 'elements', this.innerText)" class="font-serif-tc font-bold text-sm text-stone-800 ml-1">
-                        ${escapeHtml(card.elements)}
-                      </span>
-                    </div>
+                <!-- Bottom Overlapping Scripture Scroll + Score Circle -->
+                <div class="flex items-center justify-between px-2 -mt-5 z-20">
+                  <div class="story37-scroll py-1.5 px-5 min-w-[205px] max-w-[235px] text-center relative ml-1.5">
+                    <div class="story37-scroll-ear-l"></div>
+                    <div class="story37-scroll-ear-r"></div>
+                    <span ${editableAttr} onblur="updateCardField(${idx}, 'scripture', this.innerText)" class="font-hand-tc font-bold text-[15px] text-stone-950 tracking-wide block truncate">
+                      ${escapeHtml(card.scripture)}
+                    </span>
                   </div>
 
-                  <div onclick="cycleScoreBadge(${idx})" title="點擊切換 2分 / 3分 與 紅圈 / 牛皮色" class="score-badge ${scoreClass} w-11 h-11 shrink-0 font-serif-tc font-black text-base">
+                  <div onclick="cycleScoreBadge(${idx})" title="點擊切換 2分 / 3分 與 紅圈 / 牛皮色" class="story37-score-circle ${scoreClass} w-14 h-14 shrink-0 font-hand-tc font-black text-xl -mt-1 mr-0.5">
                     ${escapeHtml(card.score)}
                   </div>
                 </div>
@@ -1208,49 +1431,189 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
             </div>
           `;
         }
+
+        // LAYOUT B: A6 LANDSCAPE (148mm x 105mm — Left Full Painting / Right Torn Parchment)
+        if (currentLayout === 'landscape-split') {
+          return `
+            <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="story37-card-outer size-a6-landscape p-3 flex flex-col justify-between relative group">
+              <div class="story37-ink-frame"></div>
+
+              <div class="flex-1 grid grid-cols-12 gap-3 z-10 h-full items-stretch">
+                <!-- Left 7 Cols: Header + Full-Height Oil Painting -->
+                <div class="col-span-7 flex flex-col justify-between h-full gap-1.5">
+                  <div class="flex items-center justify-between h-9">
+                    <div class="story37-header-brush flex items-center gap-2 pl-2 pr-6 py-0.5">
+                      ${getCrossSvg("w-5 h-7")}
+                      <span class="font-serif-tc font-black text-lg tracking-widest text-stone-100">事件卡</span>
+                    </div>
+                    <div ${editableAttr} onblur="updateCardField(${idx}, 'id', this.innerText)" class="story37-pill px-2.5 py-0.5 font-cinzel font-black text-xs">
+                      ${escapeHtml(card.id)}
+                    </div>
+                  </div>
+
+                  <div class="story37-art-box flex-1 relative">
+                    <img
+                      src="${imgSrc}"
+                      alt="${escapeHtml(card.title)}"
+                      class="w-full h-full object-cover"
+                    />
+                    ${!forPrint ? getMinimalHoverControls(idx) : ''}
+                  </div>
+                </div>
+
+                <!-- Right 5 Cols: Torn Parchment + Overlapping Scroll & Score -->
+                <div class="col-span-5 flex flex-col justify-between h-full relative">
+                  <div class="story37-parchment flex-1 p-3 pb-6 flex flex-col justify-between">
+                    <div class="story37-title-brush py-1.5 px-2 text-center">
+                      <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-[18px] leading-snug text-stone-950">
+                        ${escapeHtml(card.title)}
+                      </h3>
+                    </div>
+
+                    <div class="space-y-2.5 my-auto px-1.5">
+                      <div class="border-b border-stone-400/50 pb-2">
+                        <div class="flex items-center gap-1.5 mb-0.5">
+                          ${getPersonIconSvg()}
+                          <span class="font-serif-tc font-black text-sm text-stone-900">人物</span>
+                        </div>
+                        <div ${editableAttr} onblur="updateCardField(${idx}, 'characters', this.innerText)" class="font-hand-tc font-bold text-[15px] text-stone-900 pl-6">
+                          ${formatVerticalItems(card.characters)}
+                        </div>
+                      </div>
+
+                      <div>
+                        <div class="flex items-center gap-1.5 mb-0.5">
+                          ${getCubeIconSvg()}
+                          <span class="font-serif-tc font-black text-sm text-stone-900">元素</span>
+                        </div>
+                        <div ${editableAttr} onblur="updateCardField(${idx}, 'elements', this.innerText)" class="font-hand-tc font-bold text-[15px] text-stone-900 pl-6">
+                          ${formatVerticalItems(card.elements)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between gap-1.5 -mt-4 px-1 z-20">
+                    <div class="story37-scroll flex-1 py-1 px-2.5 text-center relative ml-1">
+                      <div class="story37-scroll-ear-l"></div>
+                      <div class="story37-scroll-ear-r"></div>
+                      <span ${editableAttr} onblur="updateCardField(${idx}, 'scripture', this.innerText)" class="font-hand-tc font-bold text-xs text-stone-950 block truncate">
+                        ${escapeHtml(card.scripture)}
+                      </span>
+                    </div>
+                    <div onclick="cycleScoreBadge(${idx})" class="story37-score-circle ${scoreClass} w-11 h-11 shrink-0 font-hand-tc font-black text-base">
+                      ${escapeHtml(card.score)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        // LAYOUT C: POKER SIZE EVENT CARD (63mm x 88mm)
+        return `
+          <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="story37-card-outer size-poker p-2.5 flex flex-col justify-between relative group">
+            <div class="story37-ink-frame"></div>
+
+            <div class="flex items-center justify-between z-10 h-8 mb-1">
+              <div class="story37-header-brush flex items-center gap-1.5 pl-1.5 pr-4 py-0.5">
+                ${getCrossSvg("w-4 h-6")}
+                <span class="font-serif-tc font-black text-sm tracking-wider text-stone-100">事件卡</span>
+              </div>
+              <div ${editableAttr} onblur="updateCardField(${idx}, 'id', this.innerText)" class="story37-pill px-2 py-0.5 font-cinzel font-black text-[11px]">
+                ${escapeHtml(card.id)}
+              </div>
+            </div>
+
+            <div class="story37-art-box h-[155px] w-full relative z-10 shrink-0">
+              <img src="${imgSrc}" alt="${escapeHtml(card.title)}" class="w-full h-full object-cover" />
+              ${!forPrint ? getMinimalHoverControls(idx) : ''}
+            </div>
+
+            <div class="relative z-10 flex-1 mt-1.5 flex flex-col justify-between">
+              <div class="story37-parchment flex-1 px-2.5 pt-1.5 pb-5 flex flex-col justify-between">
+                <div class="story37-title-brush py-1 px-2 text-center">
+                  <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-base text-stone-950 leading-tight">
+                    ${escapeHtml(card.title)}
+                  </h3>
+                </div>
+
+                <div class="grid grid-cols-2 gap-1.5 my-auto py-1 text-xs">
+                  <div>
+                    <div class="flex items-center gap-1 font-serif-tc font-black text-stone-900">
+                      ${getPersonIconSvg()} <span>人物</span>
+                    </div>
+                    <div ${editableAttr} onblur="updateCardField(${idx}, 'characters', this.innerText)" class="font-hand-tc font-bold text-stone-900 pl-4">
+                      ${formatVerticalItems(card.characters)}
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-1 font-serif-tc font-black text-stone-900">
+                      ${getCubeIconSvg()} <span>元素</span>
+                    </div>
+                    <div ${editableAttr} onblur="updateCardField(${idx}, 'elements', this.innerText)" class="font-hand-tc font-bold text-stone-900 pl-4">
+                      ${formatVerticalItems(card.elements)}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between px-1 -mt-4 z-20">
+                <div class="story37-scroll py-1 px-3 flex-1 mr-2 text-center relative ml-1">
+                  <div class="story37-scroll-ear-l"></div>
+                  <div class="story37-scroll-ear-r"></div>
+                  <span ${editableAttr} onblur="updateCardField(${idx}, 'scripture', this.innerText)" class="font-hand-tc font-bold text-[11px] text-stone-950 block truncate">
+                    ${escapeHtml(card.scripture)}
+                  </span>
+                </div>
+                <div onclick="cycleScoreBadge(${idx})" class="story37-score-circle ${scoreClass} w-10 h-10 shrink-0 font-hand-tc font-black text-sm">
+                  ${escapeHtml(card.score)}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
       }
 
-      // Poker Resource Card (63mm x 88mm)
+      // =====================================================
+      // MODE 2: POKER RESOURCE CARD (人物卡 / 元素卡 63mm x 88mm)
+      // =====================================================
       const isElement = card.pokerRole === '元素卡';
       const themeClass = isElement ? 'theme-element' : 'theme-character';
       const roleIcon = isElement ? getCubeIconSvg() : getPersonIconSvg();
 
       return `
-        <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="vintage-card-outer ${themeClass} card-poker-vertical p-2.5 flex flex-col justify-between relative group">
-          <div class="vintage-inner-border"></div>
+        <div id="${forPrint ? 'print_' : ''}card_dom_${idx}" class="story37-card-outer ${themeClass} size-poker p-2.5 flex flex-col justify-between relative group">
+          <div class="story37-ink-frame"></div>
 
-          <div class="vintage-header-bar h-9 px-2.5 flex items-center justify-between z-10">
-            <div class="flex items-center gap-1.5">
-              ${getCrossSvg()}
+          <div class="flex items-center justify-between z-10 h-9 mb-1">
+            <div class="story37-header-brush flex items-center gap-1.5 pl-2 pr-5 py-0.5">
+              ${getCrossSvg("w-5 h-6")}
               <span class="font-serif-tc font-black text-base tracking-wider text-stone-100">${escapeHtml(card.pokerRole)}</span>
             </div>
-            <div class="story-pill-badge px-2 py-0.5 font-serif-tc font-black text-xs">
+            <div class="story37-pill px-2.5 py-0.5 font-serif-tc font-black text-xs">
               ${escapeHtml(card.id)}
             </div>
           </div>
 
-          <div class="artwork-frame my-2 flex-1 relative z-10">
+          <div class="story37-art-box flex-1 my-1.5 relative z-10">
             <img
               src="${imgSrc}"
               alt="${escapeHtml(card.title)}"
-              crossorigin="anonymous"
-              onload="markCardLoaded(${idx})"
-              onerror="handleImageError(this, ${idx})"
-              class="w-full h-full object-cover oil-grade"
+              class="w-full h-full object-cover"
             />
-            <div class="oil-canvas-overlay"></div>
-            ${shimmerHtml}
             ${!forPrint ? getMinimalHoverControls(idx) : ''}
           </div>
 
-          <div class="torn-parchment p-2.5 text-center z-10 flex flex-col items-center justify-center gap-1">
-            <div class="title-brush-strip w-full py-1 px-2 flex items-center justify-center gap-1.5">
+          <div class="story37-parchment p-2.5 text-center z-10 flex flex-col items-center justify-center gap-1">
+            <div class="story37-title-brush w-full py-1 px-2 flex items-center justify-center gap-1.5">
               ${roleIcon}
-              <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-2xl tracking-widest text-stone-900">
+              <h3 ${editableAttr} onblur="updateCardField(${idx}, 'title', this.innerText)" class="font-serif-tc font-black text-2xl tracking-widest text-stone-950">
                 ${escapeHtml(card.title)}
               </h3>
             </div>
-            <p ${editableAttr} onblur="updateCardField(${idx}, 'description', this.innerText)" class="font-serif-tc text-[11px] font-bold text-stone-700 line-clamp-1">
+            <p ${editableAttr} onblur="updateCardField(${idx}, 'description', this.innerText)" class="font-hand-tc text-xs font-bold text-stone-800 line-clamp-1">
               ${escapeHtml(card.description || (isElement ? '聖經元素卡' : '聖經人物卡'))}
             </p>
           </div>
@@ -1258,9 +1621,6 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       `;
     }
 
-    /**
-     * Minimal, clean 4-button hover bar over the artwork area
-     */
     function getMinimalHoverControls(idx) {
       const card = cardsData[idx];
       const locked = card && card.locked;
@@ -1271,17 +1631,17 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
           </div>
         ` : ''}
         <div class="no-print opacity-0 group-hover:opacity-100 transition-opacity duration-150 absolute inset-x-0 bottom-0 p-2 bg-gradient-to-t from-black/90 via-black/65 to-transparent z-30 flex items-center justify-center gap-1.5 flex-wrap">
-          <button onclick="rerollSingleCard(${idx})" class="px-2.5 py-1 rounded-lg bg-stone-900/90 hover:bg-stone-800 text-amber-200 border border-amber-500/40 font-bold text-[11px] shadow">
-            🎲 換一張
+          <button onclick="rerollSingleCard(${idx})" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-[11px] shadow">
+            🎲 換一張 (0秒)
           </button>
-          <button onclick="openQuadModal(${idx})" class="px-2.5 py-1 rounded-lg bg-amber-500 hover:bg-amber-400 text-stone-950 font-black text-[11px] shadow">
+          <button onclick="openQuadModal(${idx})" class="px-2.5 py-1 rounded-lg bg-stone-900/95 hover:bg-stone-800 text-amber-200 border border-amber-500/40 font-bold text-[11px] shadow">
             ❖ 4選1
           </button>
           <button onclick="openEditSceneModal(${idx})" class="px-2.5 py-1 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-[11px] shadow">
-            ✏️ 改畫面
+            ✏️ 改圖/上傳
           </button>
           <button onclick="toggleCardLock(${idx})" class="px-2 py-1 rounded-lg ${locked ? 'bg-amber-700 text-white' : 'bg-stone-800/90 text-stone-300'} hover:bg-stone-700 font-bold text-[11px]">
-            ${locked ? '🔓 解鎖' : '🔒 鎖定'}
+            ${locked ? '🔓' : '🔒'}
           </button>
         </div>
       `;
@@ -1297,13 +1657,13 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       }
 
       grid.innerHTML = cardsData.map((card, i) => {
-        const scaleClass = card.cardType === 'event' ? 'card-scale-wrapper-a6' : '';
-        return `<div class="${scaleClass} flex flex-col items-center">${buildCardHtml(card, i, false)}</div>`;
+        const respClass = (card.cardType === 'event' && currentLayout === 'landscape-split') ? 'responsive-a6-landscape' : '';
+        return `<div class="${respClass} flex flex-col items-center">${buildCardHtml(card, i, false)}</div>`;
       }).join('');
     }
 
     /*************************************************************
-     * 7. INTERACTIVE CARD ACTIONS (Inline Edit, Reroll, 4-Pick-1)
+     * 6. INSTANT ZERO-LIMIT CARD ACTIONS
      *************************************************************/
     function updateCardField(idx, field, val) {
       const card = cardsData[idx];
@@ -1311,6 +1671,10 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       const cleanVal = String(val || '').replace(/\r?\n/g, '、').replace(/掃羅/g, '保羅').trim();
       if (cleanVal && card[field] !== cleanVal) {
         card[field] = cleanVal;
+        if (field === 'title' && !card.locked) {
+          card.imageUrl = ImpastoCanvasEngine.renderCardArtDataUrl(card);
+          renderCardsGrid();
+        }
       }
     }
 
@@ -1330,42 +1694,22 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       renderCardsGrid();
     }
 
-    function markCardLoaded(idx) {
-      if (cardsData[idx] && cardsData[idx].isLoading) {
-        cardsData[idx].isLoading = false;
-        const dom = document.getElementById(`card_dom_${idx}`);
-        const shimmer = dom?.querySelector('.ai-painting-shimmer');
-        if (shimmer) shimmer.remove();
-      }
-    }
-
-    function handleImageError(imgEl, idx) {
-      const card = cardsData[idx];
-      if (!card) return;
-      if (!card._retryCount) card._retryCount = 0;
-      if (card._retryCount < 2) {
-        card._retryCount++;
-        card.seed += 37;
-        imgEl.src = buildFluxImageUrl(card);
-      } else {
-        card.isLoading = false;
-        imgEl.onerror = null;
-        imgEl.src = createFallbackCanvasUrl(card);
-        markCardLoaded(idx);
-      }
-    }
-
-    async function rerollSingleCard(idx) {
+    function rerollSingleCard(idx) {
       const card = cardsData[idx];
       if (!card) return;
       card.locked = false;
-      card._retryCount = 0;
       card.seed = Math.floor(Math.random() * 899999) + 10000;
-      card.isLoading = true;
+      card.imageUrl = ImpastoCanvasEngine.renderCardArtDataUrl(card, card.seed);
       renderCardsGrid();
+    }
 
-      await buildSmartAiPromptAsync(card, card.customNote);
-      card.imageUrl = buildFluxImageUrl(card);
+    function instantRepaintAll() {
+      cardsData.forEach(card => {
+        if (!card.locked) {
+          card.seed = Math.floor(Math.random() * 899999) + 10000;
+          card.imageUrl = ImpastoCanvasEngine.renderCardArtDataUrl(card, card.seed);
+        }
+      });
       renderCardsGrid();
     }
 
@@ -1377,16 +1721,15 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
     }
 
     /*************************************************************
-     * 8. EDIT SCENE MODAL (✏️ 改畫面)
+     * 7. SCENE EDITOR, UPLOAD & OPTIONAL CLOUD AI REDRAW
      *************************************************************/
     function openEditSceneModal(idx) {
       editingCardIdx = idx;
       const card = cardsData[idx];
       if (!card) return;
-      document.getElementById('editSceneTitle').textContent = `✏️ 改畫面：${card.id} ${card.title}`;
+      document.getElementById('editSceneTitle').textContent = `✏️ 調整畫面：${card.id} ${card.title}`;
       document.getElementById('editSceneInput').value = card.customNote || '';
       document.getElementById('editSceneModal').classList.remove('hidden');
-      setTimeout(() => document.getElementById('editSceneInput').focus(), 50);
     }
 
     function closeEditSceneModal() {
@@ -1400,20 +1743,61 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       input.focus();
     }
 
-    async function submitEditScene() {
+    async function submitEditScene(engineType = 'canvas') {
       if (editingCardIdx === null) return;
       const idx = editingCardIdx;
       const card = cardsData[idx];
       const note = document.getElementById('editSceneInput').value.trim();
       card.customNote = note;
       card.seed = Math.floor(Math.random() * 899999) + 10000;
-      card.isLoading = true;
-      closeEditSceneModal();
-      renderCardsGrid();
 
-      await buildSmartAiPromptAsync(card, note);
-      card.imageUrl = buildFluxImageUrl(card);
+      if (engineType === 'canvas') {
+        card.imageUrl = ImpastoCanvasEngine.renderCardArtDataUrl(card, card.seed);
+        card.locked = true;
+        closeEditSceneModal();
+        renderCardsGrid();
+        return;
+      }
+
+      // Optional Cloud AI with anti-rate-limit check
+      const btn = document.getElementById('btnCloudAiDraw');
+      const origTxt = btn.innerHTML;
+      btn.innerHTML = '⏳ 雲端繪製中...';
+      btn.disabled = true;
+
+      try {
+        const apiKey = "";
+        const prompt = `Masterpiece classical biblical oil painting blended with abstract impasto art (matching Story 37 Paul preaching in Athens, swirling Prussian blue and golden nebula sky, thick palette knife brushstrokes, no text): ${card.title}, ${card.characters || ''}, ${card.elements || ''}, ${note}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite-image:generateContent?key=${apiKey}`;
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: { responseModalities: ['TEXT', 'IMAGE'] }
+          })
+        });
+        if (response.ok) {
+          const result = await response.json();
+          const b64 = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData)?.inlineData?.data;
+          if (b64) {
+            card.imageUrl = `data:image/png;base64,${b64}`;
+            card.locked = true;
+            btn.innerHTML = origTxt;
+            btn.disabled = false;
+            closeEditSceneModal();
+            renderCardsGrid();
+            return;
+          }
+        }
+      } catch (e) {}
+
+      // Fallback to instant Impasto Canvas so user NEVER gets stuck or sees rate-limit banner
+      card.imageUrl = ImpastoCanvasEngine.renderCardArtDataUrl(card, card.seed);
       card.locked = true;
+      btn.innerHTML = origTxt;
+      btn.disabled = false;
+      closeEditSceneModal();
       renderCardsGrid();
     }
 
@@ -1425,7 +1809,6 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       reader.onload = (e) => {
         cardsData[idx].imageUrl = e.target.result;
         cardsData[idx].locked = true;
-        cardsData[idx].isLoading = false;
         closeEditSceneModal();
         renderCardsGrid();
       };
@@ -1433,13 +1816,13 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
     }
 
     /*************************************************************
-     * 9. 4-PICK-1 VARIATION STUDIO (❖ 4選1)
+     * 8. INSTANT 4-PICK-1 STUDIO (❖ 4選1 — 0.05s Zero-Limit)
      *************************************************************/
-    const QUAD_ANGLES = [
-      { name: "視角 A｜史詩廣角・金藍星雲旋渦", cam: "Epic wide-angle architectural composition, dramatic Van Gogh swirling Prussian blue and golden nebula sky" },
-      { name: "視角 B｜林布蘭特寫・人物神情光影", cam: "Medium close-up emotional framing, intense Rembrandt chiaroscuro lighting on expressive faces" },
-      { name: "視角 C｜破曉神聖光束・厚塗肌理", cam: "Heavy palette knife impasto brushwork, radiant golden sunbeams breaking through dramatic clouds" },
-      { name: "視角 D｜古典黃金比例・博物館級細節", cam: "Classical museum oil painting, golden ratio composition, ultra-detailed 1st-century robes and stone" }
+    const QUAD_PALETTE_NAMES = [
+      "構圖 A｜雅典普魯士藍・碎金星雲旋渦",
+      "構圖 B｜聖殿深邃夜空・林布蘭暖金光束",
+      "構圖 C｜加利利翡翠藍・破曉神聖金輝",
+      "構圖 D｜各各他暮光紫・厚塗畫刀肌理"
     ];
 
     function openQuadModal(idx) {
@@ -1456,52 +1839,44 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       quadCardIdx = null;
     }
 
-    function refreshQuadGrid() {
-      renderQuadChoices();
-    }
-
     function renderQuadChoices() {
       if (quadCardIdx === null) return;
       const card = cardsData[quadCardIdx];
-      const baseSeed = Math.floor(Math.random() * 700000) + 10000;
+      const baseSeed = Math.floor(Math.random() * 800000) + 10000;
       const grid = document.getElementById('quadGrid');
 
-      grid.innerHTML = QUAD_ANGLES.map((item, i) => {
-        const s = baseSeed + i * 1337;
-        const p = buildLocalSmartPrompt(card, card.customNote, item.cam);
-        const url = buildFluxImageUrl(card, p, s);
-        const encUrl = encodeURIComponent(url);
-        const encPrompt = encodeURIComponent(p);
+      grid.innerHTML = QUAD_PALETTE_NAMES.map((label, i) => {
+        const s = baseSeed + i * 1777;
+        const dataUrl = ImpastoCanvasEngine.renderCardArtDataUrl(card, s, i);
 
         return `
-          <div onclick="chooseQuadImage('${encUrl}', '${encPrompt}', ${s})" class="cursor-pointer bg-stone-900 border-2 border-stone-700 hover:border-amber-400 rounded-xl p-2.5 flex flex-col gap-2 transition group shadow-lg">
+          <div onclick="chooseQuadDataUrl(${i}, ${s})" class="cursor-pointer bg-stone-900 border-2 border-stone-700 hover:border-amber-400 rounded-xl p-2.5 flex flex-col gap-2 transition group shadow-lg">
             <div class="flex items-center justify-between text-xs px-1">
-              <span class="font-bold text-amber-300">${item.name}</span>
-              <span class="text-[11px] text-emerald-300 font-bold group-hover:underline">點擊選用 &rarr;</span>
+              <span class="font-bold text-amber-300">${label}</span>
+              <span class="text-[11px] text-emerald-300 font-bold group-hover:underline">點擊套用 &rarr;</span>
             </div>
             <div class="relative w-full h-48 rounded-lg overflow-hidden bg-stone-950">
-              <img src="${url}" crossorigin="anonymous" class="w-full h-full object-cover oil-grade group-hover:scale-105 transition-transform duration-300" />
-              <div class="oil-canvas-overlay"></div>
+              <img id="quad_img_${i}" src="${dataUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
             </div>
           </div>
         `;
       }).join('');
     }
 
-    function chooseQuadImage(encUrl, encPrompt, seed) {
+    function chooseQuadDataUrl(i, seed) {
       if (quadCardIdx === null) return;
+      const imgEl = document.getElementById(`quad_img_${i}`);
+      if (!imgEl) return;
       const card = cardsData[quadCardIdx];
-      card.imageUrl = decodeURIComponent(encUrl);
-      card.prompt = decodeURIComponent(encPrompt);
+      card.imageUrl = imgEl.src;
       card.seed = seed;
       card.locked = true;
-      card.isLoading = false;
       closeQuadModal();
       renderCardsGrid();
     }
 
     /*************************************************************
-     * 10. TOP BAR CONTROLS (Mode, Layout, Paste, Batch Redraw)
+     * 9. TOP BAR CONTROLS (Mode, Layout, Paste)
      *************************************************************/
     function switchMode(mode) {
       currentMode = mode;
@@ -1519,7 +1894,7 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
           renderCardsGrid();
         }
       } else {
-        btnPoker.className = "px-3 py-1.5 rounded-lg bg-amber-700 text-white shadow transition";
+        btnPoker.className = "px-3 py-1.5 rounded-lg bg-amber-600 text-stone-950 font-black shadow transition";
         btnEvent.className = "px-3 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition";
         layoutGroup.classList.add('hidden');
         if (cardsData.length === 0 || cardsData[0].cardType !== 'poker') {
@@ -1532,15 +1907,17 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
 
     function switchLayout(layout) {
       currentLayout = layout;
-      const btnClassic = document.getElementById('btnLayoutClassic');
-      const btnSplit = document.getElementById('btnLayoutSplit');
-      if (layout === 'classic') {
-        btnClassic.className = "px-2.5 py-1.5 rounded-lg bg-amber-600/30 text-amber-200 border border-amber-500/40 transition";
-        btnSplit.className = "px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition";
-      } else {
-        btnSplit.className = "px-2.5 py-1.5 rounded-lg bg-amber-600/30 text-amber-200 border border-amber-500/40 transition";
-        btnClassic.className = "px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition";
-      }
+      const bPortrait = document.getElementById('btnLayoutPortrait');
+      const bLandscape = document.getElementById('btnLayoutLandscapeSplit');
+      const bPoker = document.getElementById('btnLayoutEventPoker');
+
+      const activeCls = "px-2.5 py-1.5 rounded-lg bg-amber-500 text-stone-950 font-black shadow transition";
+      const idleCls = "px-2.5 py-1.5 rounded-lg text-stone-400 hover:text-stone-200 transition";
+
+      bPortrait.className = layout === 'portrait' ? activeCls : idleCls;
+      bLandscape.className = layout === 'landscape-split' ? activeCls : idleCls;
+      bPoker.className = layout === 'event-poker' ? activeCls : idleCls;
+
       renderCardsGrid();
     }
 
@@ -1584,9 +1961,8 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       else if (key === 'poker100') area.value = PRESET_POKER_100;
     }
 
-    async function applyPastedText() {
+    function applyPastedText() {
       const raw = document.getElementById('pasteTextarea').value;
-      const autoDraw = document.getElementById('chkAutoDrawAfterPaste').checked;
       closePasteModal();
 
       if (raw.includes('人物 |') || raw.includes('元素 |')) {
@@ -1597,62 +1973,24 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
         switchMode('event');
       }
 
-      parseLinesToCards(raw, true);
-      if (autoDraw) {
-        await redrawAllUnlockedCards();
-      }
-    }
-
-    async function redrawAllUnlockedCards() {
-      if (cardsData.length === 0) return;
-      batchAbort = false;
-      const banner = document.getElementById('batchBanner');
-      const statusTxt = document.getElementById('batchStatusText');
-      const bar = document.getElementById('batchProgressBar');
-      banner.classList.remove('hidden');
-
-      for (let i = 0; i < cardsData.length; i++) {
-        if (batchAbort) break;
-        const card = cardsData[i];
-        if (card.locked) continue;
-
-        const pct = Math.round(((i + 1) / cardsData.length) * 100);
-        bar.style.width = `${pct}%`;
-        statusTxt.textContent = `正在繪製 (${i + 1}/${cardsData.length})：${card.title}`;
-
-        card.seed = Math.floor(Math.random() * 899999) + 10000;
-        card.isLoading = true;
-        renderCardsGrid();
-
-        await buildSmartAiPromptAsync(card, card.customNote);
-        card.imageUrl = buildFluxImageUrl(card);
-        renderCardsGrid();
-        await new Promise(r => setTimeout(r, 350));
-      }
-
-      statusTxt.textContent = `✨ 已完成全部卡片油畫更新！`;
-      setTimeout(() => banner.classList.add('hidden'), 2500);
-    }
-
-    function stopBatchDrawing() {
-      batchAbort = true;
-      document.getElementById('batchBanner').classList.add('hidden');
+      parseLinesToCards(raw, false);
     }
 
     /*************************************************************
-     * 11. A4 PHYSICAL PRINT & OFFLINE DOWNLOAD
+     * 10. A4 PHYSICAL PRINT & OFFLINE DOWNLOAD
      *************************************************************/
     function triggerPrintA4() {
       const container = document.getElementById('printSheetContainer');
       container.innerHTML = '';
 
-      if (currentMode === 'event') {
+      if (currentMode === 'event' && currentLayout === 'landscape-split') {
+        // 2 A6 Landscape cards per A4 page
         for (let i = 0; i < cardsData.length; i += 2) {
           const page = document.createElement('div');
           page.className = 'print-page-a4';
           for (let j = i; j < i + 2 && j < cardsData.length; j++) {
             const slot = document.createElement('div');
-            slot.className = 'print-slot-a6 overflow-hidden';
+            slot.className = 'print-slot-a6-landscape overflow-hidden';
             slot.innerHTML = buildCardHtml(cardsData[j], j, true);
             const el = slot.firstElementChild;
             if (el) { el.style.width = '100%'; el.style.height = '100%'; }
@@ -1660,13 +1998,33 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
           }
           container.appendChild(page);
         }
+      } else if (currentMode === 'event' && currentLayout === 'portrait') {
+        // 4 Story 37 Portrait cards (2x2) per A4 page
+        for (let i = 0; i < cardsData.length; i += 4) {
+          const page = document.createElement('div');
+          page.className = 'print-page-a4';
+          const grid = document.createElement('div');
+          grid.className = 'print-grid-a6-portrait';
+          for (let j = i; j < i + 4 && j < cardsData.length; j++) {
+            const slot = document.createElement('div');
+            slot.className = 'print-slot-a6-portrait overflow-hidden flex items-center justify-center';
+            slot.innerHTML = buildCardHtml(cardsData[j], j, true);
+            page.appendChild(grid);
+            grid.appendChild(slot);
+          }
+          container.appendChild(page);
+        }
       } else {
-        // Expand poker card quantities to full 100-card deck for printing
+        // 3x3 Poker Grid (63mm x 88mm) per A4 page
         const expanded = [];
-        cardsData.forEach(c => {
-          const copies = Math.min(c.count || 1, 30);
-          for (let k = 0; k < copies; k++) expanded.push(c);
-        });
+        if (currentMode === 'poker') {
+          cardsData.forEach(c => {
+            const copies = Math.min(c.count || 1, 30);
+            for (let k = 0; k < copies; k++) expanded.push(c);
+          });
+        } else {
+          cardsData.forEach(c => expanded.push(c));
+        }
 
         for (let i = 0; i < expanded.length; i += 9) {
           const page = document.createElement('div');
@@ -1687,7 +2045,7 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
         }
       }
 
-      setTimeout(() => window.print(), 250);
+      setTimeout(() => window.print(), 200);
     }
 
     function openDownloadModal() {
@@ -1722,7 +2080,7 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       const blob = await zip.generateAsync({ type: 'blob' });
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `聖經桌遊卡片_${currentMode === 'event' ? 'A6事件卡' : '撲克牌'}.zip`;
+      link.download = `聖經桌遊卡片_${currentMode === 'event' ? '事件卡' : '撲克牌'}.zip`;
       link.click();
 
       btn.innerHTML = orig;
@@ -1730,28 +2088,7 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       closeDownloadModal();
     }
 
-    async function saveOfflineHtmlWithBase64() {
-      const btn = document.getElementById('btnDownloadOfflineHtml');
-      const orig = btn.innerHTML;
-      btn.disabled = true;
-
-      for (let i = 0; i < cardsData.length; i++) {
-        const c = cardsData[i];
-        if (!c.imageUrl || c.imageUrl.startsWith('data:')) continue;
-        btn.innerHTML = `<span>⏳ 正在封裝圖片 (${i + 1}/${cardsData.length})...</span>`;
-        try {
-          const resp = await fetch(c.imageUrl);
-          const blob = await resp.blob();
-          const b64 = await new Promise(res => {
-            const reader = new FileReader();
-            reader.onloadend = () => res(reader.result);
-            reader.readAsDataURL(blob);
-          });
-          c.imageUrl = b64;
-          c.locked = true;
-        } catch (e) {}
-      }
-
+    function saveOfflineHtmlWithBase64() {
       renderCardsGrid();
       const htmlStr = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
       const blob = new Blob([htmlStr], { type: 'text/html;charset=utf-8' });
@@ -1759,9 +2096,6 @@ Describe specific 1st-century robes, character actions/gestures, props, ancient 
       a.href = URL.createObjectURL(blob);
       a.download = 'index.html';
       a.click();
-
-      btn.innerHTML = orig;
-      btn.disabled = false;
       closeDownloadModal();
     }
   </script>
